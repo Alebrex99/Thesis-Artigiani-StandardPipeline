@@ -478,7 +478,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6285404262030983128}
   m_Layer: 0
-  m_Name: BigRedButton Variant
+  m_Name: Button1-360img
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
