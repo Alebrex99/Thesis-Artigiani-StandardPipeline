@@ -6,7 +6,7 @@ public class FadeScreen : MonoBehaviour
 {
 
     public bool fadeOnStart = true;
-    public float fadeDuration = 2;
+    public float fadeDuration = 2; //duarata in secondi
     public Color fadeColor;
    
     
@@ -17,10 +17,11 @@ public class FadeScreen : MonoBehaviour
     void Start()
     {
         rend = GetComponent<Renderer>();
+        //usato per effetto fade all'avvio
         if(fadeOnStart)
             FadeIn();
     }
-
+    //FadeIn() + FadeOut(): funzioni usate tramite pulsante : quando clicchi il pulsante, il fade inizia per cambio scena
     public void FadeIn()
     {
         Fade(1, 0);
@@ -32,6 +33,7 @@ public class FadeScreen : MonoBehaviour
 
     public void Fade(float alphaIn, float alphaOut)
     {
+        
         StartCoroutine(FadeRoutine(alphaIn, alphaOut));
     }
 
@@ -40,23 +42,27 @@ public class FadeScreen : MonoBehaviour
         float timer = 0;
         while (timer <= fadeDuration)
         {
-            // Color newColor = fadeColor;
-            // newColor.a = Mathf.Lerp(alphaIn, alphaOut, timer / fadeDuration);
-            // rend.material.SetColor("_Color", newColor);
+            //Meodologia iniziale per modificare l'alpha del materiale:
+            Color newColor = fadeColor;
+            newColor.a = Mathf.Lerp(alphaIn, alphaOut, timer / fadeDuration);
+            rend.material.SetColor("_Color", newColor);
             
-            FadeThis(rend, Mathf.Lerp(alphaIn, alphaOut, timer / fadeDuration));
+            //FadeThis(rend, Mathf.Lerp(alphaIn, alphaOut, timer / fadeDuration));
             
             timer += Time.deltaTime;
+            //wait until next frame
             yield return null;
         }
         Color newColor2 = fadeColor;
         newColor2.a = alphaOut;
         rend.material.SetColor("_Color", newColor2);
     }
+
+
     private void FadeThis(Renderer r, float inputAlpha)
     {
         Material mat = r.material;
-        Material newMat = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
+        Material newMat = new Material(Shader.Find("Unlit/Unlit Transparent Color"));
         
  
         // Set surface type to Transparent
@@ -72,6 +78,9 @@ public class FadeScreen : MonoBehaviour
         r.material = newMat;
     }
     
+
+
+
     public IEnumerator FadeOutInRoutine()
     {
         float timer = 0;
