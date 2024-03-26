@@ -25,7 +25,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 // Create menu of all scenes included in the build.
-public class StartMenu : MonoBehaviour
+public class StartMenuMod : MonoBehaviour
 {
     public OVROverlay overlay;
     public OVROverlay text;

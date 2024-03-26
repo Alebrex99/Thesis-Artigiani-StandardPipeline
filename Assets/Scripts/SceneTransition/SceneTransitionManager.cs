@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,10 +6,17 @@ using UnityEngine.SceneManagement;
 
 public class SceneTransitionManager : MonoBehaviour
 {
+    //Fade screen
     public FadeScreen fadeScreen;
 
+    //Multiple scenes scenario
     [SerializeField] private string _firstSceneToLoad;
-    [SerializeField] private GameObject _playerCharacter;
+    [SerializeField] private GameObject _playerCharacter; //OVRCameraRIG
+
+    //Scene transition
+    [SerializeField] private LoadSceneMode _loadSceneMode;
+    private AsyncOperation asyncLoadOperation; //restituito dalle operazioni asincrone per determinare se op è completata
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,57 +31,55 @@ public class SceneTransitionManager : MonoBehaviour
     }
     private IEnumerator LoadFirstScene(string sceneName)
     {
-        AsyncOperation loadOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
-        while (!loadOperation.isDone)
+        asyncLoadOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+        while (!asyncLoadOperation.isDone)
             yield return null;
 
         if (_playerCharacter != null)
             _playerCharacter.gameObject.SetActive(true);
     }
 
-    public void GoToScene(int sceneIndex)
-    {
-        StartCoroutine(GoToSceneRoutine(sceneIndex));
-    }
     
-    IEnumerator GoToSceneRoutine(int sceneIndex)
-    {
-        fadeScreen.FadeOut();
-        yield return new WaitForSeconds(fadeScreen.fadeDuration);
 
-        SceneManager.LoadScene(sceneIndex);
+    //FUNZIONI PER CAMBIO SCENA ESPOSTE:
+    //unloading scene environment per eliminare l'ambiente base quando premo pulsante
+    public void UnloadScene(int sceneIndex)
+    {
+        StartCoroutine(UnloadSceneRoutine(sceneIndex));
     }
-    
+
+    private IEnumerator UnloadSceneRoutine(int sceneIndex)
+    {
+        while (asyncLoadOperation != null && !asyncLoadOperation.isDone)
+        {
+            yield return null;
+        }
+
+        SceneManager.UnloadSceneAsync(sceneIndex);
+    }
+
+    //FUNZIONI GENERICHE PER CAMBIO SCENA:
+    //Meglio usare le Async, perchè le base frizzano il gioco, caricano e fanno ripartire tutto
     public void GoToSceneAsync(int sceneIndex)
     {
         StartCoroutine(GoToSceneAsyncRoutine(sceneIndex));
     }
+
     IEnumerator GoToSceneAsyncRoutine(int sceneIndex)
     {
         fadeScreen.FadeOut();
-        AsyncOperation operation = SceneManager.LoadSceneAsync(sceneIndex);
-        operation.allowSceneActivation = false;
-        
+        asyncLoadOperation.allowSceneActivation = false;
+
         float timer = 0;
-        while (timer <= fadeScreen.fadeDuration && !operation.isDone)
+        while (timer <= fadeScreen.fadeDuration && !asyncLoadOperation.isDone)
         {
             timer += Time.deltaTime;
             yield return null;
         }
-        operation.allowSceneActivation = true;
+        asyncLoadOperation.allowSceneActivation = true;
     }
-    public void GoToAsyncDelay(int sceneIndex, float delay)
-    {
-        StartCoroutine(GoToAsyncDelayRoutine(sceneIndex, delay));
-    }
-    IEnumerator GoToAsyncDelayRoutine(int sceneIndex, float delay)
-    {
-        float timer = 0;
-        while (timer <= delay)
-        {
-            timer += Time.deltaTime;
-            yield return null;
-        }
-        GoToSceneAsync(sceneIndex);
-    }
+
+    //COROUTINES: eseguite (di default) una volta per frame (yield return null) quando lanciate 1 volta per es. con il bottone
+  
+
 }

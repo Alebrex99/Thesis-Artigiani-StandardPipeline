@@ -58,7 +58,6 @@ public class FadeScreen : MonoBehaviour
         rend.material.SetColor("_Color", newColor2);
     }
 
-
     private void FadeThis(Renderer r, float inputAlpha)
     {
         Material mat = r.material;
@@ -78,8 +77,6 @@ public class FadeScreen : MonoBehaviour
         r.material = newMat;
     }
     
-
-
 
     public IEnumerator FadeOutInRoutine()
     {

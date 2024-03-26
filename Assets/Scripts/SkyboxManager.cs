@@ -5,31 +5,24 @@ using UnityEngine;
 
 public class SkyboxManager: MonoBehaviour
 {
-    [SerializeField] Material skybox1;
-    [SerializeField] Material skybox2;
-    //[SerializeField] Material skybox3;
+    [SerializeField] Material skyboxImg360Mono;
+    [SerializeField] Material skyboxImg180Mono;
+    [SerializeField] Material skyboxBase;
+    public FadeScreen fadeScreen;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        
+        RenderSettings.skybox = skyboxBase;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void OnButton1Pressed()
     {       
-        if(RenderSettings.skybox == skybox1)
+        if(RenderSettings.skybox == skyboxImg360Mono)
         {
-            RenderSettings.skybox = skybox2;
+            RenderSettings.skybox = skyboxBase;
         }
         else
-        {
-            RenderSettings.skybox = skybox1;
+        {   
+            RenderSettings.skybox = skyboxImg360Mono;
         }
     }
         
