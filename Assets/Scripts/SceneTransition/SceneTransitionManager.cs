@@ -11,52 +11,79 @@ public class SceneTransitionManager : MonoBehaviour
 
     //Scene transition
     [SerializeField] private LoadSceneMode _loadSceneMode;
-    [SerializeField] private string _sceneToLoad;
-    [SerializeField] private string _sceneToUnload;
+    [SerializeField] private string _sceneIn;
+    [SerializeField] private string _sceneOut;
     [SerializeField] private bool _unloadSceneOnExit;
-    private bool _buttonExit = false;
+    private bool _buttonInOut = true;
     private AsyncOperation asyncLoadOperation; //restituito dalle operazioni asincrone per determinare se op è completata, usabile per progress bar
 
 
     public void onButtonChangeScene()
     {
-        //premi il bottone -> carica scena office + scarica environemnt
-        if (_buttonExit) //sono in uscita dall'ufficio
+        //quando lo premi per la prima volta -> carica scena office + scarica environment
+        //quando lo premi per la seconda volta -> carica scena environment + scarica office
+        string sceneToLoad;
+        string sceneToUnload;
+        bool sceneWay = _buttonInOut;
+
+        if (sceneWay)
         {
-            if (!_unloadSceneOnExit)
-                return;
-            Scene sceneToUnload = SceneManager.GetSceneByName(_sceneToUnload);
-            if (!sceneToUnload.IsValid() || !sceneToUnload.isLoaded)
-                return;
-
-            StartCoroutine(UnloadScene(sceneToUnload));
-            
+            sceneToLoad = _sceneIn;
+            sceneToUnload = _sceneOut;
         }
-        else //sono in entrata nell'ufficio
+        else
         {
-            StartCoroutine(LoadScene(_sceneToLoad));
-            _buttonExit = true;
+            sceneToLoad = _sceneOut;
+            sceneToUnload = _sceneIn;
         }
+        StartCoroutine(ChangeScene(sceneToLoad, sceneToUnload));
 
+        _buttonInOut = !_buttonInOut;
 
-        //premi ancora il bottone -> carica scena environment + scarica office
     }
 
-    private IEnumerator LoadScene(string sceneToLoadName)
+    private IEnumerator ChangeScene(string sceneToLoadName, string sceneToUnloadName)
     {
+        // Controlla se la scena da caricare è già caricata
         Scene sceneToLoad = SceneManager.GetSceneByName(sceneToLoadName);
         if (sceneToLoad.IsValid() && sceneToLoad.isLoaded)
+        {
+            Debug.Log("La scena " + sceneToLoadName + " è già caricata.");
             yield break;
+        }
 
+        // Carica la scena
         asyncLoadOperation = SceneManager.LoadSceneAsync(sceneToLoadName, _loadSceneMode);
         while (!asyncLoadOperation.isDone)
         {
+            Debug.Log("Caricamento della scena " + sceneToLoadName + " in corso...");
             yield return null;
         }
-        
-        asyncLoadOperation = null;
+        Debug.Log("Scena " + sceneToLoadName + " caricata con successo.");
+
+        // Controlla se la scena da scaricare è già scaricata
+        Scene sceneToUnload = SceneManager.GetSceneByName(sceneToUnloadName);
+        if (!sceneToUnload.IsValid() || !sceneToUnload.isLoaded)
+        {
+            Debug.Log("La scena " + sceneToUnloadName + " è già scaricata.");
+            yield break;
+        }
+
+        // Scarica la scena
+        asyncLoadOperation = SceneManager.UnloadSceneAsync(sceneToUnloadName);
+        while (!asyncLoadOperation.isDone)
+        {
+            Debug.Log("Scaricamento della scena " + sceneToUnloadName + " in corso...");
+            yield return null;
+        }
+        Debug.Log("Scena " + sceneToUnloadName + " scaricata con successo.");
+
+        // Imposta la scena caricata come scena attiva
         Scene loadedScene = SceneManager.GetSceneByName(sceneToLoadName);
         SceneManager.SetActiveScene(loadedScene);
+        Debug.Log("Scena " + sceneToLoadName + " impostata come scena attiva.");
+
+        asyncLoadOperation = null;
 
     }
 

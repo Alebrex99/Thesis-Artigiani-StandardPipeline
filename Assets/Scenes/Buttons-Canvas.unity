@@ -426,8 +426,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fadeScreen: {fileID: 1950412013}
   _loadSceneMode: 1
-  _sceneToLoad: Office
-  _sceneToUnload: Environment
+  _sceneIn: Office
+  _sceneOut: Environment
   _unloadSceneOnExit: 1
 --- !u!114 &1203120595
 MonoBehaviour:
