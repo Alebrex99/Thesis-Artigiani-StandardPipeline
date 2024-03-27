@@ -9,36 +9,12 @@ public class SceneTransitionManager : MonoBehaviour
     //Fade screen
     public FadeScreen fadeScreen;
 
-    //Multiple scenes scenario
-    [SerializeField] private string _firstSceneToLoad;
-    [SerializeField] private GameObject _playerCharacter; //OVRCameraRIG
-
     //Scene transition
     [SerializeField] private LoadSceneMode _loadSceneMode;
     private AsyncOperation asyncLoadOperation; //restituito dalle operazioni asincrone per determinare se op è completata
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        Scene firstScene = SceneManager.GetSceneByName(_firstSceneToLoad);
-        if (firstScene.IsValid() && firstScene.isLoaded)
-            return;
-
-        if (_playerCharacter != null)
-            _playerCharacter.gameObject.SetActive(false);
-        StartCoroutine(LoadFirstScene(_firstSceneToLoad));
-
-    }
-    private IEnumerator LoadFirstScene(string sceneName)
-    {
-        asyncLoadOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
-        while (!asyncLoadOperation.isDone)
-            yield return null;
-
-        if (_playerCharacter != null)
-            _playerCharacter.gameObject.SetActive(true);
-    }
-
+    
+  
     
 
     //FUNZIONI PER CAMBIO SCENA ESPOSTE:
