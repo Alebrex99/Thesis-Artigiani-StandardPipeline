@@ -526,17 +526,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 202912086384781514, guid: 90ab26347f5b60142b0ba515d96981d3, type: 3}
-      propertyPath: fadeDuration
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 1535865696418903623, guid: 90ab26347f5b60142b0ba515d96981d3, type: 3}
       propertyPath: m_Name
       value: '[BuildingBlock] Camera Rig'
-      objectReference: {fileID: 0}
-    - target: {fileID: 3419250768374270392, guid: 90ab26347f5b60142b0ba515d96981d3, type: 3}
-      propertyPath: disableEyeAnchorCameras
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3473168230841171509, guid: 90ab26347f5b60142b0ba515d96981d3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -578,14 +570,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5895656133296140500, guid: 90ab26347f5b60142b0ba515d96981d3, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 9fcd3ccaed1ce2948a93379b792e3630, type: 2}
-    - target: {fileID: 8631202931613678419, guid: 90ab26347f5b60142b0ba515d96981d3, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.106
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -621,7 +605,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 630737354881981398, guid: 45f285228c5c02142a675c390fe7bfd1, type: 3}
       propertyPath: _whenSelect.m_PersistentCalls.m_Calls.Array.size
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 630737354881981398, guid: 45f285228c5c02142a675c390fe7bfd1, type: 3}
       propertyPath: _whenSelect.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
@@ -715,6 +699,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 630737354881981403, guid: 45f285228c5c02142a675c390fe7bfd1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2086771710}
+    - targetCorrespondingSourceObject: {fileID: 630737354881981403, guid: 45f285228c5c02142a675c390fe7bfd1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2086771714}
   m_SourcePrefab: {fileID: 100100000, guid: 45f285228c5c02142a675c390fe7bfd1, type: 3}
 --- !u!1 &2086771709 stripped
 GameObject:
@@ -742,6 +729,55 @@ MonoBehaviour:
   _selectSurface: {fileID: 0}
   _movementProvider: {fileID: 0}
   _tiebreakerScore: 0
+--- !u!114 &2086771714
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2086771709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1464721f2283eb14e94a33e812b47be4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interactableView: {fileID: 2086771710}
+  _whenHover:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenUnhover:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenSelect:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1203120592}
+        m_TargetAssemblyTypeName: SkyboxManager, Assembly-CSharp
+        m_MethodName: OnButton1Pressed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _whenUnselect:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenInteractorViewAdded:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenInteractorViewRemoved:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenSelectingInteractorViewAdded:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenSelectingInteractorViewRemoved:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
