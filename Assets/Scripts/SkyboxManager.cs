@@ -1,33 +1,105 @@
 using Meta.WitAi;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static GuardSimple;
 
 public class SkyboxManager: MonoBehaviour
 {
+    public enum State
+    {
+        Main,
+        Button1,
+        Button2,
+        Button3,
+        Button4
+    }
+    public static SkyboxManager instance;
+    State _currentState;
     [SerializeField] Material skyboxImg360Mono;
-    [SerializeField] Material skyboxImg180Mono;
+    [SerializeField] Material skyboxImg180Stereo;
     [SerializeField] Material skyboxBase;
-    [SerializeField] GameObject _environement;
+    [SerializeField] GameObject _environment;
+    [SerializeField] GameObject _waitingRoom;
     [SerializeField] GameObject _office;
     public FadeScreen fadeScreen;
     
-
+    private void Awake()
+    {
+        instance = this;
+    }
     private void Start()
     {
+        _currentState = State.Main;
+
         RenderSettings.skybox = skyboxBase;
+        _waitingRoom.SetActive(false);
+        _environment.SetActive(true);
     }
+
+    //FSM POSSIBILE: 
+    //DA FARE DURANTE OGNI STATO : ANCORA DA DECIDERE
+    private void UpdateState()
+    {
+        switch (_currentState)
+        {
+            case State.Main:
+                break;
+            case State.Button1:
+                break;
+            case State.Button2: 
+                break;
+            case State.Button3:
+                break;
+            case State.Button4:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+    }
+
+    //FUNZIONI PER I PULSANTI -> CAMBIO STATO (TRANSIZIONI)
     public void OnButton1Pressed()
-    {   /*  
-        if (_environement != null)
+    {
+        //INSERIRE TRANSIZIONI
+        /*
+        State newState = _currentState;
+        switch(_currentState)
         {
-            _environement.SetActive(true);
-        }
-        if (_office != null)
+            case State.Main:
+                newState = State.Button1;
+                break;
+            case State.Button1:
+                newState = State.Main;
+                break;
+            case State.Button2:
+                newState = State.Main;
+                break;
+            case State.Button3:
+                newState = State.Main;
+                break;
+            case State.Button4:
+                newState = State.Main;
+                break;
+        }*/
+        
+        //PUOI UNIRE GLI IF PER SKYBOX E CAMBIO SCENA
+
+        if (_environment != null && _waitingRoom!=null)
         {
-            _office.SetActive(false);
+            if (_environment.activeSelf)
+            {
+                _environment.SetActive(false);
+                _waitingRoom.SetActive(true);
+            }
+            else
+            {
+                _waitingRoom.SetActive(false);
+                _environment.SetActive(true);
+            }
+           
         }
-        */
         if(RenderSettings.skybox == skyboxImg360Mono)
         {
             RenderSettings.skybox = skyboxBase;
@@ -38,9 +110,40 @@ public class SkyboxManager: MonoBehaviour
         }
     }
 
+    public void OnButton2Pressed()
+    {
+        if (_environment != null && _office != null)
+        {
+            if (_environment.activeSelf)
+            {
+                _environment.SetActive(false);
+                _office.SetActive(true);
+            }
+            else
+            {
+                _office.SetActive(false);
+                _environment.SetActive(true);
+            }
+
+        }
+        if (RenderSettings.skybox == skyboxImg180Stereo)
+        {
+            RenderSettings.skybox = skyboxBase;
+        }
+        else
+        {
+            RenderSettings.skybox = skyboxImg180Stereo;
+        }
+    }
+
     public void OnButton3Pressed()
     {
 
     }
-        
+
+    public void OnButton4Pressed()
+    {
+
+    }
+
 }
