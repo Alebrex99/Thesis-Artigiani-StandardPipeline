@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR;
 using static GuardSimple;
 
 public class SkyboxManager: MonoBehaviour
@@ -59,8 +60,7 @@ public class SkyboxManager: MonoBehaviour
         }
     }
 
-    //FUNZIONI PER I PULSANTI -> CAMBIO STATO (TRANSIZIONI)
-    public void OnButton1Pressed()
+    private void ChangeState()
     {
         //INSERIRE TRANSIZIONI
         /*
@@ -83,6 +83,12 @@ public class SkyboxManager: MonoBehaviour
                 newState = State.Main;
                 break;
         }*/
+    }
+    //FUNZIONI PER I PULSANTI -> CAMBIO STATO (TRANSIZIONI)
+    //se clicco -> cambia stato
+    public void OnButton1Pressed()
+    {
+        ChangeState();
         
         //PUOI UNIRE GLI IF PER SKYBOX E CAMBIO SCENA
 
