@@ -19,6 +19,7 @@ public class GameManager: MonoBehaviour
     public static GameManager instance;
     State _currentState;
     private Button3D[] _button3Ds;
+    private Button3D _currentButton;
 
 
     //Skyboxes
@@ -37,13 +38,21 @@ public class GameManager: MonoBehaviour
     }
     private void Start()
     {
-        RenderSettings.skybox = skyboxBase;
-        _currentState = State.Main;
-        _waitingRoom.SetActive(false);
-        _office.SetActive(false);
-        _environment.SetActive(true);
+        if (skyboxBase!=null && _waitingRoom!=null && _office !=null && _environment != null)
+        {
+            RenderSettings.skybox = skyboxBase;
+            _currentState = State.Main;
+            _waitingRoom.SetActive(false);
+            _office.SetActive(false);
+            _environment.SetActive(true);
+        }
+        else
+        {
+            Debug.LogError("ASSIGN THE ENVIRONMENTS");
+        }
+      
 
-        //FindObjectsOfType --> da usare per prendere tutti i bottoni
+        //BOTTONI
         _button3Ds = FindObjectsOfType<Button3D>();
         foreach(Button3D button3D in _button3Ds)
         {
@@ -65,7 +74,7 @@ public class GameManager: MonoBehaviour
                 break;
             case State.Button1:
                 break;
-            case State.Button2: 
+            case State.Button2:
                 break;
             case State.Button3:
                 break;
@@ -76,7 +85,7 @@ public class GameManager: MonoBehaviour
         }
     }
 
-    private void ChangeState(State buttonState)
+    private void ChangeState(State buttonState, Button3D button)
     {
         //INSERIRE TRANSIZIONI
         //es. sono in button1 (newState) ed è stato premuto button2 (buttonState)
@@ -113,25 +122,32 @@ public class GameManager: MonoBehaviour
     public void OnButtonPressedEffect(Button3D button, bool isButtonPressed )
     {
         Debug.Log($"Button {button.getButtonName()} premuto --> cambio stato");
-        State ButtonToState;
+        State ButtonState;
         switch (button.getButtonName())
         {
             case "Button1":
-                ButtonToState = State.Button1;
+                ButtonState = State.Button1;
                 break;
             case "Button2":
-                ButtonToState = State.Button2;
+                ButtonState = State.Button2;
                 break;
             case "Button3":
-                ButtonToState = State.Button3;
+                ButtonState = State.Button3;
                 break;
             case "Button4":
-                ButtonToState = State.Button4;
+                ButtonState = State.Button4;
                 break;
             default: throw new ArgumentOutOfRangeException();
         }
-        
-        ChangeState(ButtonToState);
+        if (_currentButton != null && _currentButton!= button)
+        {
+            _currentButton.Reset();
+        }
+
+        // Imposta il nuovo pulsante corrente
+        _currentButton = button;
+        ChangeState(ButtonState, button);
+        //UpdateState();
     }
 
 

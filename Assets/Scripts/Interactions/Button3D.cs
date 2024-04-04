@@ -18,6 +18,8 @@ public class Button3D : MonoBehaviour
     [SerializeField] GameObject[] _EnvsOff;
     [SerializeField] GameObject _environmentOn;
     [SerializeField] GameObject _environmentOff;
+    [SerializeField] GameObject _environmentMain;
+    [SerializeField] Material _skyboxMain;
 
     void Start ()
     {
@@ -38,27 +40,6 @@ public class Button3D : MonoBehaviour
 
 
         //PUOI UNIRE GLI IF PER SKYBOX E CAMBIO SCENA
-
-        ChangeEnvironment();
-        ChangeSkybox();
-
-    }
-
-    public void ChangeSkybox()
-    {
-        
-        if (RenderSettings.skybox == _skyboxOn)
-        {
-            RenderSettings.skybox = _skyboxOff;
-        }
-        else
-        {
-            RenderSettings.skybox = _skyboxOn;
-        }
-    }
-    
-    public void ChangeEnvironment()
-    {
         if (_environmentOn != null && _environmentOff != null)
         {
             if (_environmentOn.activeSelf)
@@ -73,6 +54,24 @@ public class Button3D : MonoBehaviour
             }
 
         }
+        if (RenderSettings.skybox == _skyboxOn)
+        {
+            RenderSettings.skybox = _skyboxOff;
+        }
+        else
+        {
+            RenderSettings.skybox = _skyboxOn;
+        }
+
+    }
+
+    //Ogni volta che viene cliccato un altro bottone, il corrente va resettato (stato main)
+    public void Reset()
+    {
+        RenderSettings.skybox = _skyboxMain;
+        _environmentMain.SetActive(true);
+        _environmentOn.SetActive(false);
+        isButtonPressed = false;
     }
 
     public String getButtonName()
