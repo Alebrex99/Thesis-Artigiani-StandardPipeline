@@ -27,6 +27,7 @@ public class GameManager: MonoBehaviour
     [SerializeField] GameObject _environmentMain;
     [SerializeField] GameObject _waitingRoom;
     [SerializeField] GameObject _office;
+    [SerializeField] GameObject _video2D;
     public FadeScreen fadeScreen;
     
 
@@ -36,16 +37,15 @@ public class GameManager: MonoBehaviour
     }
     private void Start()
     {
-       
         _currentState = State.Main;
-        RenderSettings.skybox = skyboxMain;
+        //RenderSettings.skybox = skyboxMain;
             
         _waitingRoom.SetActive(false);
         _office.SetActive(false);
+        _video2D.SetActive(false);
         _environmentMain.SetActive(true);
         _currentEnvironment = _environmentMain;
-      
-
+    
         //BOTTONI
         _button3Ds = FindObjectsOfType<Button3D>();
         foreach(Button3D button3D in _button3Ds)
@@ -53,8 +53,6 @@ public class GameManager: MonoBehaviour
             Debug.Log(button3D.getButtonName());
             button3D.OnButtonPressed += OnButtonPressedEffect;
         }
- 
-        
     }
 
     private void ChangeState(Button3D buttonPressed)
@@ -102,31 +100,22 @@ public class GameManager: MonoBehaviour
                 _currentEnvironment.SetActive(true);
                 break;
             case State.Button1:
-                _currentEnvironment.SetActive(false);
-                _currentEnvironment = buttonPressed.GetAssociatedEnvironment();
-                _currentEnvironment.SetActive(true);
+                OnButtonChangeEnvironment(buttonPressed);
                 break;
             case State.Button2:
-                _currentEnvironment.SetActive(false);
-                _currentEnvironment = buttonPressed.GetAssociatedEnvironment();
-                _currentEnvironment.SetActive(true);
+                OnButtonChangeEnvironment(buttonPressed);
                 break;
             case State.Button3:
-                _currentEnvironment.SetActive(false);
-                _currentEnvironment = buttonPressed.GetAssociatedEnvironment();
-                _currentEnvironment.SetActive(true);
+                OnButtonChangeEnvironment(buttonPressed);
                 break;
             case State.Button4:
-                _currentEnvironment.SetActive(false);
-                _currentEnvironment = buttonPressed.GetAssociatedEnvironment();
-                _currentEnvironment.SetActive(true);
+                OnButtonChangeEnvironment(buttonPressed);
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
         }
     }
 
-  
     //CORRISPONDE ALLA CHECK TRANSITION:
     public void OnButtonPressedEffect(Button3D buttonPressed, bool isButtonPressed )
     {
@@ -163,11 +152,10 @@ public class GameManager: MonoBehaviour
 
     }
 
-
-
-    //FUNZIONI PER I PULSANTI -> CAMBIO STATO (TRANSIZIONI)
-    public void OnButton1Pressed()
+    public void OnButtonChangeEnvironment(Button3D buttonPressed)
     {
-       
+        _currentEnvironment.SetActive(false);
+        _currentEnvironment = buttonPressed.GetAssociatedEnvironment();
+        _currentEnvironment.SetActive(true);
     }
 }
