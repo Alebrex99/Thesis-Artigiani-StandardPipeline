@@ -535,7 +535,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5837592159730691640, guid: 9ea3c3bd7f7fe1043a0bb52ecda39ce6, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -543,7 +543,55 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 431215982480021505, guid: 9ea3c3bd7f7fe1043a0bb52ecda39ce6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1909564288}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5180279930533395779, guid: 9ea3c3bd7f7fe1043a0bb52ecda39ce6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 5956130718954039297, guid: 9ea3c3bd7f7fe1043a0bb52ecda39ce6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 3876804671819014611, guid: 9ea3c3bd7f7fe1043a0bb52ecda39ce6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 6527313333463659060, guid: 9ea3c3bd7f7fe1043a0bb52ecda39ce6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 6906042446320498096, guid: 9ea3c3bd7f7fe1043a0bb52ecda39ce6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 5676963381706779911, guid: 9ea3c3bd7f7fe1043a0bb52ecda39ce6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 8865307799012631646, guid: 9ea3c3bd7f7fe1043a0bb52ecda39ce6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 8310240850484608568, guid: 9ea3c3bd7f7fe1043a0bb52ecda39ce6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 6304862802621516215, guid: 9ea3c3bd7f7fe1043a0bb52ecda39ce6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 8437003709218336490, guid: 9ea3c3bd7f7fe1043a0bb52ecda39ce6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 8785153381001534626, guid: 9ea3c3bd7f7fe1043a0bb52ecda39ce6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 941331984465656451, guid: 9ea3c3bd7f7fe1043a0bb52ecda39ce6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 2303111951626582053, guid: 9ea3c3bd7f7fe1043a0bb52ecda39ce6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 2119992893893279640, guid: 9ea3c3bd7f7fe1043a0bb52ecda39ce6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 6391345600478640010, guid: 9ea3c3bd7f7fe1043a0bb52ecda39ce6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 8827524989756136000, guid: 9ea3c3bd7f7fe1043a0bb52ecda39ce6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 9ea3c3bd7f7fe1043a0bb52ecda39ce6, type: 3}
 --- !u!1 &802999444 stripped
 GameObject:
@@ -849,7 +897,7 @@ GameObject:
   - component: {fileID: 1085411768}
   - component: {fileID: 1085411767}
   m_Layer: 0
-  m_Name: SkyboxWaitingRoom
+  m_Name: SkyboxEnvironment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1745,7 +1793,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1493077503
 Transform:
   m_ObjectHideFlags: 0
@@ -1761,6 +1809,89 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1756839298
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1756839299}
+  - component: {fileID: 1756839301}
+  - component: {fileID: 1756839300}
+  m_Layer: 0
+  m_Name: SkyboxCube_WaitingRoom
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1756839299
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1756839298}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 100, y: 100, z: 100}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1037477895}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &1756839300
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1756839298}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 929851bfeaf749b47a70ca039dcf7fd2, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1756839301
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1756839298}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1909564287
 GameObject:
   m_ObjectHideFlags: 0
@@ -1773,7 +1904,7 @@ GameObject:
   - component: {fileID: 1909564290}
   - component: {fileID: 1909564289}
   m_Layer: 0
-  m_Name: SkyboxWaitingRoom
+  m_Name: Img180Stereo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1856,7 +1987,7 @@ GameObject:
   - component: {fileID: 2067750214}
   - component: {fileID: 2067750213}
   m_Layer: 0
-  m_Name: SkyboxWaitingRoom
+  m_Name: SkyboxPano_WaitingRoom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1882,7 +2013,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c08337bbdab41c54c9f60d5b691c5dbf, type: 2}
+  - {fileID: 2100000, guid: d73acc2b465a9464a8e59efe47332f3b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2410,6 +2541,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6909439798396506623, guid: 5be60e388d11889429532e9c64f1760b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2067750215}
+    - targetCorrespondingSourceObject: {fileID: 6909439798396506623, guid: 5be60e388d11889429532e9c64f1760b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1756839299}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5be60e388d11889429532e9c64f1760b, type: 3}
 --- !u!1001 &5115501060861986799
@@ -2426,7 +2560,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8235167071441124845, guid: 7c97cc511b376e54ba2556c41285eb39, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8477383570520498148, guid: 7c97cc511b376e54ba2556c41285eb39, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2671,6 +2805,6 @@ SceneRoots:
   - {fileID: 5115501060861986799}
   - {fileID: 4278034058893219462}
   - {fileID: 802999443}
-  - {fileID: 1493077503}
   - {fileID: 251878238}
+  - {fileID: 1493077503}
   - {fileID: 859819022}
