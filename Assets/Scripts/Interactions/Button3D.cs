@@ -17,14 +17,16 @@ public class Button3D : MonoBehaviour
     [SerializeField] Material _skyboxMain;
     //[SerializeField] GameObject[] _envsOn;
     [SerializeField] GameObject _environmentOn;
-    
+    [SerializeField] GameObject _environmentMain;
+    [SerializeField] private static GameObject _currentEnvironment;
+
     //mettere la logica direttamente nel bottone
     private Button3D _currentButton;
 
 
     void Start ()
     {
-        
+        _currentEnvironment = _environmentMain;
     }
 
     //Funzione specifica Buttone1
@@ -38,37 +40,49 @@ public class Button3D : MonoBehaviour
         //ACTION CAMBIO STATO:
         if (OnButtonPressed != null)
             OnButtonPressed(this, isButtonPressed);
+        
+
+        //logica nel bottone:
+
+
+        //ChangeEvnironment();
+
         isButtonPressed = false;
+
     }
 
 
-    /*public void ChangeEnvironment()
+    public void ChangeEnvironment()
     {
-       
-       if (_environmentOn != null && _environmentOff != null)
-       {
-           if (_environmentOn.activeSelf)
-           {
-               _environmentOn.SetActive(false);
-               _environmentOff.SetActive(true);
-           }
-           else
-           {
-               _environmentOn.SetActive(true);
-               _environmentOff.SetActive(false);
-           }
+        Debug.Log(_currentEnvironment.name);
 
-       }
-       if (RenderSettings.skybox == _skyboxOn)
-       {
-           RenderSettings.skybox = _skyboxOff;
-       }
-       else
-       {
-           RenderSettings.skybox = _skyboxOn;
-       }
-       
-    }*/
+        if (_currentEnvironment != _environmentOn)
+        {
+            _currentEnvironment.SetActive(false);
+            _currentEnvironment = _environmentOn;
+            _currentEnvironment.SetActive(true);
+        }
+        else
+        {
+            _currentEnvironment.SetActive(false);
+            _currentEnvironment = _environmentMain;
+            _currentEnvironment.SetActive(true);
+  
+
+        }
+
+
+        /*
+        if (RenderSettings.skybox == _skyboxOn)
+        {
+            RenderSettings.skybox = _skyboxOff;
+        }
+        else
+        {
+            RenderSettings.skybox = _skyboxOn;
+        }*/
+
+    }
 
     public String getButtonName()
     {
@@ -80,4 +94,11 @@ public class Button3D : MonoBehaviour
         return _environmentOn;
     }
 
+    public void ChangeEvnironment()
+    {
+        if (_environmentOn != null && _environmentOn)
+        {
+            _environmentOn.SetActive(true);
+        }
+    }
 }
