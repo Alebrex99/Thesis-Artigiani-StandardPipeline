@@ -43,7 +43,7 @@ public class Button3D : MonoBehaviour
         //logica nel bottone:
         Debug.Log(_currentEnvironment.name);
         Debug.Log(_environmentOn.name);
-        ChangeEnvironment();
+        ChangeEnvironment(); //PER DEMO
 
         isButtonPressed = false;
 
@@ -52,7 +52,7 @@ public class Button3D : MonoBehaviour
 
     public void ChangeEnvironment()
     {
-        
+        ButtonsManager.instance._voiceAudio.Stop();
         //se l'ambiente corrente è quello da accendere, lo spegni e accendi quello principale
         if (_currentEnvironment.name == _environmentOn.name)
         {

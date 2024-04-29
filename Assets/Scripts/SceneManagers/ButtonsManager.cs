@@ -17,7 +17,7 @@ public class ButtonsManager: MonoBehaviour
     public static ButtonsManager instance;//singleton
     
     State _currentState;
-    [SerializeField] private AudioSource _voiceAudio;
+    public AudioSource _voiceAudio;
     private Button3D[] _button3Ds;
     private GameObject _currentEnvironment;
 

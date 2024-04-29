@@ -158,7 +158,7 @@ public class cAppManager : MonoBehaviour {
     }
 
 
-    //ALE FUNZIONI GENERICHE CAMBIO SCENA
+    //ALE: FUNZIONI GENERICHE CAMBIO SCENA
     public void GoToSceneAsync(Scenes scene)
     {
         if (actualScene == scene)
