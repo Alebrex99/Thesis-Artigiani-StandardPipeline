@@ -771,7 +771,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _canvasRenderTexture: {fileID: 153049741}
   _meshRenderer: {fileID: 121264430}
-  _renderingMode: 100
+  _renderingMode: 101
   _useAlphaToMask: 1
   _alphaCutoutThreshold: 0.5
   _canvasMesh: {fileID: 121264428}
