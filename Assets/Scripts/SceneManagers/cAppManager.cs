@@ -34,7 +34,6 @@ public class cAppManager : MonoBehaviour {
     private static int selectedScene = -1;
 
 
-
     void Awake() {
         if (null != instance) {
             Destroy(goPersistent);
@@ -159,7 +158,7 @@ public class cAppManager : MonoBehaviour {
 
 
     //ALE: FUNZIONI GENERICHE CAMBIO SCENA
-    public void GoToSceneAsync(Scenes scene)
+    public static void GoToSceneAsync(Scenes scene)
     {
         if (actualScene == scene)
         {
@@ -168,7 +167,7 @@ public class cAppManager : MonoBehaviour {
         }
         Debug.Log("[App] Load Scene");
         actualScene = scene;
-        StartCoroutine(GoToSceneAsyncRoutine((int)scene));
+        instance.StartCoroutine(instance.GoToSceneAsyncRoutine((int)scene));
     }
 
     IEnumerator GoToSceneAsyncRoutine(int sceneIndex)
@@ -186,6 +185,7 @@ public class cAppManager : MonoBehaviour {
             yield return null;
         }
         Debug.Log("Scena " + sceneToLoad.name + " caricata con successo.");
+        OVRScreenFade.instance.FadeIn();
 
         Scene loadedScene = SceneManager.GetSceneByBuildIndex(sceneIndex);
         SceneManager.SetActiveScene(loadedScene);

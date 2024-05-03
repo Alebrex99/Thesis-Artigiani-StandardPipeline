@@ -9,9 +9,9 @@ public class IntroManager : MonoBehaviour
     public static IntroManager instance;
     
     public VideoPlayer videoPlayer;
-    public AudioSource _voiceAudio;
+    public AudioSource voiceAudio;
 
-
+    int loopVideo = 0;
     private void Awake()
     {
         instance = this;
@@ -20,23 +20,39 @@ public class IntroManager : MonoBehaviour
     void Start()
     {
         //QUANDO IL VIDEO FINISCE
-        videoPlayer.loopPointReached += EndVideo;
+        
         //START VOICE AUDIO
-        if (_voiceAudio != null)
+        if (voiceAudio != null && videoPlayer !=null)
         {
-            _voiceAudio.Play();
+            videoPlayer.Play();
+            voiceAudio.Play();
         }
+        videoPlayer.loopPointReached += EndVideo;
+        Invoke("EndAudio", voiceAudio.clip.length);
+
     }
 
     private void EndVideo(VideoPlayer source)
     {
-        videoPlayer.loopPointReached -= EndVideo;
-        videoPlayer.Stop();
-        cAppManager.instance.GoToSceneAsync(Scenes.HOME);
+        //cAppManager.GoToSceneAsync(Scenes.HOME);
+        //ANIMAZIONI POSSIBILI
+        loopVideo++;
+        if(loopVideo>= 2)
+        {
+            source.Stop();
+            source.loopPointReached -= EndVideo;
+        }
+    }
+
+    private void EndAudio()
+    {
+        cAppManager.GoToSceneAsync(Scenes.HOME);
         //ANIMAZIONI POSSIBILI
     }
 
+  
 
 
-    
+
+
 }

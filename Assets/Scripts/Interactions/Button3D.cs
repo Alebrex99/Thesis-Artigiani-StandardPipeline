@@ -51,7 +51,7 @@ public class Button3D : MonoBehaviour
 
     public void ChangeEnvironment()
     {
-        //IntroManager.instance._voiceAudio.Stop();
+        //IntroManager.instance.voiceAudio.Stop();
         //se l'ambiente corrente è quello da accendere, lo spegni e accendi quello principale
         if (_currentEnvironment.name == _environmentOn.name)
         {
