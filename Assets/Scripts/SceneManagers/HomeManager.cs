@@ -15,23 +15,22 @@ public class HomeManager: MonoBehaviour
         Button4
     }
     public static HomeManager instance;//singleton
-    
+    public Transform trInitPos;
+    [SerializeField] private GameObject _interactables;
+    [SerializeField] private float _interactableActivationDelay = 1f;
+    [SerializeField] private Transform interactablesInitPos;
+
+
     State _currentState;
-    private Button3D[] _button3Ds;
+    //private Button3D[] _buttons3D;
+    [SerializeField] private Button3D[] _buttons3D;
     private GameObject _currentEnvironment;
 
-    //Skyboxes
-    [SerializeField] Material skyboxMain;
-
-    //[SerializeField] GameObject _buttons;
-    //[SerializeField] GameObject _exitButton;
     [SerializeField] GameObject _environmentMain;
     [SerializeField] GameObject _waitingRoom;
     [SerializeField] GameObject _office;
     [SerializeField] GameObject _video2DScene;
     [SerializeField] GameObject _video180StereoScene;
-    [SerializeField] OVROverlay _OVROverlayHome;
-    public FadeScreen fadeScreen;
     
 
     private void Awake()
@@ -50,18 +49,40 @@ public class HomeManager: MonoBehaviour
         _video2DScene.SetActive(false);
         _video180StereoScene.SetActive(false);
         _currentEnvironment = _environmentMain;
-    
-        
+
+        //ResetUserPosition(); //introdurre quando ci sono i persistenti (non per development)
 
         //BOTTONI
-        _button3Ds = FindObjectsOfType<Button3D>(); //pesa meno con Public lista , ma sbatti dopo
-        foreach(Button3D button3D in _button3Ds)
+        //_buttons3D = FindObjectsOfType<Button3D>(); //pesa meno con Public lista , ma sbatti dopo
+        foreach (Button3D button3D in _buttons3D)
         {
-            Debug.Log(button3D.getButtonName());
+            //Debug.Log(button3D.getButtonName());
             button3D.OnButtonPressed += OnButtonPressedEffect;
         }
+        _interactables.SetActive(false);
+        LateActivation(_interactables, _interactableActivationDelay);
     }
 
+    public void LateActivation(GameObject toActivate, float _activationDelay)
+    {
+        StartCoroutine(Activation(toActivate, _activationDelay));
+    }
+    private IEnumerator Activation(GameObject toActivate, float _activationDelay)
+    {
+        yield return new WaitForSeconds(_activationDelay);
+        toActivate.transform.position = interactablesInitPos.position;
+        toActivate.SetActive(true);
+    }
+
+    public Transform GetUserInitTr()
+    {
+        return trInitPos;
+    }
+
+    public void ResetUserPosition()
+    {
+        cXRManager.SetUserPosition(GetUserInitTr().position, GetUserInitTr().rotation);
+    }
 
     //FSM POSSIBILE: 
     //DA FARE DURANTE OGNI STATO : ANCORA DA DECIDERE
@@ -92,64 +113,19 @@ public class HomeManager: MonoBehaviour
         }
     }
 
-    private void CheckTransition()
+    private void CheckTransition(string buttonPressedName)
     {
         State newState = _currentState;
-
-        switch (_currentState)
-        {
-            case State.Main:
-                //if () { } condizione per il cambio stato
-                newState = State.Button1;
-                break;
-            case State.Button1:
-                newState = State.Main;
-                break;
-            case State.Button2:
-                newState = State.Main;
-                break;
-            case State.Button3:
-                newState = State.Main;
-                break;
-            case State.Button4:
-                newState = State.Main;
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
-        if(newState != _currentState)
-        {
-            Debug.Log($"Changing State FROM:{_currentState} --> TO:{newState}");
-            _currentState = newState;
-        }
-    }
-
-    //CORRISPONDE ALLA CHECK TRANSITION:
-    public void OnButtonPressedEffect(Button3D buttonPressed, bool isButtonPressed )
-    {
-        //PUOI PROVARE A METTERE TALE LOGICA DIRETTAMENTE NEL BOTTONE
-        Debug.Log($"Button {buttonPressed.getButtonName()} premuto --> cambio stato");
-        String buttonPressedName = buttonPressed.getButtonName();
         
-        State newState = _currentState;
         //premo lo stesso bottone di quello corrente
-        if (_currentState.ToString() == buttonPressedName)
+        if (newState.ToString() == buttonPressedName)
         {
-             newState = State.Main;
-            /*
-            _currentEnvironment.SetActive(false);
-            _currentEnvironment = _environmentMain;
-            _currentEnvironment.SetActive(true);
-            */
+            newState = State.Main;
+
         }
         else //premo un bottone diverso da quello corrente (o la prima volta o le successive)
         {
             newState = (State)Enum.Parse(typeof(State), buttonPressedName);
-            /*
-            _currentEnvironment.SetActive(false);
-            _currentEnvironment = buttonPressed.GetAssociatedEnvironment();
-            _currentEnvironment.SetActive(true);
-            */
 
         }
         if (newState != _currentState)
@@ -157,6 +133,44 @@ public class HomeManager: MonoBehaviour
             Debug.Log($"Changing State FROM:{_currentState} --> TO:{newState}");
             _currentState = newState;
         }
+
+        /*switch (_currentState)
+       {
+           case State.Main:
+               //if () { } condizione per il cambio stato
+               newState = State.Button1;
+               break;
+           case State.Button1:
+               newState = State.Main;
+               break;
+           case State.Button2:
+               newState = State.Main;
+               break;
+           case State.Button3:
+               newState = State.Main;
+               break;
+           case State.Button4:
+               newState = State.Main;
+               break;
+           default:
+               throw new ArgumentOutOfRangeException();
+       }
+       if(newState != _currentState)
+       {
+           Debug.Log($"Changing State FROM:{_currentState} --> TO:{newState}");
+           _currentState = newState;
+       }*/
+    }
+
+    //CORRISPONDE ALLA CHECK TRANSITION:
+    public void OnButtonPressedEffect(Button3D buttonPressed, bool isButtonPressed )
+    {
+        //QUESTA LOGICA E' ANCHE NEL BOTTONE
+        Debug.Log($"Button {buttonPressed.getButtonName()} premuto --> cambio stato");
+        String buttonPressedName = buttonPressed.getButtonName();
+        
+        //CHECK TRANSITION:
+        CheckTransition(buttonPressedName);
         /*se servirà la macchina a stati completa: va messo in Update() e la funzione 
         OnbuttonChangeEnvironment() dovrà essere chiamata nell IF qui sopra*/
         UpdateState(buttonPressed); 
@@ -171,6 +185,8 @@ public class HomeManager: MonoBehaviour
         _currentEnvironment.SetActive(true);
     }
 
+
+    
 
 
 

@@ -7,10 +7,12 @@ using UnityEngine.Video;
 public class IntroManager : MonoBehaviour
 {
     public static IntroManager instance;
-    
+
+    [SerializeField] private Transform trInitPos;
     public VideoPlayer videoPlayer;
     public AudioSource voiceAudio;
 
+    private bool bShowVideo = false;
     int loopVideo = 0;
     private void Awake()
     {
@@ -29,6 +31,7 @@ public class IntroManager : MonoBehaviour
         }
         videoPlayer.loopPointReached += EndVideo;
         Invoke("EndAudio", voiceAudio.clip.length);
+        ResetUserPosition();
 
     }
 
@@ -50,8 +53,16 @@ public class IntroManager : MonoBehaviour
         //ANIMAZIONI POSSIBILI
     }
 
-  
 
+    public Transform GetUserInitTr()
+    {
+        return trInitPos;
+    }
+
+    public void ResetUserPosition()
+    {
+        cXRManager.SetUserPosition(GetUserInitTr().position, GetUserInitTr().rotation);
+    }
 
 
 
