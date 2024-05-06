@@ -16,6 +16,8 @@ public class HomeManager: MonoBehaviour
     }
     public static HomeManager instance;//singleton
     public Transform trInitPos;
+
+
     [SerializeField] private GameObject _interactables;
     [SerializeField] private float _interactableActivationDelay = 1f;
     [SerializeField] private Transform interactablesInitPos;

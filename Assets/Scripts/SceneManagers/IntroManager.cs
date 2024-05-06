@@ -12,7 +12,6 @@ public class IntroManager : MonoBehaviour
     public VideoPlayer videoPlayer;
     public AudioSource voiceAudio;
 
-    private bool bShowVideo = false;
     int loopVideo = 0;
     private void Awake()
     {
