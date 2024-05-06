@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ButtonsManager: MonoBehaviour
+public class HomeManager: MonoBehaviour
 {
     public enum State
     {
@@ -14,7 +14,7 @@ public class ButtonsManager: MonoBehaviour
         Button3,
         Button4
     }
-    public static ButtonsManager instance;//singleton
+    public static HomeManager instance;//singleton
     
     State _currentState;
     private Button3D[] _button3Ds;

@@ -20,7 +20,11 @@ public class WorldSpaceVideo : MonoBehaviour
     {
         //_statusBar.maxValue = (float)_videoPlayer.clip.length;
         //_statusBar.value = 0;
-        _volumeSlider.value = 0.5f;
+        if(_volumeSlider != null)
+        {
+            _volumeSlider.value = 0.5f;
+        }
+       
     }
 
  
