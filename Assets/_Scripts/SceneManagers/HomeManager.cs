@@ -23,6 +23,7 @@ public class HomeManager: MonoBehaviour
     //public cWatchManager scrWatch;
 
     [SerializeField] private GameObject _interactables;
+    [Range(0,60)]
     [SerializeField] private float _interactableActivationDelay = 1f;
     [SerializeField] private Transform interactablesInitPos;
 
@@ -59,7 +60,7 @@ public class HomeManager: MonoBehaviour
         _video180StereoScene.SetActive(false);
         _currentEnvironment = _environmentMain;
 
-        //ResetUserPosition(); //introdurre quando ci sono i persistenti (non per development)
+        ResetUserPosition(); //introdurre quando ci sono i persistenti (non per development)
 
         //BOTTONI
         //_buttons3D = FindObjectsOfType<Button3D>(); //pesa meno con Public lista , ma sbatti dopo
@@ -85,6 +86,7 @@ public class HomeManager: MonoBehaviour
     public void LateActivation(GameObject toActivate, float _activationDelay)
     {
         StartCoroutine(Activation(toActivate, _activationDelay));
+
     }
     private IEnumerator Activation(GameObject toActivate, float _activationDelay)
     {

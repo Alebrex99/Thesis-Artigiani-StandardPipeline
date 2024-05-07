@@ -7,7 +7,7 @@ using UnityEngine.Video;
 public class IntroManager : MonoBehaviour
 {
     public static IntroManager instance;
-    [SerializeField] private Transform trInitPos;
+    public Transform trInitPos;
 
     //VIDEO
     public VideoPlayer videoPlayer;
