@@ -88,11 +88,13 @@ public class cAppManager : MonoBehaviour {
     }
 
 
-    public static Scenes GetActualEscena() {
+    public static Scenes GetActualScene() {
         return actualScene;
     }
 
-    public static void LoadScene(Scenes scene) {
+
+
+    /*public static void LoadScene(Scenes scene) {
         if (actualScene == scene) {
             Debug.LogWarning("[APP] Se esta intentando cargar la misma scene: " + scene);
             return;
@@ -101,7 +103,7 @@ public class cAppManager : MonoBehaviour {
         actualScene = scene;
         instance.StartCoroutine(instance.LoadSceneCor((int)scene));
         //cDataManager.AddJuegosAction(eAcciones.LoadScene, -1, 0, (int)scene, scene.ToString());
-    }
+    }*/
     private IEnumerator LoadSceneCor(int buildIndex) {
         //SHOW LOADING
         //ALE cMainUIManager.ShowLoading();
@@ -158,7 +160,7 @@ public class cAppManager : MonoBehaviour {
 
 
     //ALE: FUNZIONI GENERICHE CAMBIO SCENA
-    public static void GoToSceneAsync(Scenes scene)
+    public static void LoadScene(Scenes scene)
     {
         if (actualScene == scene)
         {
@@ -209,7 +211,7 @@ public class cAppManager : MonoBehaviour {
 
     /*ALE private static void CierraApp() {
         cMainUIManager.ResetLog();
-        if (Scenes.MENU == GetActualEscena()) {
+        if (Scenes.MENU == GetActualScene()) {
             Application.Quit();
         }
         else {

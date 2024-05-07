@@ -18,26 +18,26 @@ public class HomeManager: MonoBehaviour
     public static HomeManager instance;//singleton
     public Transform trInitPos;
 
-    //cStBase
-    public Transform trLightButton;
-    //public cWatchManager scrWatch;
+    public AudioSource voiceInfoButtons; //voce spiegazione
 
+    //GESTIONE BOTTONI
+    State _currentState;
     [SerializeField] private GameObject _interactables;
     [Range(0,60)]
     [SerializeField] private float _interactableActivationDelay = 1f;
     [SerializeField] private Transform interactablesInitPos;
-
-    State _currentState;
     //private Button3D[] _buttons3D;
     [SerializeField] private Button3D[] _buttons3D;
     private GameObject _currentEnvironment;
-
     [SerializeField] GameObject _environmentMain;
     [SerializeField] GameObject _waitingRoom;
     [SerializeField] GameObject _office;
     [SerializeField] GameObject _video2DScene;
     [SerializeField] GameObject _video180StereoScene;
-    
+
+    //FEATURES DA cStBase
+    public Transform trLightButton;
+    //public cWatchManager scrWatch;
 
     private void Awake()
     {
@@ -46,12 +46,13 @@ public class HomeManager: MonoBehaviour
 
     private void Start()
     {
+        ResetUserPosition(); //introdurre quando ci sono i persistenti (non per development)
+
         //SE HO TELEPORT: inserimento delle iscrizioni a eventi da cStEVBase
 
 
         _currentState = State.Main;
         //RenderSettings.skybox = skyboxMain;
-
         _environmentMain.SetActive(true);
         //spegni tutto il resto
         _waitingRoom.SetActive(false);
@@ -59,8 +60,6 @@ public class HomeManager: MonoBehaviour
         _video2DScene.SetActive(false);
         _video180StereoScene.SetActive(false);
         _currentEnvironment = _environmentMain;
-
-        ResetUserPosition(); //introdurre quando ci sono i persistenti (non per development)
 
         //BOTTONI
         //_buttons3D = FindObjectsOfType<Button3D>(); //pesa meno con Public lista , ma sbatti dopo
@@ -75,10 +74,6 @@ public class HomeManager: MonoBehaviour
 
     private void Update()
     {
-        if (trLightButton == null)
-        {
-            Debug.Log("NOOOO LUCEE");
-        }
         trLightButton.position = cXRManager.GetTrCenterEye().position;
         trLightButton.rotation = cXRManager.GetTrCenterEye().rotation;
     }
@@ -93,6 +88,11 @@ public class HomeManager: MonoBehaviour
         yield return new WaitForSeconds(_activationDelay);
         toActivate.transform.position = interactablesInitPos.position;
         toActivate.SetActive(true);
+        if(voiceInfoButtons!= null)
+        {
+            voiceInfoButtons.Play(); //start when the buttons appear
+        }
+
     }
 
     public Transform GetUserInitTr()
@@ -105,8 +105,22 @@ public class HomeManager: MonoBehaviour
         cXRManager.SetUserPosition(GetUserInitTr().position, GetUserInitTr().rotation);
     }
 
-  
-
+    public static Scenes GetNextScene(Button3D buttonPressed)
+    {
+        switch (buttonPressed.getButtonName())
+        {
+            case "Button1":
+                return Scenes.JEWEL1;
+            case "Button2":
+                return Scenes.JEWEL2;
+            case "Button3":
+                return Scenes.JEWEL3;
+            case "Button4":
+                return Scenes.JEWEL4;
+            default:
+                return Scenes.HOME;
+        }
+    }
 
 
 
@@ -194,16 +208,22 @@ public class HomeManager: MonoBehaviour
     //CORRISPONDE ALLA CHECK TRANSITION:
     public void OnButtonPressedEffect(Button3D buttonPressed, bool isButtonPressed )
     {
-        //QUESTA LOGICA E' ANCHE NEL BOTTONE
+        //CAMBIO STATO: 
         Debug.Log($"Button {buttonPressed.getButtonName()} premuto --> cambio stato");
         String buttonPressedName = buttonPressed.getButtonName();
-        
+
         //CHECK TRANSITION:
-        CheckTransition(buttonPressedName);
+        //CheckTransition(buttonPressedName);
+
         /*se servirà la macchina a stati completa: va messo in Update() e la funzione 
         OnbuttonChangeEnvironment() dovrà essere chiamata nell IF qui sopra*/
-        UpdateState(buttonPressed); 
-        
+        //UpdateState(buttonPressed); 
+
+        //CAMBIO SCENA:
+        Scenes scene = GetNextScene(buttonPressed);
+        cAppManager.SelectedScene = (int)scene;
+      
+        cAppManager.LoadScene(scene);
 
     }
 

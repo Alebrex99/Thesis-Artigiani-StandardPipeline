@@ -27,7 +27,6 @@ public class Button3D : MonoBehaviour
         _currentEnvironment = _environmentMain;
     }
 
-    //Funzione specifica Buttone1
     public void Press()
     {
         if (isButtonPressed)
@@ -35,14 +34,15 @@ public class Button3D : MonoBehaviour
 
         isButtonPressed = true;
 
-        //ACTION SE VUOI CAMBIO STATO:
-        /*if (OnButtonPressed != null)
+        //ACTION SE VUOI CAMBIO STATO/CHANGE SCENE: (gestione in HomeManager)
+        if (OnButtonPressed != null)
             OnButtonPressed(this, isButtonPressed);
-        */
-        //logica nel bottone:
+        
+
+        //DEMO: logica nel bottone:
         Debug.Log(_currentEnvironment.name);
         Debug.Log(_environmentOn.name);
-        ChangeEnvironment(); //PER DEMO
+        //ChangeEnvironment(); //PER DEMO
 
         isButtonPressed = false;
 
@@ -82,10 +82,11 @@ public class Button3D : MonoBehaviour
 
     }
 
-    public String getButtonName()
+    public string getButtonName()
     {
         return ButtonName;
     }
+
 
     public GameObject GetAssociatedEnvironment()
     {

@@ -86,7 +86,7 @@ public class IntroManager : MonoBehaviour
 
     private void EndAudio()
     {
-        cAppManager.GoToSceneAsync(Scenes.HOME);
+        cAppManager.LoadScene(Scenes.HOME);
         //ANIMAZIONI POSSIBILI : LOGO -> VIDEO
     }
 
