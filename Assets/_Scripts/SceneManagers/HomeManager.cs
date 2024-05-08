@@ -17,16 +17,16 @@ public class HomeManager: MonoBehaviour
     }
     public static HomeManager instance;//singleton
 
-    public AudioSource voiceInfoButtons; //voce spiegazione
-
     //GESTIONE BOTTONI
-    State _currentState;
+    public AudioSource voiceInfoButtons; //voce spiegazione
     [SerializeField] private GameObject _interactables;
     [Range(0,60)]
     [SerializeField] private float _interactableActivationDelay = 1f;
     [SerializeField] private Transform interactablesInitPos;
-    //private Button3D[] _buttons3D;
     [SerializeField] private Button3D[] _buttons3D;
+
+    //GESTIONE FSM
+    State _currentState;
     private GameObject _currentEnvironment;
     [SerializeField] GameObject _environmentMain;
     [SerializeField] GameObject _waitingRoom;

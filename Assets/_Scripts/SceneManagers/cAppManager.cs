@@ -92,6 +92,16 @@ public class cAppManager : MonoBehaviour {
         return actualScene;
     }
 
+    public static int GetActualBuildScene()
+    {
+        return actualBuildScene;
+    }
+    public static int GetPrevBuildScene()
+    {
+        if (-1 == prevBuildScene)
+            return actualBuildScene;
+        return prevBuildScene;
+    }
 
 
     /*public static void LoadScene(Scenes scene) {
@@ -104,6 +114,45 @@ public class cAppManager : MonoBehaviour {
         instance.StartCoroutine(instance.LoadSceneCor((int)scene));
         //cDataManager.AddJuegosAction(eAcciones.LoadScene, -1, 0, (int)scene, scene.ToString());
     }*/
+
+    //ALE: Funzione cambio Scena
+    public static void LoadScene(Scenes scene)
+    {
+        if (actualScene == scene)
+        {
+            Debug.LogWarning("[APP] Se esta intentando cargar la misma scene: " + scene);
+            return;
+        }
+        Debug.Log("[App] Load Scene");
+        actualScene = scene;
+        instance.StartCoroutine(instance.GoToSceneAsyncRoutine((int)scene));
+    }
+
+    IEnumerator GoToSceneAsyncRoutine(int sceneIndex)
+    {
+        OVRScreenFade.instance.FadeIn();
+        Scene sceneToLoad = SceneManager.GetSceneByBuildIndex(sceneIndex);
+        if (sceneToLoad.IsValid() && sceneToLoad.isLoaded)
+        {
+            Debug.Log("La scena " + sceneToLoad.name + " è già caricata.");
+            yield break;
+        }
+        AsyncOperation asyncLoadOperation = SceneManager.LoadSceneAsync(sceneIndex);
+        while (!asyncLoadOperation.isDone)
+        {
+            Debug.Log("Caricamento della scena " + sceneToLoad.name + " in corso...");
+            yield return null;
+        }
+        Debug.Log("Scena " + sceneToLoad.name + " caricata con successo.");
+        
+
+        Scene loadedScene = SceneManager.GetSceneByBuildIndex(sceneIndex);
+        SceneManager.SetActiveScene(loadedScene);
+        Debug.Log("Scena " + sceneToLoad.name + " impostata come scena attiva.");
+
+        asyncLoadOperation = null;
+    }
+
     private IEnumerator LoadSceneCor(int buildIndex) {
         //SHOW LOADING
         //ALE cMainUIManager.ShowLoading();
@@ -149,65 +198,16 @@ public class cAppManager : MonoBehaviour {
         }
         //colorAdjustments.colorFilter.value = new Color(1, 1, 1);
     }
-    public static int GetActualBuildScene() {
-        return actualBuildScene;
-    }
-    public static int GetPrevBuildScene() {
-        if (-1 == prevBuildScene)
-            return actualBuildScene;
-        return prevBuildScene;
-    }
+   
 
-
-    //ALE: FUNZIONI GENERICHE CAMBIO SCENA
-    public static void LoadScene(Scenes scene)
-    {
-        if (actualScene == scene)
-        {
-            Debug.LogWarning("[APP] Se esta intentando cargar la misma scene: " + scene);
-            return;
-        }
-        Debug.Log("[App] Load Scene");
-        actualScene = scene;
-        instance.StartCoroutine(instance.GoToSceneAsyncRoutine((int)scene));
-    }
-
-    IEnumerator GoToSceneAsyncRoutine(int sceneIndex)
-    {
-        Scene sceneToLoad = SceneManager.GetSceneByBuildIndex(sceneIndex);
-        if(sceneToLoad.IsValid() && sceneToLoad.isLoaded)
-        {
-            Debug.Log("La scena " + sceneToLoad.name + " è già caricata.");
-            yield break;
-        }
-        AsyncOperation asyncLoadOperation = SceneManager.LoadSceneAsync(sceneIndex);
-        while (!asyncLoadOperation.isDone)
-        {
-            Debug.Log("Caricamento della scena " + sceneToLoad.name + " in corso...");
-            yield return null;
-        }
-        Debug.Log("Scena " + sceneToLoad.name + " caricata con successo.");
-        OVRScreenFade.instance.FadeIn();
-
-        Scene loadedScene = SceneManager.GetSceneByBuildIndex(sceneIndex);
-        SceneManager.SetActiveScene(loadedScene);
-        Debug.Log("Scena " + sceneToLoad.name + " impostata come scena attiva.");
-
-        asyncLoadOperation = null;
-    }
-
-
-
-
-
-    /*ALEpublic static void QuitApp() {
+    public static void QuitApp() {
         //MOSTRAR CONFIRMACION
         //SI ES CLIENTE DESCONECTAR
         //SI ES SERVIDOR DESCONECTAR A CLIENTE
         //SI ESTA EN ESCENA->VOLVER A MENU
         //SI ESTA EN MENU->SALIR
-        cMainUIManager.ShowAlert(cLanguageManager.GetString("_AlertExit", null), CierraApp, true);
-    }*/
+       //ALE cMainUIManager.ShowAlert(cLanguageManager.GetString("_AlertExit", null), CierraApp, true);
+    }
 
     /*ALE private static void CierraApp() {
         cMainUIManager.ResetLog();

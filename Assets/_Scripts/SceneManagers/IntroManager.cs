@@ -7,25 +7,24 @@ using UnityEngine.Video;
 public class IntroManager : MonoBehaviour
 {
     public static IntroManager instance;
-    public Transform userInitPos;
 
-    //VIDEO
+    //VIDEO (cSceneInfo)
     public VideoPlayer videoPlayer;
+    [SerializeField] private GameObject goVideoPlayer;
     int loopVideo = 0;
+    [Range(0.1f, 10)]
+    [SerializeField] private float rotationVideoSpeed = 1;
+    private bool bShownVideo = false;
+
+    //cSceneInfo : video + animation logo
+    public Transform userInitPos;
+    private float timeLastClick = 0;
+    [SerializeField] Animator animLogo;
 
     //AUDIO
     public AudioSource voiceAudio;
 
-    //cSceneInfo : video + animation logo
-    private bool bShownVideo = false;
-    private float timeLastClick = 0;
-    [SerializeField] private GameObject goVideoPlayer;
-    [SerializeField] Animator animLogo;
-    [Range(0.1f, 10)]
-    [SerializeField] private float rotationVideoSpeed = 1;
-    
-
-
+  
     private void Awake()
     {
         instance = this;
@@ -67,7 +66,7 @@ public class IntroManager : MonoBehaviour
             voiceAudio.Play();
         }
         videoPlayer.loopPointReached += EndVideo;
-        Invoke("EndAudio", voiceAudio.clip.length);
+        Invoke(nameof(EndAudio), voiceAudio.clip.length);
     }
 
     private void EndVideo(VideoPlayer source)
