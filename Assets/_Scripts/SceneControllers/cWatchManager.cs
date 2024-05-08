@@ -13,14 +13,15 @@ public class cWatchManager : MonoBehaviour{
     private bool bShowing = false;
 
     private void Update() {
-        if (cAppManager.IsZurdo) {
+
+        /*ALEif (cAppManager.IsZurdo) {
             transform.position = cXRManager.GetTrMunyecaRight().position;
             transform.rotation = cXRManager.GetTrMunyecaRight().rotation;
         }
         else {
             transform.position = cXRManager.GetTrMunyecaLeft().position;
             transform.rotation = cXRManager.GetTrMunyecaLeft().rotation;
-        }
+        }*/
     }
     public void Show(bool enable) {
         goPulsera.SetActive(enable);

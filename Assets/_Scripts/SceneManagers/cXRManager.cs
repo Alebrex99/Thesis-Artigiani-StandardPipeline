@@ -7,8 +7,8 @@ public class cXRManager : MonoBehaviour{
     public Hand rightHand;
     public Transform trCenterEye;
     public Transform trUserPosition;
-    public Transform trMunyecaLeft;
-    public Transform trMunyecaRight;
+    //ALE public Transform trMunyecaLeft;
+    //ALE  public Transform trMunyecaRight;
     public Transform trLeftHand;
     public Transform trRightHand;
 
@@ -36,8 +36,8 @@ public class cXRManager : MonoBehaviour{
     public static Hand GetLeftHand() { return instance.leftHand; }
     public static Hand GetRighttHand() { return instance.rightHand; }
     public static Transform GetTrCenterEye() { return instance.trCenterEye; }
-    public static Transform GetTrMunyecaLeft() { return instance.trMunyecaLeft; }
-    public static Transform GetTrMunyecaRight() { return instance.trMunyecaRight; }
+    //ALE public static Transform GetTrMunyecaLeft() { return instance.trMunyecaLeft; }
+    //ALE public static Transform GetTrMunyecaRight() { return instance.trMunyecaRight; }
     public static Transform GetTrLeftHand() { return instance.trLeftHand; }
     public static Transform GetTrRightHand() { return instance.trRightHand; }
 

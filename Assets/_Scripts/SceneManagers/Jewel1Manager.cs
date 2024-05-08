@@ -12,7 +12,8 @@ public class Jewel1Manager : MonoBehaviour
     public Transform trLightJewel;
 
     //GESTIONE AUDIO + IMMERSIONE
-    public AudioSource envExplaination;
+    public AudioSource envAudioSrc;
+    public AudioClip[] _envClips;
     [Range(0, 60)]
     [SerializeField] private float _immersionDelay = 1f;
 
@@ -20,11 +21,16 @@ public class Jewel1Manager : MonoBehaviour
     public VideoPlayer videoPlayer;
     [SerializeField] private GameObject goVideoPlayer;
     int loopVideo = 0;
-    private bool bShownVideo = false;
+    private bool bShowVideo = false;
     private bool bShowJewel = false;
     [Range(0.1f, 10)]
     [SerializeField] private float rotationVideoSpeed = 1;
 
+    //JEWEL 1
+    [SerializeField] private Jewel _jewel1;
+    [Range(0, 60)]
+    [SerializeField] private float _activationDelay = 1f;
+    [SerializeField] private Transform _jewelInitPos;
 
     // Start is called before the first frame update
     private void Awake()
@@ -35,18 +41,22 @@ public class Jewel1Manager : MonoBehaviour
     void Start()
     {
         ResetUserPosition();
-        Invoke(nameof(PlayEnvExplaination), _immersionDelay);
+        _jewel1.gameObject.SetActive(false);
+        StartCoroutine(PlayEnvMedia());
+        StartCoroutine(LateActivation(_jewel1.gameObject, _activationDelay));
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (bShownVideo)
+        if (bShowVideo)
         {
+            //FUNZIONA ANCHE QUESTO:
             //Vector3 euler = Quaternion.LookRotation(goVideoPlayer.transform.position - cXRManager.GetTrCenterEye().position).eulerAngles;
             //goVideoPlayer.transform.eulerAngles = new Vector3(0, euler.y, 0);
 
-            //Method lectures:
+            //Used Method lectures:
             Vector3 targetDirection = goVideoPlayer.transform.position - cXRManager.GetTrCenterEye().position;
             targetDirection.y = 0;
             targetDirection.Normalize();
@@ -57,9 +67,9 @@ public class Jewel1Manager : MonoBehaviour
         }
         else
         {
-            Vector3 euler = Quaternion.LookRotation(goVideoPlayer.transform.position - cXRManager.GetTrCenterEye().position).eulerAngles;
+            //Vector3 euler = Quaternion.LookRotation(goVideoPlayer.transform.position - cXRManager.GetTrCenterEye().position).eulerAngles;
             //SOSTITUIRE : goVideoPlayer se voglio un altro oggetto quando il video si spegne; es) goLogoCentral
-            goVideoPlayer.transform.eulerAngles = new Vector3(0, euler.y, 0);
+            //goVideoPlayer.transform.eulerAngles = new Vector3(0, euler.y, 0);
         }
     }
 
@@ -73,11 +83,35 @@ public class Jewel1Manager : MonoBehaviour
         cXRManager.SetUserPosition(GetUserInitTr().position, GetUserInitTr().rotation);
     }
 
-    public void PlayEnvExplaination()
+    private IEnumerator PlayEnvMedia()
     {
-        if(envExplaination != null)
+
+        envAudioSrc.PlayOneShot(_envClips[0], 1f); //Environment sounds
+        yield return new WaitForSeconds(_immersionDelay);
+        envAudioSrc.PlayOneShot(_envClips[1], 0.7f); //Environment explanation
+        yield return new WaitForSeconds(_immersionDelay);
+        PlayPicture();
+
+    }
+
+    private IEnumerator LateActivation(GameObject toActivate, float _activationDelay)
+    {
+        yield return new WaitForSeconds(_activationDelay);
+        toActivate.transform.position = _jewelInitPos.position + new Vector3(0,toActivate.transform.position.y,0);
+        toActivate.SetActive(true);
+    }
+
+    private void PlayPicture()
+    {
+        if (bShowVideo)
         {
-            envExplaination.Play();
+            videoPlayer.Stop();
+            bShowVideo = false;
+        }
+        else
+        {
+            videoPlayer.Play();
+            bShowVideo = true;
         }
     }
 

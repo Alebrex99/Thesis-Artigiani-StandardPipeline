@@ -18,7 +18,8 @@ public class HomeManager: MonoBehaviour
     public static HomeManager instance;//singleton
 
     //GESTIONE BOTTONI
-    public AudioSource voiceInfoButtons; //voce spiegazione
+    public AudioSource envAudioSrc; //voce spiegazione
+    public AudioClip _buttonExplainClip;
     [SerializeField] private GameObject _interactables;
     [Range(0,60)]
     [SerializeField] private float _interactableActivationDelay = 1f;
@@ -69,7 +70,7 @@ public class HomeManager: MonoBehaviour
             button3D.OnButtonPressed += OnButtonPressedEffect;
         }
         _interactables.SetActive(false);
-        LateActivation(_interactables, _interactableActivationDelay);
+        StartCoroutine(LateActivation(_interactables, _interactableActivationDelay));
     }
 
     private void Update()
@@ -78,22 +79,17 @@ public class HomeManager: MonoBehaviour
         trLightButton.rotation = cXRManager.GetTrCenterEye().rotation;
     }
 
-    public void LateActivation(GameObject toActivate, float _activationDelay)
-    {
-        StartCoroutine(Activation(toActivate, _activationDelay));
-
-    }
-    private IEnumerator Activation(GameObject toActivate, float _activationDelay)
+    private IEnumerator LateActivation(GameObject toActivate, float _activationDelay)
     {
         yield return new WaitForSeconds(_activationDelay);
         toActivate.transform.position = interactablesInitPos.position;
         toActivate.SetActive(true);
-        if(voiceInfoButtons!= null)
+        if(envAudioSrc!= null)
         {
-            voiceInfoButtons.Play(); //start when the buttons appear
+            envAudioSrc.PlayOneShot(_buttonExplainClip); //start when the buttons appear
         }
-
     }
+
 
     public Transform GetUserInitTr()
     {
@@ -122,14 +118,33 @@ public class HomeManager: MonoBehaviour
         }
     }
 
+    public void OnButtonPressedEffect(Button3D buttonPressed, bool isButtonPressed)
+    {
+        //CAMBIO STATO: 
+        Debug.Log($"Button {buttonPressed.getButtonName()} premuto --> cambio stato");
+        String buttonPressedName = buttonPressed.getButtonName();
 
+        //CHECK TRANSITION:
+        //CheckTransition(buttonPressedName);
+
+        /*se servirÃ  la macchina a stati completa: va messo in Update() e la funzione 
+        OnbuttonChangeEnvironment() dovrÃ  essere chiamata nell IF qui sopra*/
+        //UpdateState(buttonPressed); 
+
+        //CAMBIO SCENA:
+        Scenes scene = GetNextScene(buttonPressed);
+        cAppManager.SelectedScene = (int)scene;
+
+        cAppManager.LoadScene(scene);
+
+    }
 
 
 
 
     //FSM POSSIBILE: 
     //DA FARE DURANTE OGNI STATO : ANCORA DA DECIDERE
-    //andrebbe messo nell'update così che nello stato corrente accadano cose
+    //andrebbe messo nell'update cosÃ¬ che nello stato corrente accadano cose
     private void UpdateState(Button3D buttonPressed)
     {
         switch (_currentState)
@@ -206,26 +221,7 @@ public class HomeManager: MonoBehaviour
     }
 
     //CORRISPONDE ALLA CHECK TRANSITION:
-    public void OnButtonPressedEffect(Button3D buttonPressed, bool isButtonPressed )
-    {
-        //CAMBIO STATO: 
-        Debug.Log($"Button {buttonPressed.getButtonName()} premuto --> cambio stato");
-        String buttonPressedName = buttonPressed.getButtonName();
-
-        //CHECK TRANSITION:
-        //CheckTransition(buttonPressedName);
-
-        /*se servirà la macchina a stati completa: va messo in Update() e la funzione 
-        OnbuttonChangeEnvironment() dovrà essere chiamata nell IF qui sopra*/
-        //UpdateState(buttonPressed); 
-
-        //CAMBIO SCENA:
-        Scenes scene = GetNextScene(buttonPressed);
-        cAppManager.SelectedScene = (int)scene;
-      
-        cAppManager.LoadScene(scene);
-
-    }
+    
 
     public void OnButtonChangeEnvironment(Button3D buttonPressed)
     {

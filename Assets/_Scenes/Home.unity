@@ -3694,8 +3694,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 24300001, guid: 03d4f07283ae4307b8c7a2ea7ad08068, type: 2}
-  m_audioClip: {fileID: 8300000, guid: 516d85a3d4e5e1649b29361ee96ac881, type: 3}
-  m_PlayOnAwake: 1
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -18430,7 +18430,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1360381815
 Transform:
   m_ObjectHideFlags: 0
@@ -18466,8 +18466,6 @@ MonoBehaviour:
   rightHand: {fileID: 0}
   trCenterEye: {fileID: 8801813002340179122}
   trUserPosition: {fileID: 710208415}
-  trMunyecaLeft: {fileID: 0}
-  trMunyecaRight: {fileID: 0}
   trLeftHand: {fileID: 0}
   trRightHand: {fileID: 0}
 --- !u!114 &1360381817
@@ -26186,7 +26184,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2146306783
 Transform:
   m_ObjectHideFlags: 0
@@ -26196,7 +26194,7 @@ Transform:
   m_GameObject: {fileID: 2146306782}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0.015, y: -3.39, z: -2.37}
+  m_LocalPosition: {x: 0.015, y: -3.51, z: -2.161684}
   m_LocalScale: {x: 4.0032783, y: 4.1415653, z: 2.791556}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -27527,7 +27525,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1da742d7a0caeac41b7880a583fe146d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  voiceInfoButtons: {fileID: 316689635}
+  envAudioSrc: {fileID: 316689635}
+  _buttonExplainClip: {fileID: 8300000, guid: 516d85a3d4e5e1649b29361ee96ac881, type: 3}
   _interactables: {fileID: 911097126}
   _interactableActivationDelay: 10
   interactablesInitPos: {fileID: 1838876023}
@@ -29092,7 +29091,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4802376842497524358, guid: e099748b80bbfec49b3d7a8255aa6204, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5268263528619915286, guid: e099748b80bbfec49b3d7a8255aa6204, type: 3}
       propertyPath: m_IsActive
