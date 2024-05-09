@@ -67,9 +67,9 @@ public class Jewel1Manager : MonoBehaviour
         }
         else
         {
-            //Vector3 euler = Quaternion.LookRotation(goVideoPlayer.transform.position - cXRManager.GetTrCenterEye().position).eulerAngles;
+            Vector3 euler = Quaternion.LookRotation(goVideoPlayer.transform.position - cXRManager.GetTrCenterEye().position).eulerAngles;
             //SOSTITUIRE : goVideoPlayer se voglio un altro oggetto quando il video si spegne; es) goLogoCentral
-            //goVideoPlayer.transform.eulerAngles = new Vector3(0, euler.y, 0);
+            goVideoPlayer.transform.eulerAngles = new Vector3(0, euler.y, 0);
         }
     }
 
@@ -83,6 +83,13 @@ public class Jewel1Manager : MonoBehaviour
         cXRManager.SetUserPosition(GetUserInitTr().position, GetUserInitTr().rotation);
     }
 
+    private IEnumerator LateActivation(GameObject toActivate, float _activationDelay)
+    {
+        yield return new WaitForSeconds(_activationDelay);
+        toActivate.transform.position = _jewelInitPos.position + new Vector3(0, toActivate.transform.position.y, 0);
+        toActivate.SetActive(true);
+    }
+
     private IEnumerator PlayEnvMedia()
     {
 
@@ -92,13 +99,6 @@ public class Jewel1Manager : MonoBehaviour
         yield return new WaitForSeconds(_immersionDelay);
         PlayPicture();
 
-    }
-
-    private IEnumerator LateActivation(GameObject toActivate, float _activationDelay)
-    {
-        yield return new WaitForSeconds(_activationDelay);
-        toActivate.transform.position = _jewelInitPos.position + new Vector3(0,toActivate.transform.position.y,0);
-        toActivate.SetActive(true);
     }
 
     private void PlayPicture()
