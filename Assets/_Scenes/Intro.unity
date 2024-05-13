@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: 119ec07f1c7ed204db46bd8465fd5a50, type: 2}
+  m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.0961187, g: 0.25971857, b: 0.2968252, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -902,6 +902,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1530837853}
   - {fileID: 1043463471}
   - {fileID: 4402819}
   - {fileID: 748482302}
@@ -1851,15 +1852,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7516989854852174098, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.72423
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 7516989854852174098, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.72423
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 7516989854852174098, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.72423
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 7516989854951799700, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -3536,6 +3537,84 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1872086173}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1530837852
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 170055780}
+    m_Modifications:
+    - target: {fileID: 1585551896868121886, guid: dda2aeea1faae654d8986620127b767e, type: 3}
+      propertyPath: _previewInEditor
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1585551896868121886, guid: dda2aeea1faae654d8986620127b767e, type: 3}
+      propertyPath: textures.Array.data[0]
+      value: 
+      objectReference: {fileID: 8900000, guid: 6e3786ae01869224384b0159434b5c7f, type: 3}
+    - target: {fileID: 1585551896868121886, guid: dda2aeea1faae654d8986620127b767e, type: 3}
+      propertyPath: textures.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2740586813578101109, guid: dda2aeea1faae654d8986620127b767e, type: 3}
+      propertyPath: m_Name
+      value: IntroBackground
+      objectReference: {fileID: 0}
+    - target: {fileID: 3405139552657467770, guid: dda2aeea1faae654d8986620127b767e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3405139552657467770, guid: dda2aeea1faae654d8986620127b767e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3405139552657467770, guid: dda2aeea1faae654d8986620127b767e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3405139552657467770, guid: dda2aeea1faae654d8986620127b767e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3405139552657467770, guid: dda2aeea1faae654d8986620127b767e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3405139552657467770, guid: dda2aeea1faae654d8986620127b767e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3405139552657467770, guid: dda2aeea1faae654d8986620127b767e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3405139552657467770, guid: dda2aeea1faae654d8986620127b767e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3405139552657467770, guid: dda2aeea1faae654d8986620127b767e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3405139552657467770, guid: dda2aeea1faae654d8986620127b767e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8966711346580023261, guid: dda2aeea1faae654d8986620127b767e, type: 3}
+      propertyPath: m_Name
+      value: SkyboxUnderlay
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: dda2aeea1faae654d8986620127b767e, type: 3}
+--- !u!4 &1530837853 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3405139552657467770, guid: dda2aeea1faae654d8986620127b767e, type: 3}
+  m_PrefabInstance: {fileID: 1530837852}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1544007726
 GameObject:
   m_ObjectHideFlags: 0
@@ -4663,7 +4742,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df8e1d778abf442e4bec449c360e9e1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadeTime: 20
+  fadeTime: 10
   fadeColor: {r: 0.01, g: 0.01, b: 0.01, a: 1}
   fadeOnStart: 1
   renderQueue: -1
