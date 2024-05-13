@@ -24,7 +24,12 @@ public class IntroManager : MonoBehaviour
     //AUDIO
     public AudioSource voiceAudio;
 
-  
+    //BUTTON home
+    [SerializeField] private Transform _buttonHomeInitPos;
+    [SerializeField] private Button3D _buttonHome;
+    [Range(0, 60)]
+    [SerializeField] private float _activationDelay = 1f;
+
     private void Awake()
     {
         instance = this;
@@ -58,6 +63,7 @@ public class IntroManager : MonoBehaviour
     void Start()
     {
         ResetUserPosition();
+        _buttonHome.gameObject.SetActive(false);
         //START VOICE AUDIO
         if (voiceAudio != null && videoPlayer !=null)
         {
@@ -66,13 +72,26 @@ public class IntroManager : MonoBehaviour
             voiceAudio.Play();
         }
         videoPlayer.loopPointReached += EndVideo;
-        Invoke(nameof(EndAudio), voiceAudio.clip.length);
+        //Invoke(nameof(EndAudio), voiceAudio.clip.length);
+
+        //attivazione bottone Home (puoi metterlo in EndVideo volendo)
+        StartCoroutine(LateActivation(_buttonHome.gameObject, _activationDelay));
+        //_buttonHome.OnButtonPressed += OnButtonPressedEffect;
     }
+
+    /*private void OnButtonPressedEffect(Button3D buttonPressed, bool isButtonPressed)
+    {
+        //CAMBIO STATO: 
+        Debug.Log($"Button {buttonPressed.getButtonName()} premuto --> torna a HOME");
+        String buttonPressedName = buttonPressed.getButtonName();
+
+    }*/
+
 
     private void EndVideo(VideoPlayer source)
     {
         loopVideo++;
-        if(loopVideo>= 2)
+        if(loopVideo>= 1)
         {
             source.loopPointReached -= EndVideo;
             source.Stop();
@@ -81,6 +100,7 @@ public class IntroManager : MonoBehaviour
             /*animLogo.ResetTrigger("ShowVideo");
             animLogo.SetTrigger("HideVideo");*/
             bShownVideo = false; //smetterà di seguire l'utente
+            cAppManager.LoadScene(Scenes.HOME);
         }
     }
 
@@ -105,6 +125,17 @@ public class IntroManager : MonoBehaviour
         //setting video clip run time
         videoPlayer.clip = vc;
     }
+
+    private IEnumerator LateActivation(GameObject toActivate, float _activationDelay)
+    {
+        yield return new WaitForSeconds(_activationDelay);
+        toActivate.transform.position = _buttonHomeInitPos.position;
+        toActivate.SetActive(true);
+    }
+
+   
+
+
 
 
 

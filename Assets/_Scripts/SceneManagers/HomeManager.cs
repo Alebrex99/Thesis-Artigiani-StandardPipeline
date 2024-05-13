@@ -90,7 +90,6 @@ public class HomeManager: MonoBehaviour
         }
     }
 
-
     public Transform GetUserInitTr()
     {
         return userInitPos;
@@ -118,6 +117,8 @@ public class HomeManager: MonoBehaviour
         }
     }
 
+
+    //CORRISPONDE ALLA CHECK TRANSITION:
     public void OnButtonPressedEffect(Button3D buttonPressed, bool isButtonPressed)
     {
         //CAMBIO STATO: 
@@ -220,7 +221,6 @@ public class HomeManager: MonoBehaviour
        }*/
     }
 
-    //CORRISPONDE ALLA CHECK TRANSITION:
     
 
     public void OnButtonChangeEnvironment(Button3D buttonPressed)

@@ -144,7 +144,7 @@ public class cAppManager : MonoBehaviour {
             yield return null;
         }
         Debug.Log("Scena " + sceneToLoad.name + " caricata con successo.");
-        
+        actualBuildScene = SceneManager.GetActiveScene().buildIndex;
 
         Scene loadedScene = SceneManager.GetSceneByBuildIndex(sceneIndex);
         SceneManager.SetActiveScene(loadedScene);

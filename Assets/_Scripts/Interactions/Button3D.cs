@@ -13,8 +13,8 @@ public class Button3D : MonoBehaviour
     public string ButtonName;
 
     //Elementi da spegnere e da accendere
-    [SerializeField] Material _skyboxOn;
-    [SerializeField] Material _skyboxMain;
+    //[SerializeField] Material _skyboxOn;
+    //[SerializeField] Material _skyboxMain;
     //[SerializeField] GameObject[] _envsOn;
     [SerializeField] GameObject _environmentOn;
     [SerializeField] GameObject _environmentMain;
@@ -42,13 +42,31 @@ public class Button3D : MonoBehaviour
         //DEMO: logica nel bottone:
         Debug.Log(_currentEnvironment.name);
         Debug.Log(_environmentOn.name);
-        //ChangeEnvironment(); //PER DEMO
+        //ChangeEnvironment(); //ATTIVARE SOLO PER DEMO, disattiare per gestione in HomeManager
 
         isButtonPressed = false;
 
     }
 
+    public string getButtonName()
+    {
+        return ButtonName;
+    }
 
+    public void BackToHome()
+    {
+        Scenes scene = Scenes.HOME;
+        cAppManager.SelectedScene = (int)scene;
+        cAppManager.LoadScene(scene);
+    }
+
+
+
+
+
+
+
+    //PER DEMO:
     public void ChangeEnvironment()
     {
         //IntroManager.instance.voiceAudio.Stop();
@@ -82,16 +100,11 @@ public class Button3D : MonoBehaviour
 
     }
 
-    public string getButtonName()
-    {
-        return ButtonName;
-    }
-
 
     public GameObject GetAssociatedEnvironment()
     {
         return _environmentOn;
     }
 
-  
+    
 }
