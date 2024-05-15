@@ -731,88 +731,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 273156286}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &413166079
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1020044644}
-    m_Modifications:
-    - target: {fileID: 1005297748490874, guid: b0121989850b34d0ba1135a627e1ec18, type: 3}
-      propertyPath: m_Name
-      value: VRVideoPlayer
-      objectReference: {fileID: 0}
-    - target: {fileID: 1005297748490874, guid: b0121989850b34d0ba1135a627e1ec18, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4300523417545186, guid: b0121989850b34d0ba1135a627e1ec18, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4300523417545186, guid: b0121989850b34d0ba1135a627e1ec18, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4300523417545186, guid: b0121989850b34d0ba1135a627e1ec18, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4300523417545186, guid: b0121989850b34d0ba1135a627e1ec18, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4300523417545186, guid: b0121989850b34d0ba1135a627e1ec18, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4300523417545186, guid: b0121989850b34d0ba1135a627e1ec18, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4300523417545186, guid: b0121989850b34d0ba1135a627e1ec18, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4300523417545186, guid: b0121989850b34d0ba1135a627e1ec18, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4300523417545186, guid: b0121989850b34d0ba1135a627e1ec18, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4300523417545186, guid: b0121989850b34d0ba1135a627e1ec18, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114845147238742862, guid: b0121989850b34d0ba1135a627e1ec18, type: 3}
-      propertyPath: videoUrl
-      value: Assets/_Media/Backgrounds/BEACH LEJOS.mp4
-      objectReference: {fileID: 0}
-    - target: {fileID: 114845147238742862, guid: b0121989850b34d0ba1135a627e1ec18, type: 3}
-      propertyPath: renderMode
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114845147238742862, guid: b0121989850b34d0ba1135a627e1ec18, type: 3}
-      propertyPath: stereoMode
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114845147238742862, guid: b0121989850b34d0ba1135a627e1ec18, type: 3}
-      propertyPath: videoSource
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: b0121989850b34d0ba1135a627e1ec18, type: 3}
---- !u!4 &413166080 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4300523417545186, guid: b0121989850b34d0ba1135a627e1ec18, type: 3}
-  m_PrefabInstance: {fileID: 413166079}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &550685631
 GameObject:
   m_ObjectHideFlags: 0
@@ -1337,7 +1255,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 413166080}
   - {fileID: 2038957911}
   - {fileID: 1415101022}
   - {fileID: 100235526}
