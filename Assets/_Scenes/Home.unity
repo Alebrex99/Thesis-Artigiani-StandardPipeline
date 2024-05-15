@@ -3968,7 +3968,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &317915888
 Transform:
   m_ObjectHideFlags: 0
@@ -14721,7 +14721,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1457147757671748, guid: 86b26048b3afda744b007257161860dc, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4435288314474964, guid: 86b26048b3afda744b007257161860dc, type: 3}
       propertyPath: m_RootOrder
@@ -18226,26 +18226,26 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 0
-    height: 0
+    width: 1
+    height: 1
   srcRectRight:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 0
-    height: 0
+    width: 1
+    height: 1
   destRectLeft:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 0
-    height: 0
+    width: 1
+    height: 1
   destRectRight:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 0
-    height: 0
+    width: 1
+    height: 1
   invertTextureRects: 0
   overrideTextureRectMatrix: 0
   overridePerLayerColorScaleAndOffset: 0
@@ -18258,11 +18258,11 @@ MonoBehaviour:
   externalSurfaceWidth: 0
   externalSurfaceHeight: 0
   compositionDepth: 0
-  noDepthBufferTesting: 0
+  noDepthBufferTesting: 1
   layerTextureFormat: 0
   currentOverlayShape: 0
   textures:
-  - {fileID: 2800000, guid: 0179aee55eb767c4d8eb3ff7a5982050, type: 3}
+  - {fileID: 2800000, guid: cb592d74465cb174bbb7d600001f11f3, type: 3}
   - {fileID: 0}
   isAlphaPremultiplied: 0
   useBicubicFiltering: 0
@@ -26958,7 +26958,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2146306783
 Transform:
   m_ObjectHideFlags: 0
