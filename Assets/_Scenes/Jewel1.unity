@@ -174,7 +174,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &100235526
 Transform:
   m_ObjectHideFlags: 0
@@ -1761,13 +1761,14 @@ GameObject:
   m_Component:
   - component: {fileID: 1415101022}
   - component: {fileID: 1415101023}
+  - component: {fileID: 1415101024}
   m_Layer: 0
   m_Name: SkyboxUnderlay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1415101022
 Transform:
   m_ObjectHideFlags: 0
@@ -1796,41 +1797,41 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentOverlayType: 1
-  isDynamic: 0
+  isDynamic: 1
   isProtectedContent: 0
   srcRectLeft:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1
+    width: 0.5
     height: 1
   srcRectRight:
     serializedVersion: 2
-    x: 0
+    x: 0.5
     y: 0
-    width: 1
+    width: 0.5
     height: 1
   destRectLeft:
     serializedVersion: 2
-    x: 0
+    x: 0.25
     y: 0
-    width: 1
+    width: 0.5
     height: 1
   destRectRight:
     serializedVersion: 2
-    x: 0
+    x: 0.25
     y: 0
-    width: 1
+    width: 0.5
     height: 1
   invertTextureRects: 0
-  overrideTextureRectMatrix: 0
+  overrideTextureRectMatrix: 1
   overridePerLayerColorScaleAndOffset: 0
   colorScale: {x: 1, y: 1, z: 1, w: 1}
   colorOffset: {x: 0, y: 0, z: 0, w: 0}
   useExpensiveSuperSample: 0
   useExpensiveSharpen: 0
   hidden: 0
-  isExternalSurface: 1
+  isExternalSurface: 0
   externalSurfaceWidth: 4096
   externalSurfaceHeight: 2048
   compositionDepth: 0
@@ -1838,7 +1839,7 @@ MonoBehaviour:
   layerTextureFormat: 0
   currentOverlayShape: 5
   textures:
-  - {fileID: 0}
+  - {fileID: 8400000, guid: 6099577d61d63c945ae93b4ac28ca6a1, type: 2}
   - {fileID: 0}
   isAlphaPremultiplied: 0
   useBicubicFiltering: 0
@@ -1847,6 +1848,42 @@ MonoBehaviour:
   useEfficientSharpen: 0
   useAutomaticFiltering: 0
   _previewInEditor: 1
+--- !u!328 &1415101024
+VideoPlayer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1415101021}
+  m_Enabled: 1
+  m_VideoClip: {fileID: 32900000, guid: 4940eb6ef409fe249971cbab418ca036, type: 3}
+  m_TargetCameraAlpha: 1
+  m_TargetCamera3DLayout: 0
+  m_TargetCamera: {fileID: 0}
+  m_TargetTexture: {fileID: 8400000, guid: 6099577d61d63c945ae93b4ac28ca6a1, type: 2}
+  m_TimeReference: 0
+  m_TargetMaterialRenderer: {fileID: 0}
+  m_TargetMaterialProperty: <noninit>
+  m_RenderMode: 2
+  m_AspectRatio: 2
+  m_DataSource: 0
+  m_TimeUpdateMode: 2
+  m_PlaybackSpeed: 1
+  m_AudioOutputMode: 2
+  m_TargetAudioSources:
+  - {fileID: 0}
+  m_DirectAudioVolumes:
+  - 1
+  m_Url: 
+  m_EnabledAudioTracks: 01
+  m_DirectAudioMutes: 00
+  m_ControlledAudioTrackCount: 1
+  m_PlayOnAwake: 1
+  m_SkipOnDrop: 1
+  m_Looping: 0
+  m_WaitForFirstFrame: 1
+  m_FrameReadyEventEnabled: 0
+  m_VideoShaders: []
 --- !u!1 &1422778674
 GameObject:
   m_ObjectHideFlags: 0
