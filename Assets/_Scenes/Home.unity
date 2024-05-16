@@ -24545,6 +24545,22 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &1802832257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1209400726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6aa5199eebce6a5478f5c477d7e1dfc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxDistance: 1
+  _minDistance: 0.05
+  _minZDistance: 0.05
+  y_offset: 0.5
 --- !u!1 &1810559787
 GameObject:
   m_ObjectHideFlags: 0
@@ -27709,9 +27725,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 130088260815830799, guid: 45f285228c5c02142a675c390fe7bfd1, type: 3}
+    - {fileID: 8090568399529928176, guid: 45f285228c5c02142a675c390fe7bfd1, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3117616286895852237, guid: 45f285228c5c02142a675c390fe7bfd1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1802832257}
     - targetCorrespondingSourceObject: {fileID: 3117616286895852237, guid: 45f285228c5c02142a675c390fe7bfd1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 316689635}
