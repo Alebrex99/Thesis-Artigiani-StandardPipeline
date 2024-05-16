@@ -130,6 +130,7 @@ public class cAppManager : MonoBehaviour {
 
     IEnumerator GoToSceneAsyncRoutine(int sceneIndex)
     {
+        //cMainUIManager.ShoweLoadin()
         Scene sceneToLoad = SceneManager.GetSceneByBuildIndex(sceneIndex);
         if (sceneToLoad.IsValid() && sceneToLoad.isLoaded)
         {
