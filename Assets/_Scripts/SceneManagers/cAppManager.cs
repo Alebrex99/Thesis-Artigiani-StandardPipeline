@@ -87,8 +87,6 @@ public class cAppManager : MonoBehaviour {
             PlayerPrefs.SetString("FriendIP", value);
         }
     }
-
-
     public static Scenes GetActualScene() {
         return actualScene;
     }
@@ -103,18 +101,6 @@ public class cAppManager : MonoBehaviour {
             return actualBuildScene;
         return prevBuildScene;
     }
-
-
-    /*public static void LoadScene(Scenes scene) {
-        if (actualScene == scene) {
-            Debug.LogWarning("[APP] Se esta intentando cargar la misma scene: " + scene);
-            return;
-        }
-        Debug.Log("[App] Load Scene");
-        actualScene = scene;
-        instance.StartCoroutine(instance.LoadSceneCor((int)scene));
-        //cDataManager.AddJuegosAction(eAcciones.LoadScene, -1, 0, (int)scene, scene.ToString());
-    }*/
 
     //ALE: Funzione cambio Scena
     public static void LoadScene(Scenes scene)
@@ -160,7 +146,6 @@ public class cAppManager : MonoBehaviour {
         OVRScreenFade.instance.FadeIn();
         asyncLoadOperation = null;
     }
-
     //VERSIONE LOADING (JESUS + ALE)
     IEnumerator ChangeSceneCor(int sceneIndex)
     {
@@ -208,7 +193,6 @@ public class cAppManager : MonoBehaviour {
         //OVRScreenFade.instance.FadeIn();
         cMainUIManager.HideLoading(); 
     }
-
     IEnumerator ChangeScene2(int sceneIndex)
     {
         cMainUIManager.ShowLoading();
@@ -228,10 +212,29 @@ public class cAppManager : MonoBehaviour {
         cMainUIManager.HideLoading();
     }
 
+    public static void BackHome()
+    {
+        LoadScene(Scenes.HOME);
+    }
+
+
+
+
 
 
 
     //OLD FUNCTIONS 
+    /*public static void LoadScene(Scenes scene) {
+       if (actualScene == scene) {
+           Debug.LogWarning("[APP] Se esta intentando cargar la misma scene: " + scene);
+           return;
+       }
+       Debug.Log("[App] Load Scene");
+       actualScene = scene;
+       instance.StartCoroutine(instance.LoadSceneCor((int)scene));
+       //cDataManager.AddJuegosAction(eAcciones.LoadScene, -1, 0, (int)scene, scene.ToString());
+   }*/
+
     private IEnumerator LoadSceneCor(int buildIndex) {
         //SHOW LOADING
         //ALE cMainUIManager.ShowLoading();

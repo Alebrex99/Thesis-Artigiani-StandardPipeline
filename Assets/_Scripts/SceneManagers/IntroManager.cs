@@ -74,6 +74,7 @@ public class IntroManager : MonoBehaviour
         videoPlayer.loopPointReached += EndVideo;
         //Invoke(nameof(EndAudio), voiceAudio.clip.length);
 
+
         //attivazione bottone Home (puoi metterlo in EndVideo volendo)
         StartCoroutine(LateActivation(_buttonHome.gameObject, _activationDelay));
         //_buttonHome.OnButtonPressed += OnButtonPressedEffect;

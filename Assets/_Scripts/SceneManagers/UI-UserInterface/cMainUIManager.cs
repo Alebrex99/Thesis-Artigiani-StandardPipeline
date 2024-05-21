@@ -13,7 +13,7 @@ public class cMainUIManager : MonoBehaviour{
     //ALE public TextMeshProUGUI txLog;
     //ALE public GameObject pnLogs;
 
-    private static cMainUIManager instance;
+    public static cMainUIManager instance;
     private static UnityEvent<string> logUpdated;
 
     private void Awake() {
@@ -25,7 +25,8 @@ public class cMainUIManager : MonoBehaviour{
 
     public static void ShowLoading(string text = null) {
         instance.goMainCanvas.SetActive(true);
-        instance.goMainCanvas.transform.position = cXRManager.GetTrCenterEye().position + cXRManager.GetTrCenterEye().forward * 1f;
+        instance.goMainCanvas.transform.parent = cXRManager.GetTrCenterEye();//ALE
+        instance.goMainCanvas.transform.position = cXRManager.GetTrCenterEye().position + cXRManager.GetTrCenterEye().forward*0.5f; //0.5f
         instance.goMainCanvas.transform.rotation = Quaternion.LookRotation(instance.goMainCanvas.transform.position - cXRManager.GetTrCenterEye().position);
         instance.goMainCanvas.transform.eulerAngles = new Vector3(0, instance.goMainCanvas.transform.eulerAngles.y, 0);
         instance.scrLoading.ShowLoading(text);
@@ -33,6 +34,8 @@ public class cMainUIManager : MonoBehaviour{
     public static void HideLoading() {
         instance.scrLoading.HideLoading();
         instance.goMainCanvas.SetActive(false); //ALE
+        // Reset goMainCanvas to its original parent
+        cMainUIManager.instance.goMainCanvas.transform.parent = null; //ALE
         /*ALE if (!instance.scrAlert.IsShowing())
             instance.goMainCanvas.SetActive(false);*/
     }

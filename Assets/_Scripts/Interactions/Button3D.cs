@@ -4,6 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 using System;
 using JetBrains.Annotations;
+using UnityEditor.UI;
 
 public class Button3D : MonoBehaviour
 {
@@ -55,9 +56,11 @@ public class Button3D : MonoBehaviour
 
     public void BackToHome()
     {
-        Scenes scene = Scenes.HOME;
+        gameObject.SetActive(false);
+        cAppManager.BackHome();
+        /*Scenes scene = Scenes.HOME;
         cAppManager.SelectedScene = (int)scene;
-        cAppManager.LoadScene(scene);
+        cAppManager.LoadScene(scene);*/
     }
 
 
