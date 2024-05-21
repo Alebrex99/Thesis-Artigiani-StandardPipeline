@@ -32,6 +32,7 @@ public class cAppManager : MonoBehaviour {
     //private static ColorAdjustments colorAdjustments;
     private static Scenes actualScene;
     private static int selectedScene = -1;
+    private AsyncOperation asyncLoadOperation;
 
 
     void Awake() {
@@ -124,20 +125,24 @@ public class cAppManager : MonoBehaviour {
             return;
         }
         Debug.Log("[App] Load Scene");
-        actualScene = scene;
-        instance.StartCoroutine(instance.GoToSceneAsyncRoutine((int)scene));
+        actualScene = scene; //SET LA SCENA CORRENTE (es. Intro)
+        actualBuildScene = (int)scene;
+        //instance.StartCoroutine(instance.GoToSceneAsyncRoutine((int)scene));
+        instance.StartCoroutine(instance.ChangeSceneCor(actualBuildScene));
+        //instance.StartCoroutine(instance.ChangeScene2(actualBuildScene));
     }
 
     IEnumerator GoToSceneAsyncRoutine(int sceneIndex)
     {
-        //cMainUIManager.ShoweLoadin()
+        cMainUIManager.ShowLoading(); //cDontDestroy.instance.gameObject.SetActive(true);
         Scene sceneToLoad = SceneManager.GetSceneByBuildIndex(sceneIndex);
         if (sceneToLoad.IsValid() && sceneToLoad.isLoaded)
         {
-            Debug.Log("La scena " + sceneToLoad.name + " � gi� caricata.");
+            Debug.Log("La scena " + sceneToLoad.name + " è già caricata.");
             yield break;
         }
         OVRScreenFade.instance.FadeOut();
+        
         AsyncOperation asyncLoadOperation = SceneManager.LoadSceneAsync(sceneIndex);
         while (!asyncLoadOperation.isDone)
         {
@@ -151,10 +156,82 @@ public class cAppManager : MonoBehaviour {
         SceneManager.SetActiveScene(loadedScene);
         Debug.Log("Scena " + sceneToLoad.name + " impostata come scena attiva.");
 
+        cMainUIManager.HideLoading();
         OVRScreenFade.instance.FadeIn();
         asyncLoadOperation = null;
     }
 
+    //VERSIONE LOADING (JESUS + ALE)
+    IEnumerator ChangeSceneCor(int sceneIndex)
+    {
+        cMainUIManager.ShowLoading(); //cDontDestroy.instance.gameObject.SetActive(true);
+        Scene sceneToLoad = SceneManager.GetSceneByBuildIndex(sceneIndex);
+        Scene sceneToUnload = SceneManager.GetActiveScene(); //scena corrente
+
+        //CARICAMENTO SCENA NUOVA: ADDITIVAMENTE
+        if (sceneToLoad.IsValid() && sceneToLoad.isLoaded)
+        {
+            Debug.Log("La scena " + sceneToLoad.name + " è già caricata.");
+            yield break;
+        }
+        //OVRScreenFade.instance.FadeOut();
+        
+        asyncLoadOperation = SceneManager.LoadSceneAsync(sceneIndex, LoadSceneMode.Additive);
+        yield return new WaitForEndOfFrame();
+        while (!asyncLoadOperation.isDone)
+        {
+            //Debug.Log("Caricamento della scena " + sceneToLoad.name + " in corso...");
+            yield return new WaitForEndOfFrame();
+        }
+        //Debug.Log("Scena " + sceneToLoad.name + " caricata con successo.");
+        asyncLoadOperation = null;
+        
+        //ATTIVA SCENA NUOVA 
+        Scene loadedScene = SceneManager.GetSceneByBuildIndex(sceneIndex);
+        SceneManager.SetActiveScene(loadedScene);
+
+        //SCARICAMENTO SCENA ORIGINALE
+        if (!sceneToUnload.IsValid() || !sceneToUnload.isLoaded)
+        {
+            Debug.Log("La scena " + sceneToUnload.name + " è già scaricata.");
+            yield break;
+        }
+        asyncLoadOperation = SceneManager.UnloadSceneAsync(sceneToUnload);
+        while (!asyncLoadOperation.isDone)
+        {
+            //Debug.Log("Scaricamento della scena " + sceneToUnload.name + " in corso...");
+            yield return new WaitForEndOfFrame();
+        }
+
+        actualBuildScene = SceneManager.GetActiveScene().buildIndex;
+        asyncLoadOperation = null;
+        //OVRScreenFade.instance.FadeIn();
+        cMainUIManager.HideLoading(); 
+    }
+
+    IEnumerator ChangeScene2(int sceneIndex)
+    {
+        cMainUIManager.ShowLoading();
+        Scene sceneToLoad = SceneManager.GetSceneByBuildIndex(sceneIndex);
+        Scene sceneToUnload = SceneManager.GetActiveScene(); //scena corrente
+        
+        SceneManager.LoadSceneAsync(sceneIndex, LoadSceneMode.Additive);
+        yield return new WaitForEndOfFrame();
+
+        while(!SceneManager.GetSceneByBuildIndex(sceneIndex).isLoaded)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+        SceneManager.UnloadScene(sceneToUnload);
+
+        actualBuildScene = SceneManager.GetActiveScene().buildIndex;
+        cMainUIManager.HideLoading();
+    }
+
+
+
+
+    //OLD FUNCTIONS 
     private IEnumerator LoadSceneCor(int buildIndex) {
         //SHOW LOADING
         //ALE cMainUIManager.ShowLoading();
@@ -181,7 +258,6 @@ public class cAppManager : MonoBehaviour {
         }*/
 
     }
-   
 
     public static void QuitApp() {
         //MOSTRAR CONFIRMACION
