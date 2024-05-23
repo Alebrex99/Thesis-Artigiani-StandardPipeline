@@ -52,7 +52,6 @@ public class cMainUIManager : MonoBehaviour{
         /*ALE if (!instance.scrAlert.IsShowing())
             instance.goMainCanvas.SetActive(false);*/
     }
-
     //GESTIONE MENU SCARICAMENTO CONFIG: cStMenu
     public static void ShowMenuCanvas()
     {

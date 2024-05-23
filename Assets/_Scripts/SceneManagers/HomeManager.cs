@@ -20,10 +20,10 @@ public class HomeManager: MonoBehaviour
     //GESTIONE BOTTONI
     public AudioSource envAudioSrc; //voce spiegazione
     public AudioClip _buttonExplainClip;
-    [SerializeField] private GameObject _interactables;
+    [SerializeField] private GameObject[] _interactables; //interagibili principali (bottoni main ecc)
     [Range(0,60)]
     [SerializeField] private float _interactableActivationDelay = 1f;
-    [SerializeField] private Transform interactablesInitPos;
+    [SerializeField] private Transform mainInteractablesInitPos;
     [SerializeField] private Button3D[] _buttons3D;
 
     //GESTIONE FSM
@@ -39,6 +39,10 @@ public class HomeManager: MonoBehaviour
     public Transform userInitPos;
     public Transform trLightButton;
     //public cWatchManager scrWatch;
+
+    //MY HISTORY + MI TALLER
+    [SerializeField] GameObject informationOptions;
+
 
     private void Awake()
     {
@@ -59,6 +63,9 @@ public class HomeManager: MonoBehaviour
         _video180StereoScene.SetActive(false);
         _currentEnvironment = _environmentMain;
 
+        //MY HISTORY + MI TALLER
+        informationOptions.SetActive(false);
+        
         //BOTTONI
         //_buttons3D = FindObjectsOfType<Button3D>(); //pesa meno con Public lista , ma sbatti dopo
         foreach (Button3D button3D in _buttons3D)
@@ -66,21 +73,33 @@ public class HomeManager: MonoBehaviour
             //Debug.Log(button3D.getButtonName());
             button3D.OnButtonPressed += OnButtonPressedEffect;
         }
-        _interactables.SetActive(false);
+        foreach(GameObject interactable in _interactables)
+        {
+            interactable.SetActive(false);
+        }
+        //_interactables.SetActive(false);
         StartCoroutine(LateActivation(_interactables, _interactableActivationDelay));
     }
-
     private void Update()
     {
         trLightButton.position = cXRManager.GetTrCenterEye().position;
         trLightButton.rotation = cXRManager.GetTrCenterEye().rotation;
     }
 
-    private IEnumerator LateActivation(GameObject toActivate, float _activationDelay)
+    private IEnumerator LateActivation(GameObject[] toActivate, float _activationDelay)
     {
         yield return new WaitForSeconds(_activationDelay);
-        toActivate.transform.position = interactablesInitPos.position;
-        toActivate.SetActive(true);
+        //ATTIVO INTERAGIBILI MAIN
+        for(int i=0; i<toActivate.Length; i++)
+        {
+            toActivate[i].SetActive(true);
+            toActivate[i].transform.position = mainInteractablesInitPos.position;
+        }
+        //toActivate.transform.position = mainInteractablesInitPos.position;
+        //toActivate.SetActive(true);
+
+
+        //SETTO E ATTIVO CLIP SPIEGAZIONE BOTTONI
         if(envAudioSrc!= null)
         {
             envAudioSrc.PlayOneShot(_buttonExplainClip); //start when the buttons appear
@@ -122,11 +141,10 @@ public class HomeManager: MonoBehaviour
         Debug.Log($"Button {buttonPressed.getButtonName()} premuto --> cambio stato");
         String buttonPressedName = buttonPressed.getButtonName();
 
-        //CHECK TRANSITION:
+        //CHECK TRANSITION: FSM
         //CheckTransition(buttonPressedName);
 
-        /*se servirà la macchina a stati completa: va messo in Update() e la funzione 
-        OnbuttonChangeEnvironment() dovrà essere chiamata nell IF qui sopra*/
+        //UPDATE STATE: FSM
         //UpdateState(buttonPressed); 
 
         //CAMBIO SCENA:

@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
@@ -21,8 +21,6 @@ public class Button3D : MonoBehaviour
     [SerializeField] GameObject _environmentMain;
     public static GameObject _currentEnvironment; //accessibile da qualunque altro script senza un rifeirmento necessario
 
-    //mettere la logica direttamente nel bottone
-
     void Start ()
     {
         _currentEnvironment = _environmentMain;
@@ -35,7 +33,7 @@ public class Button3D : MonoBehaviour
 
         isButtonPressed = true;
 
-        //ACTION SE VUOI CAMBIO STATO/CHANGE SCENE: (gestione in HomeManager)
+        //ACTION SE VUOI CAMBIO STATO/CHANGE SCENE: se bottoni fanno stessa cosa (gestione in HomeManager)
         if (OnButtonPressed != null)
             OnButtonPressed(this, isButtonPressed);
         
