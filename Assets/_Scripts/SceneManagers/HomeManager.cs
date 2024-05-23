@@ -47,11 +47,8 @@ public class HomeManager: MonoBehaviour
 
     private void Start()
     {
-        ResetUserPosition(); //introdurre quando ci sono i persistenti (non per development)
-
+        ResetUserPosition();
         //SE HO TELEPORT: inserimento delle iscrizioni a eventi da cStEVBase
-
-
         _currentState = State.Main;
         //RenderSettings.skybox = skyboxMain;
         _environmentMain.SetActive(true);
