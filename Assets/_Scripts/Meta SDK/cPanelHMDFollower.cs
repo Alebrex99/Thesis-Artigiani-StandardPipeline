@@ -33,6 +33,7 @@ namespace OculusSampleFramework
         [SerializeField] private float _maxDistance = 0.3f;
         [SerializeField] private float _minDistance = 0.05f;
         [SerializeField] private float _minZDistance = 0.05f;
+        [SerializeField] private Transform trButtonIdeal;
 
         private OVRCameraRig _cameraRig;
         private Vector3 _panelInitialPosition = Vector3.zero;
@@ -51,6 +52,7 @@ namespace OculusSampleFramework
             offset = new Vector3(0, y_offset, 0);
             _panelInitialPosition = transform.position - offset;
         }
+
 
         private void Update()
         {
@@ -81,12 +83,14 @@ namespace OculusSampleFramework
 
         private Vector3 CalculateIdealAnchorPosition()
         {
-            return _cameraRig.centerEyeAnchor.position + _panelInitialPosition;
+            //return _cameraRig.centerEyeAnchor.position + _panelInitialPosition; //togliere per impedire che segua(da ottimizzare)
+            return trButtonIdeal.position;
         }
 
         private IEnumerator LerpToHMD()
         {
             Vector3 newPanelPosition = CalculateIdealAnchorPosition();
+            //Vector3 newPanelPosition = trButtonIdeal.position;
             _lastMovedToPos = _cameraRig.centerEyeAnchor.position;
             float startTime = Time.time;
             float endTime = Time.time + TOTAL_DURATION;

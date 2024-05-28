@@ -34,6 +34,9 @@ public class cAppManager : MonoBehaviour {
     private static int selectedScene = -1;
     private AsyncOperation asyncLoadOperation;
 
+    //FROM CONFIG.CSV
+    private float fadeTime = 5;
+
 
     void Awake() {
         if (null != instance) {
@@ -47,6 +50,10 @@ public class cAppManager : MonoBehaviour {
 
         //postProcessing.profile.TryGet<ColorAdjustments>(out colorAdjustments);
         //LogOut();
+    }
+    private void Start()
+    {
+        cOVRScreenFade.instance.fadeTime = fadeTime;
     }
 
     public static string UserID {

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,13 +7,16 @@ using UnityEngine;
 public class LoadingTrigger : MonoBehaviour
 {
     //OGGETTI DA IGNORARE:
-    [SerializeField] private GameObject[] goToIgnore;
+    [SerializeField] private GameObject[] goToSwitchOffMenu;
+
     [SerializeField] private cMenuLoad cMenuLoad;
+    [SerializeField] private cLoading cLoading;
+    private List<GameObject> triggeredObjs = new List<GameObject>();
 
     // Start is called before the first frame update
     void Start()
     {
-        
+    
     }
 
     // Update is called once per frame
@@ -23,25 +27,29 @@ public class LoadingTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("ENTRATO: " +  other.gameObject.name); //es. entra il button load + entra il collider (game object nel bottone che si chiama collider)
-        if (cMenuLoad.IsShowing())
+
+        Debug.Log("ENTRATO: " + other.gameObject.name);
+        if (cMenuLoad.IsShowing() && goToSwitchOffMenu.Contains(other.gameObject))
         {
-            if (!goToIgnore.Contains(other.gameObject))
-            {
-                other.gameObject.SetActive(false);
-                Debug.Log("DEVE ESSERCI SOLO IL MENU : " + other.gameObject.name);
-            }
-            //se in questo trigger si trovano i goToIgnore, non devono essere disattivati
+            other.gameObject.SetActive(false); //solo se in lista di spegnimento
+            Debug.Log("MENU: spengo " + other.gameObject.name);
+
         }
-        else //alora è solo loading cambio scena
+        if (cLoading.IsShowing())
         {
-            //se il pannello attio è quello di loading allora disattiva tutti gli oggetti col trigger eccetto la OVR camera rig
-            if (other.gameObject != GetComponent<OVRCameraRig>())
-            {
-                other.gameObject.SetActive(false);
-                Debug.Log("DEVE ESSERCI SOLO IL LOADING" + other.gameObject.name);
-            }
+            triggeredObjs.Add(other.gameObject);
+            other.gameObject.SetActive(false);
+            Debug.Log("LOADING: spengo " + other.gameObject.name);
         }
-         
+
+        
+    }
+
+    private void OnDisable()
+    {
+        if(triggeredObjs.Count == 0) return;
+        triggeredObjs.ForEach(go => go.SetActive(true)); //come è l'if inline?
+
+        triggeredObjs.ForEach(go => Debug.Log("USCITO: " + go.name));
     }
 }

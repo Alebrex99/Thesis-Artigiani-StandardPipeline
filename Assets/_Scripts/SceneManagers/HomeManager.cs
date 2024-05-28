@@ -42,6 +42,7 @@ public class HomeManager: MonoBehaviour
 
     //MY HISTORY + MI TALLER
     [SerializeField] GameObject informationOptions;
+    private bool isInfoOpened=false;
 
 
     private void Awake()
@@ -93,7 +94,7 @@ public class HomeManager: MonoBehaviour
         for(int i=0; i<toActivate.Length; i++)
         {
             toActivate[i].SetActive(true);
-            toActivate[i].transform.position = mainInteractablesInitPos.position;
+            //toActivate[i].transform.position = mainInteractablesInitPos.position; //togliere se si usa cPanelHMDFollower
         }
         //toActivate.transform.position = mainInteractablesInitPos.position;
         //toActivate.SetActive(true);
@@ -154,6 +155,27 @@ public class HomeManager: MonoBehaviour
         cAppManager.LoadScene(scene);
 
     }
+
+
+
+    public void OpenCloseInformations()
+    {
+        if (isInfoOpened)
+        {
+            informationOptions.SetActive(false);
+            isInfoOpened = false;
+        }
+        else
+        {
+            informationOptions.SetActive(true);
+            isInfoOpened = true;
+        }
+    }
+
+
+
+
+
 
 
 

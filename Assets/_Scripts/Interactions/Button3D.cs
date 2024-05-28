@@ -60,11 +60,18 @@ public class Button3D : MonoBehaviour
         cAppManager.LoadScene(scene);*/
     }
 
+    public void OpenCloseInformations()
+    {
+        HomeManager.instance.OpenCloseInformations();
+        
+    }
+
     public void CallConversationalAgent()
     {
         cAppManager.CallConversationalAgent();
         //FAI COSE SE E' CHIAMABILE SOLO DA BOTTONI
     }
+
 
 
 

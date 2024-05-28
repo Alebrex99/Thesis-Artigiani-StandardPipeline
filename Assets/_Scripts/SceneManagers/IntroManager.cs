@@ -18,8 +18,9 @@ public class IntroManager : MonoBehaviour
     [SerializeField] private float rotationVideoSpeed = 1;
     private bool bShownVideo = false;
 
-    //cSceneInfo + MENU : video + animation logo
+    //SCENE : cSceneInfo + MENU : video + animation logo
     public Transform userInitPos;
+    public Transform chairInitPos;
     private float timeLastClick = 0;
     [SerializeField] Animator animLogo;
     //[SerializeField] private GameObject menuCanvas;
@@ -67,7 +68,6 @@ public class IntroManager : MonoBehaviour
     {
         _buttonHome.gameObject.SetActive(false);
         goVideoPlayer.gameObject.SetActive(false);
-        cOVRScreenFade.instance.fadeTime = 5;
         ResetUserPosition();
         //MENU : cStMenu
         //chiama invoke con la conversione del nome del metodo in stringa
