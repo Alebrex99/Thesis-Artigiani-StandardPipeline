@@ -11,22 +11,33 @@ using System.Collections;
 using System.Buffers.Text;
 using static SocketIOUnity;
 using TMPro.Examples;
+using OVRSimpleJSON;
 
 
 public class cSocketManager : MonoBehaviour
 {
+    public static cSocketManager instance;
     public SocketIOUnity socket;
     private bool isConnected = false;
+    Queue<byte[]> audioQueue = new Queue<byte[]>();
+
+    public static List<byte[]> conversation = new List<byte[]>();
+
     [SerializeField] private GameObject objectToSpin;
+    
     //MESSAGGIO DA INVIARE DA VOICE -> TO TEXT
     private string message = "Hello from Unity!";
 
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        //TODO: check the Uri if Valid.
+        instance = this;
+    }
+
+    // Start is called before the first frame update
+    private void Start() //mettere async void Start() per asincrono
+    {
         //var uri = new Uri("http://192.168.1.107:11100"); //DEFAULT: IP non corretto
-        //var uri = new Uri("http://localhost:11100"); //Funziona con SERVER DI PROVA
+        //var uri = new Uri("http://localhost:11100"); //Funziona con SERVER: C:\Users\Utente\UnityProjects\SocketIOUnity\Samples~\Server
         var uri = new Uri("http://localhost:5000"); //Funziona con server MIKEL; bisognerà poi modificare l'indirizzo con uno internet
         socket = new SocketIOUnity(uri, new SocketIOOptions
         {
@@ -53,6 +64,7 @@ public class cSocketManager : MonoBehaviour
             Debug.Log("socket.OnConnected");
             socket.Emit("chat_message", "hola"); //message to INIT, chiama internamente EmitAsync
             Debug.Log("Initial message sent from connect");
+            isConnected = true; // Set isConnected to true when connected
         };
         socket.OnPing += (sender, e) =>
         {
@@ -71,129 +83,118 @@ public class cSocketManager : MonoBehaviour
         {
             Debug.Log($"{DateTime.Now} Reconnecting: attempt = {e}");
         };
-        //--------------------------------------------------------------
-    
+       
+
+        //----------------CONNECTION ASYNC -------------------------------
         Debug.Log("Connecting...");
-        socket.Connect();
+        socket.Connect(); //gestione interna di SocketIOUnity
+        //await socket.ConnectAsync(); //cambio ad asincrono
 
-        //------------------- RECEIVING = REACTIONS TO SERVER (Unity wrapper) ------------------------
-        //ON UNITY THREAD = SOLO CON PLAYER PREFS SYSTEM, PER EFFETTO SU OGGETTI
-        /* Set (unityThreadScope) the thread scope function where the code should run.
-        Options are: .Update, .LateUpdate or .FixedUpdate, default: UnityThreadScope.Update */
-        socket.unityThreadScope = UnityThreadScope.Update; //dove tale thread sta andando
-        socket.OnUnityThread("audio_response_end", (response) =>
-        {
-            objectToSpin.transform.Rotate(0, 45, 0);
-        });
-        //in teoria non usarlo per i chunk AUDIO
-        socket.OnUnityThread("audio_response_chunk", (response) =>
-        {
-            Debug.Log("OnUnityThread: " + response.ToString());
-            /*var base64String = response.GetValue<string>(); //prima: GetValue<string>("audio_chunk")
-            var chunk = Convert.FromBase64String(base64String);
-            Debug.Log($"Received chunk of length {chunk.Length}");*/
-        });
-        //ReceivedText.text = "";
-        socket.OnAnyInUnityThread((name, response) =>
-        {
-            //ReceivedText.text += "Received On " + name + " : " + response.GetValue<string>() + "\n"; //response.GetValue().GetRawText()
-        });
-
-
-        //----------------RECEIVING = REACTIONS TO SERVER (SocketIO)------------------------
+        //------------------- RECEIVING = CLIENT REACTIONS TO SERVER (FOR AUDIO CHUNKS)-------------------------
         //receives CHUNKS FROM SERVER : Equivalente delle funzioni sopra, ma prese dirette da SOcketIO (tanto SocketIO Unity estende socketIO)
         socket.On("audio_response_chunk", response =>
         {
             Debug.Log("Audio response chunk: " + response.ToString());
-            //NON FUNZIONANO I SEGUENTI: non stampano nulla (guardare la GetValue()
-            var base64String = response.GetValue<string>(); //prima: GetValue<string>("audio_chunk"); possible: data[index]
-            var chunk = Convert.FromBase64String(base64String);
+            
+            //MODO1 : Modo alternativo di Unity serilizer per deserializzare JSON ricevuto:
+            string json = response.ToString();
+            json = json.Substring(1, json.Length - 2); //toglie le parentesi quadre
+            DataResponse stringChunk = JsonUtility.FromJson<DataResponse>(json);
+            Debug.Log("UNITY Serialization: "+ stringChunk.audio_chunk);
+            var base64String = stringChunk.audio_chunk;
+            var chunk = Convert.FromBase64String(base64String); //prende una string e converte in bytes
+            
+            //MODO2 : Funziona, direttamnete con JObject di c# .NET
+            /*var audioChunkObject = response.GetValue<JObject>(); //prende un oggetto JSON
+            JToken jtoken = audioChunkObject["audio_chunk"];
+            var base64String = jtoken.ToString();
+            //var base64String = response.GetValue<string>(); //prima: GetValue<string>("audio_chunk"); possible: data[index]
+            var chunk = Convert.FromBase64String(base64String); //prende una string e converte in bytes */
+            conversation.Add(chunk); //lista con tutti i chunk da usare ovunque nel codice
             Debug.Log($"Received chunk of length {chunk.Length}");
-
+            
+            //DA MANDARE AD UN AUDIO SOURCE
+            audioQueue.Enqueue(chunk); //metto in coda così da essere certo di riprodurre in ordine i chunks
+            StartCoroutine(UseAudioChunk()); //PROBLEMA: Possono essere avviate N coroutine contemporaneamente
         });
-
         socket.On("audio_response_end", response =>
         {
             Debug.Log("Audio response end: " + response.ToString());
+            conversation.ForEach(chunk => Debug.Log(chunk.ToString())); //stampa la lunghezza di ogni chunk
+        });
+
+
+        //------------------- RECEIVING = CLIENT REACTIONS TO SERVER (FOR GAMEOBJECTS) ------------------------
+        /*ON UNITY THREAD(Unity wrapper) = SOLO CON PLAYER PREFS SYSTEM, PER EFFETTO SU OGGETTI
+         * N.B. NON PUOI USARE OnUnityThread e On contemporaneamente sullo stesso evento
+         * Set (unityThreadScope) the thread scope function where the code should run. 
+         * Options are: .Update, .LateUpdate or .FixedUpdate, default: UnityThreadScope.Update */
+        socket.unityThreadScope = UnityThreadScope.Update; //dove tale thread sta andando
+        socket.OnUnityThread("spin", (response) =>
+        {
             objectToSpin.transform.Rotate(0, 45, 0);
+            objectToSpin.transform.position = new Vector3(2, 2, 2);
+        });
+        //Corrisponde esattamente a :
+        /*socket.On("audio_response_end", response =>
+        {
+            Debug.Log("Audio response end: " + response.ToString());
+            UnityThread.executeInUpdate(() => {
+                objectToSpin.transform.Rotate(0, 45, 0);
+            });
+            // or  
+            //UnityThread.executeInLateUpdate(() => { ... });
+            // or 
+            //UnityThread.executeInFixedUpdate(() => { ... });
+        });*/
+        
+        //Per reagire a qualunque tipo di evento emesso (corrisponde a socket.onAny()):
+        //ReceivedText.text = "";
+        socket.OnAnyInUnityThread((name, response) =>
+        {
+            //ReceivedText.text += "Received On " + name + " : " + response.GetValue<string>() + "\n"; //response.GetValue().GetRawText()
+            objectToSpin.transform.Rotate(0, 45, 0);
+            objectToSpin.transform.position = new Vector3(2, 2, 2);
         });
     }
 
     void Update()
     {
-        //
+        //-------------------------EMITTING FROM CLIENT TO SERVER------------------------
         if (OVRInput.GetDown(OVRInput.RawButton.B))
         {
             socket.Emit("chat_message", 123);
         }
+        //Quando l'utente parla -> voice to text -> send text
         if(Input.GetKeyDown(KeyCode.Space))
         {
             socket.Emit("chat_message", 123); //Possibilità 1
-            StartCoroutine(SendMessages(message)); //send message epresso da USER
+            //StartCoroutine(SendMessages(message)); //send message epresso da USER
         }
     }
 
-
-
-    IEnumerator SendMessages(string message) //params -> ENTERO MESSAGE TO SEND
+    private IEnumerator UseAudioChunk()
     {
-        //TESTING
-        /*
-        while (true)
+        while (audioQueue.Count>0)
         {
-            if (isConnected)
-            {
-                //TRASCRITION THE AUDIO
-                Debug.Log("Enter message to send: ");
-                //string message = Console.ReadLine(); //TO READ FROM terminal: passare message (TEXT) como parametro
-                if (message.ToLower() == "exit")
-                {
-                    StartCoroutine(Disconnect());
-                    yield break;
-                }
-                client.EmitAsync("chat_message", message).Wait();
-                Debug.Log("Message sent");
-            }
-            yield return null;
-        }*/
-
-        //TO SEND MESSAGES FROM USER REALMEMENT, NON CON CONSOLE
-        if (isConnected)
-        {
-            //TRASCRITION THE AUDIO
-            Debug.Log("Enter message to send: ");
-            //string message = Console.ReadLine(); //TO READ FROM temrminal: passare message (TEXT) como parametro
-            if (message.ToLower() == "exit")
-            {
-                StartCoroutine(Disconnect());
-                yield break;
-            }
-            socket.EmitAsync("chat_message", message).Wait();
-            Debug.Log("Message sent");
+            var chunk = audioQueue.Dequeue();
+            yield return StartCoroutine(PlayAudioChunk());    
         }
-        yield return null;
-
     }
 
-    IEnumerator Disconnect()
+    private IEnumerator PlayAudioChunk()
     {
-        if (socket != null)
-        {
-            yield return socket.DisconnectAsync();
-            isConnected = false;
-        }
+
+       yield return null; //Ritorna alla fine dell'audio riprodotto
     }
 
     void OnApplicationQuit()
     {
-        StartCoroutine(Disconnect());
+        //StartCoroutine(Disconnect());
+        socket.Disconnect(); //gstione interna di SocketIOUnity
+        //await socket.DisconnectAsync(); //cambio ad asincrono di SocketIO
+        Debug.Log("Application ending after " + Time.realtimeSinceStartup + " seconds");
     }
-
-
-
-
-
-
 
     public void EmitTest()
     {
@@ -211,7 +212,6 @@ public class cSocketManager : MonoBehaviour
             socket.EmitStringAsJSON(eventName, txt);
         }*/
     }
-
     public static bool IsJSON(string str)
     {
         if (string.IsNullOrWhiteSpace(str)) { return false; }
@@ -234,7 +234,6 @@ public class cSocketManager : MonoBehaviour
             return false;
         }
     }
-
     public void EmitSpin()
     {
         socket.Emit("spin");
@@ -247,8 +246,14 @@ public class cSocketManager : MonoBehaviour
         socket.Emit("class", testClass2);
     }
 
-    // our test class
+    //Per UNITY JSON serialization:
     [System.Serializable]
+    public class DataResponse
+    {
+        public string audio_chunk;
+    }
+
+    // Test class for emit
     class TestClass
     {
         public string[] arr;
@@ -269,5 +274,36 @@ public class cSocketManager : MonoBehaviour
             this.text = text;
         }
     }
-    //
+
+
+
+
+
+
+    //FUNZIONI ULTERIORI DA POTER USARE PER DISCONNESSIONE E INVIO MESSAGGI
+    IEnumerator SendMessages(string message) //params -> ENTERO MESSAGE TO SEND
+    {
+        //TO SEND MESSAGES FROM USER NON CON CONSOLE
+        if (isConnected)
+        {
+            //TRASCRITION THE AUDIO
+            Debug.Log("Enter message to send: ");
+            if (message.ToLower() == "exit")
+            {
+                StartCoroutine(Disconnect());
+                yield break;
+            }
+            socket.EmitAsync("chat_message", message); //.Wait() ma si bloccava prima
+            Debug.Log("Message sent");
+        }
+        yield return null;
+    }
+    IEnumerator Disconnect()
+    {
+        if (socket != null)
+        {
+            yield return socket.DisconnectAsync();
+            isConnected = false;
+        }
+    }
 }
