@@ -86,7 +86,6 @@ public class HomeManager: MonoBehaviour
         trLightButton.position = cXRManager.GetTrCenterEye().position;
         trLightButton.rotation = cXRManager.GetTrCenterEye().rotation;
     }
-
     private IEnumerator LateActivation(GameObject[] toActivate, float _activationDelay)
     {
         yield return new WaitForSeconds(_activationDelay);
@@ -106,17 +105,14 @@ public class HomeManager: MonoBehaviour
             envAudioSrc.PlayOneShot(_buttonExplainClip); //start when the buttons appear
         }
     }
-
     public Transform GetUserInitTr()
     {
         return userInitPos;
     }
-
     public void ResetUserPosition()
     {
         cXRManager.SetUserPosition(GetUserInitTr().position, GetUserInitTr().rotation);
     }
-
     public static Scenes GetNextScene(Button3D buttonPressed)
     {
         switch (buttonPressed.getButtonName())
@@ -133,9 +129,7 @@ public class HomeManager: MonoBehaviour
                 return Scenes.HOME;
         }
     }
-
-
-    //CORRISPONDE ALLA CHECK TRANSITION:
+    //CORRISPONDEREBBE ALLA CHECK TRANSITION NELLA FSM:
     public void OnButtonPressedEffect(Button3D buttonPressed, bool isButtonPressed)
     {
         //CAMBIO STATO: 
@@ -155,9 +149,6 @@ public class HomeManager: MonoBehaviour
         cAppManager.LoadScene(scene);
 
     }
-
-
-
     public void OpenCloseInformations()
     {
         if (isInfoOpened)
@@ -172,6 +163,15 @@ public class HomeManager: MonoBehaviour
         }
     }
 
+
+
+    private void OnDisable()
+    {
+        foreach (Button3D button3D in _buttons3D)
+        {
+            button3D.OnButtonPressed -= OnButtonPressedEffect;
+        }
+    }
 
 
 

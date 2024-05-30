@@ -31,7 +31,7 @@ public class SocketIO_Init : MonoBehaviour
         //REACTION FROM SERVER : receves CHUNKS FROM SERVER
         client.On("audio_response_chunk", response =>
         {
-            var base64String = response.GetValue<string>(1); //prima: "audio_chunk"; possible: data[index]
+            var base64String = response.GetValue<string>(); //prima: "audio_chunk"; possible: data[index]
             var chunk = Convert.FromBase64String(base64String);
             Debug.Log($"Received chunk of length {chunk.Length}");
         });
