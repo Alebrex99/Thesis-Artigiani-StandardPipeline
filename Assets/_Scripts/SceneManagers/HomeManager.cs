@@ -24,7 +24,7 @@ public class HomeManager: MonoBehaviour
     [Range(0,60)]
     [SerializeField] private float _interactableActivationDelay = 1f;
     [SerializeField] private Transform mainInteractablesInitPos;
-    [SerializeField] private Button3D[] _buttons3D;
+    [SerializeField] private Button3D[] _buttonsMain3D;
 
     //GESTIONE FSM
     State _currentState;
@@ -41,7 +41,7 @@ public class HomeManager: MonoBehaviour
     //public cWatchManager scrWatch;
 
     //MY HISTORY + MI TALLER
-    [SerializeField] GameObject informationOptions;
+    [SerializeField] GameObject myHistory;
     private bool isInfoOpened=false;
 
 
@@ -65,11 +65,11 @@ public class HomeManager: MonoBehaviour
         _currentEnvironment = _environmentMain;
 
         //MY HISTORY + MI TALLER
-        informationOptions.SetActive(false);
+        myHistory.SetActive(false);
         
         //BOTTONI
-        //_buttons3D = FindObjectsOfType<Button3D>(); //pesa meno con Public lista , ma sbatti dopo
-        foreach (Button3D button3D in _buttons3D)
+        //_buttonsMain3D = FindObjectsOfType<Button3D>(); //pesa meno con Public lista , ma sbatti dopo
+        foreach (Button3D button3D in _buttonsMain3D)
         {
             //Debug.Log(button3D.getButtonName());
             button3D.OnButtonPressed += OnButtonPressedEffect;
@@ -95,10 +95,6 @@ public class HomeManager: MonoBehaviour
             toActivate[i].SetActive(true);
             //toActivate[i].transform.position = mainInteractablesInitPos.position; //togliere se si usa cPanelHMDFollower
         }
-        //toActivate.transform.position = mainInteractablesInitPos.position;
-        //toActivate.SetActive(true);
-
-
         //SETTO E ATTIVO CLIP SPIEGAZIONE BOTTONI
         if(envAudioSrc!= null)
         {
@@ -129,6 +125,7 @@ public class HomeManager: MonoBehaviour
                 return Scenes.HOME;
         }
     }
+    
     //CORRISPONDEREBBE ALLA CHECK TRANSITION NELLA FSM:
     public void OnButtonPressedEffect(Button3D buttonPressed, bool isButtonPressed)
     {
@@ -153,12 +150,12 @@ public class HomeManager: MonoBehaviour
     {
         if (isInfoOpened)
         {
-            informationOptions.SetActive(false);
+            myHistory.SetActive(false);
             isInfoOpened = false;
         }
         else
         {
-            informationOptions.SetActive(true);
+            myHistory.SetActive(true);
             isInfoOpened = true;
         }
     }
@@ -167,7 +164,7 @@ public class HomeManager: MonoBehaviour
 
     private void OnDisable()
     {
-        foreach (Button3D button3D in _buttons3D)
+        foreach (Button3D button3D in _buttonsMain3D)
         {
             button3D.OnButtonPressed -= OnButtonPressedEffect;
         }

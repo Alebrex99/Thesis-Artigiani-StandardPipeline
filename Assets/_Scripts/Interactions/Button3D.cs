@@ -74,17 +74,13 @@ public class Button3D : MonoBehaviour
 
 
 
-
-
-
-    //PER DEMO:
+    //PER DEMO + PER MY HISTORY ECC.
     public void ChangeEnvironment()
     {
         //IntroManager.instance.voiceAudio.Stop();
         //se l'ambiente corrente è quello da accendere, lo spegni e accendi quello principale
         if (_currentEnvironment.name == _environmentOn.name)
         {
-            
             _currentEnvironment.SetActive(false);
             _currentEnvironment = _environmentMain;
             _currentEnvironment.SetActive(true);
@@ -95,12 +91,9 @@ public class Button3D : MonoBehaviour
             _currentEnvironment.SetActive(false);
             _currentEnvironment = _environmentOn;
             _currentEnvironment.SetActive(true);
-  
-
+ 
         }
-
-        /*
-        if (RenderSettings.skybox == _skyboxOn)
+        /* if (RenderSettings.skybox == _skyboxOn)
         {
             RenderSettings.skybox = _skyboxOff;
         }

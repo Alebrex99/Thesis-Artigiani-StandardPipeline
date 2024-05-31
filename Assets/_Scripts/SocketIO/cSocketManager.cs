@@ -19,6 +19,7 @@ public class cSocketManager : MonoBehaviour
     public static cSocketManager instance;
     public SocketIOUnity socket;
     private bool isConnected = false;
+    private bool isPlaying = false;
     Queue<byte[]> audioQueue = new Queue<byte[]>();
 
     public static List<byte[]> conversation = new List<byte[]>();
@@ -115,11 +116,16 @@ public class cSocketManager : MonoBehaviour
             
             //DA MANDARE AD UN AUDIO SOURCE
             audioQueue.Enqueue(chunk); //metto in coda così da essere certo di riprodurre in ordine i chunks
-            StartCoroutine(UseAudioChunk()); //PROBLEMA: Possono essere avviate N coroutine contemporaneamente
+            if (!isPlaying) //serve per evitare che partano N coroutine separatamente...
+            {
+                StartCoroutine(UseAudioChunk());
+            }
+            //POTREBBE ESSERE MEGLIO CHIAMARE UNA FUNZIONE ASYNC E QUANDO IL TASK FINISCE CONTINUARE CON LA SUCCESSIVA
         });
         socket.On("audio_response_end", response =>
         {
             Debug.Log("Audio response end: " + response.ToString());
+            StopAllCoroutines(); //ferma tutte le coroutine
             conversation.ForEach(chunk => Debug.Log(chunk.ToString())); //stampa la lunghezza di ogni chunk
         });
 
@@ -175,17 +181,20 @@ public class cSocketManager : MonoBehaviour
 
     private IEnumerator UseAudioChunk()
     {
+        isPlaying = true;
         while (audioQueue.Count>0)
         {
             var chunk = audioQueue.Dequeue();
-            yield return StartCoroutine(PlayAudioChunk());    
+            yield return StartCoroutine(PlayAudioChunk(chunk));    
         }
+        isPlaying = false;
     }
 
-    private IEnumerator PlayAudioChunk()
+    private IEnumerator PlayAudioChunk(byte[] chunk)
     {
-
-       yield return null; //Ritorna alla fine dell'audio riprodotto
+        //AudioClip clip = WavUtility.ToAudioClip(chunk, 0);
+        AudioClip clip = AudioClip.Create("test", chunk.Length, 1, 44100, false);
+        yield return null; //Ritorna alla fine dell'audio riprodotto
     }
 
     void OnApplicationQuit()
