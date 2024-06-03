@@ -68,8 +68,8 @@ public class Button3D : MonoBehaviour
 
     public void CallConversationalAgent()
     {
-        cAppManager.CallConversationalAgent();
-        //FAI COSE SE E' CHIAMABILE SOLO DA BOTTONI
+        //Chiamare il Toggle activation di Meta
+        cAppManager.ToggleConversationalAgent();
     }
 
 

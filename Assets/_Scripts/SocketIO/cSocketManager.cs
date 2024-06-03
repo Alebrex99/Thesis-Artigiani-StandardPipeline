@@ -12,21 +12,27 @@ using System.Buffers.Text;
 using static SocketIOUnity;
 using TMPro.Examples;
 using OVRSimpleJSON;
+using UnityEngine.XR;
 
 
 public class cSocketManager : MonoBehaviour
 {
+    //SOCKET IO UNITY
     public static cSocketManager instance;
     public SocketIOUnity socket;
     private bool isConnected = false;
     private bool isPlaying = false;
-    Queue<byte[]> audioQueue = new Queue<byte[]>();
 
+    //RICEZIONE SERVER -> CLIENT
     public static List<byte[]> conversation = new List<byte[]>();
+    Queue<byte[]> audioQueue = new Queue<byte[]>();
+    private byte[] audioBuffer = new byte[0];
+    private int chunkCounter = 0;
+    private int channels = 2;
 
     [SerializeField] private GameObject objectToSpin;
     
-    //MESSAGGIO DA INVIARE DA VOICE -> TO TEXT
+    //INVIO CLIENT -> SERVER
     private string message = "Hello from Unity!";
 
     void Awake()
@@ -69,11 +75,11 @@ public class cSocketManager : MonoBehaviour
         };
         socket.OnPing += (sender, e) =>
         {
-            Debug.Log("Ping");
+            //Debug.Log("Ping");
         };
         socket.OnPong += (sender, e) =>
         {
-            Debug.Log("Pong: " + e.TotalMilliseconds);
+            //Debug.Log("Pong: " + e.TotalMilliseconds);
         };
         socket.OnDisconnected += (sender, e) =>
         {
@@ -91,21 +97,23 @@ public class cSocketManager : MonoBehaviour
         socket.Connect(); //gestione interna di SocketIOUnity
         //await socket.ConnectAsync(); //cambio ad asincrono
 
+
         //------------------- RECEIVING = CLIENT REACTIONS TO SERVER (FOR AUDIO CHUNKS)-------------------------
         //receives CHUNKS FROM SERVER : Equivalente delle funzioni sopra, ma prese dirette da SOcketIO (tanto SocketIO Unity estende socketIO)
         socket.On("audio_response_chunk", response =>
         {
             Debug.Log("Audio response chunk: " + response.ToString());
+            chunkCounter++;
             
-            //MODO1 : Modo alternativo di Unity serilizer per deserializzare JSON ricevuto:
-            string json = response.ToString();
-            json = json.Substring(1, json.Length - 2); //toglie le parentesi quadre
+            //MODO1 : UNITY SERIALIZATION
+            string json = response.ToString().Trim('[', ']');
+            //json = json.Substring(1, json.Length - 2); //toglie le parentesi quadre
             DataResponse stringChunk = JsonUtility.FromJson<DataResponse>(json);
             Debug.Log("UNITY Serialization: "+ stringChunk.audio_chunk);
             var base64String = stringChunk.audio_chunk;
             var chunk = Convert.FromBase64String(base64String); //prende una string e converte in bytes
             
-            //MODO2 : Funziona, direttamnete con JObject di c# .NET
+            //MODO2 : JOBJECT .NET
             /*var audioChunkObject = response.GetValue<JObject>(); //prende un oggetto JSON
             JToken jtoken = audioChunkObject["audio_chunk"];
             var base64String = jtoken.ToString();
@@ -113,20 +121,21 @@ public class cSocketManager : MonoBehaviour
             var chunk = Convert.FromBase64String(base64String); //prende una string e converte in bytes */
             conversation.Add(chunk); //lista con tutti i chunk da usare ovunque nel codice
             Debug.Log($"Received chunk of length {chunk.Length}");
-            
+
             //DA MANDARE AD UN AUDIO SOURCE
-            audioQueue.Enqueue(chunk); //metto in coda così da essere certo di riprodurre in ordine i chunks
+            //audioQueue.Enqueue(chunk); //Uso di una coda
+            //Uso Buffer: sarà uno stream unico = unico byte[]
+            Buffer.BlockCopy(chunk, 0, audioBuffer, audioBuffer.Length, chunk.Length); 
             if (!isPlaying) //serve per evitare che partano N coroutine separatamente...
             {
-                StartCoroutine(UseAudioChunk());
+                StartCoroutine(PlayAudioBuffer(audioBuffer));
             }
-            //POTREBBE ESSERE MEGLIO CHIAMARE UNA FUNZIONE ASYNC E QUANDO IL TASK FINISCE CONTINUARE CON LA SUCCESSIVA
         });
         socket.On("audio_response_end", response =>
         {
             Debug.Log("Audio response end: " + response.ToString());
-            StopAllCoroutines(); //ferma tutte le coroutine
-            conversation.ForEach(chunk => Debug.Log(chunk.ToString())); //stampa la lunghezza di ogni chunk
+            //StopAllCoroutines(); //ferma tutte le coroutine
+            //conversation.ForEach(chunk => Debug.Log(chunk.ToString())); //stampa la lunghezza di ogni chunk
         });
 
 
@@ -179,22 +188,46 @@ public class cSocketManager : MonoBehaviour
         }
     }
 
-    private IEnumerator UseAudioChunk()
+    private float[] ConvertByteToFloat(byte[] array)
+    {
+        float[] floatArr = new float[array.Length / 4];
+        for (int i = 0; i < floatArr.Length; i++)
+        {
+            if (BitConverter.IsLittleEndian)
+                Array.Reverse(array, i * 4, 4);
+            floatArr[i] = BitConverter.ToSingle(array, i * 4) / 0x80000000;
+        }
+        return floatArr;
+    }
+
+    /*private IEnumerator UseAudioChunk()
     {
         isPlaying = true;
+        
         while (audioQueue.Count>0)
         {
             var chunk = audioQueue.Dequeue();
-            yield return StartCoroutine(PlayAudioChunk(chunk));    
+            yield return StartCoroutine(PlayAudioBuffer(chunk));    
         }
         isPlaying = false;
-    }
-
-    private IEnumerator PlayAudioChunk(byte[] chunk)
+    }*/
+    private IEnumerator PlayAudioBuffer(byte[] audioBuffer)
     {
-        //AudioClip clip = WavUtility.ToAudioClip(chunk, 0);
-        AudioClip clip = AudioClip.Create("test", chunk.Length, 1, 44100, false);
-        yield return null; //Ritorna alla fine dell'audio riprodotto
+        isPlaying = true;
+        while (Buffer.ByteLength(audioBuffer) > 0) //ottimizzato
+        {
+            //Riproduzione audio
+
+            float[] audioBufferFloat = ConvertByteToFloat(audioBuffer);
+            AudioClip clip = AudioClip.Create("ClipName", audioBufferFloat.Length, channels,44100 , false); 
+            clip.SetData(audioBufferFloat, 0);
+            /*
+            audioSource.clip = clip;
+            audioSource.Play();
+            PlayOnce = false;*/
+            yield return null;
+        }
+        isPlaying = false;
     }
 
     void OnApplicationQuit()

@@ -1,3 +1,4 @@
+using Meta.Voice.Samples.Dictation;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -36,6 +37,9 @@ public class cAppManager : MonoBehaviour {
 
     //FROM CONFIG.CSV
     private float fadeTime = 5;
+
+    //CONVERSATIONAL AGENT
+    [SerializeField] private DictationActivation _dictationActivation;
 
 
     void Awake() {
@@ -248,10 +252,15 @@ public class cAppManager : MonoBehaviour {
     }
 
     //AI : CONVERSATIONAL AGENT
-    public static void CallConversationalAgent()
+    public static void ToggleConversationalAgent()
+    {
+        Debug.Log("Toggle Conversational Agent");
+        instance._dictationActivation.ToggleActivation();
+    }
+    public static void CallConversationalAgent(string voiceToText)
     {
         //CHIAMATA ALL'AI : METTO SE DEVE ESSERE POSSIBILE OVUNQUE; altrimenti solo da bottoni
-        //USO di socket.io: scrivi codice di inzializzazione
+        Debug.Log("Call Conversational Agent: " + voiceToText);
 
     }
 
