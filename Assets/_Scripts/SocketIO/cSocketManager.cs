@@ -219,9 +219,11 @@ public class cSocketManager : MonoBehaviour
         float[] floatArr = new float[array.Length / 4];
         for (int i = 0; i < floatArr.Length; i++)
         {
-            int intValue = BitConverter.ToInt16(array, i * 4); //conversione per PCM 16 bit
-            floatArr[i] = (float)intValue / int.MaxValue;
-            //Debug.Log("FLOAT: " + floatArr[i]);
+            if (BitConverter.IsLittleEndian)
+                Array.Reverse(array, i * 4, 4);
+            float value = BitConverter.ToSingle(array, i * 4);
+            floatArr[i] = Mathf.Clamp(value, -1f, 1f);
+            Debug.Log("Float value: " + floatArr[i]);
         }
         return floatArr;
     }
