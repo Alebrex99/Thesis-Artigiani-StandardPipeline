@@ -145,6 +145,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   goPersistent: {fileID: 3398034078497264051}
   fadeSpeed: 1
+  _dictationActivation: {fileID: 0}
 --- !u!1 &2455164159914401237
 GameObject:
   m_ObjectHideFlags: 0
@@ -610,6 +611,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: UIInfo-FlatCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 5828769021090270280, guid: c5021b252d1b48e47945db015b768d83, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5828769021090270280, guid: c5021b252d1b48e47945db015b768d83, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5828769021090270280, guid: c5021b252d1b48e47945db015b768d83, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6327567601460970223, guid: c5021b252d1b48e47945db015b768d83, type: 3}
       propertyPath: cLoading
       value: 
@@ -618,6 +631,22 @@ PrefabInstance:
       propertyPath: cMenuLoad
       value: 
       objectReference: {fileID: 5516214583515740346}
+    - target: {fileID: 6901841144168586645, guid: c5021b252d1b48e47945db015b768d83, type: 3}
+      propertyPath: m_Size.x
+      value: 1.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6901841144168586645, guid: c5021b252d1b48e47945db015b768d83, type: 3}
+      propertyPath: m_Size.y
+      value: 1.55
+      objectReference: {fileID: 0}
+    - target: {fileID: 6901841144168586645, guid: c5021b252d1b48e47945db015b768d83, type: 3}
+      propertyPath: m_Size.z
+      value: 1.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 6901841144168586645, guid: c5021b252d1b48e47945db015b768d83, type: 3}
+      propertyPath: m_Center.z
+      value: -1.0406568
+      objectReference: {fileID: 0}
     - target: {fileID: 7993581483749921999, guid: c5021b252d1b48e47945db015b768d83, type: 3}
       propertyPath: _whenSelect.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
