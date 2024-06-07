@@ -36,6 +36,7 @@ public class HomeManager: MonoBehaviour
     [SerializeField] GameObject _envOffice;
     [SerializeField] GameObject _envMyExperience;
     [SerializeField] GameObject chairInitpos;
+    private float rotationChairSpeed = 0.6f;
 
     //DEPRECATED
     [SerializeField] GameObject _video2DScene;
@@ -92,13 +93,20 @@ public class HomeManager: MonoBehaviour
         trLightButton.position = cXRManager.GetTrCenterEye().position;
         trLightButton.rotation = cXRManager.GetTrCenterEye().rotation;
 
+        Vector3 targetDirection = cXRManager.GetTrCenterEye().forward;
+        targetDirection.y = 0;
+        targetDirection.Normalize();
+        float rotationStep = rotationChairSpeed * Time.deltaTime;
+        Vector3 newDirection = Vector3.RotateTowards(chairInitpos.transform.forward, targetDirection, rotationStep, 0.0f);
+        chairInitpos.transform.rotation = Quaternion.LookRotation(newDirection, chairInitpos.transform.up);
+
         //La sedia segue il tuo sguardo
-        Vector3 lookDirection = cXRManager.GetTrCenterEye().forward;
+        /*Vector3 lookDirection = cXRManager.GetTrCenterEye().forward;
         // Calcola la rotazione target in base alla direzione dello sguardo
         Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
         // Solo la rotazione attorno all'asse Y è necessaria
         Vector3 euler = targetRotation.eulerAngles;
-        chairInitpos.transform.eulerAngles = new Vector3(0, euler.y, 0);
+        chairInitpos.transform.eulerAngles = new Vector3(0, euler.y, 0);*/
     }
     private IEnumerator LateActivation(GameObject[] toActivate, float _activationDelay)
     {

@@ -4839,7 +4839,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1134468468563343773, guid: d6733f35cecdc984c9d50925eb25939e, type: 3}
       propertyPath: _renderingLayers.m_Bits
-      value: 40
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 2985875327630501294, guid: d6733f35cecdc984c9d50925eb25939e, type: 3}
       propertyPath: _renderingMode
@@ -19057,7 +19057,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
+  m_VertexColorAlwaysGammaSpace: 1
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -20691,7 +20691,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1769755562872856128, guid: 5be7b3536897e2a4cb9960535159222d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.063
+      value: -0.179
       objectReference: {fileID: 0}
     - target: {fileID: 1769755562872856128, guid: 5be7b3536897e2a4cb9960535159222d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -31919,7 +31919,7 @@ MonoBehaviour:
   _lateActivatedObj:
   - {fileID: 911097126}
   - {fileID: 1944357239}
-  _interactableActivationDelay: 5
+  _activationDelay: 1
   mainInteractablesInitPos: {fileID: 1838876023}
   _buttonsMain3D:
   - {fileID: 7034946076955373971}
@@ -34308,6 +34308,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2245283900097521840, guid: e099748b80bbfec49b3d7a8255aa6204, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2631630217450811383, guid: e099748b80bbfec49b3d7a8255aa6204, type: 3}
+      propertyPath: _renderingLayers.m_Bits
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3107244640220049985, guid: e099748b80bbfec49b3d7a8255aa6204, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4802376842497524358, guid: e099748b80bbfec49b3d7a8255aa6204, type: 3}
       propertyPath: m_Name
       value: HomeEnvironment
@@ -34319,6 +34331,14 @@ PrefabInstance:
     - target: {fileID: 4975070425602223034, guid: e099748b80bbfec49b3d7a8255aa6204, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5298380568696984272, guid: e099748b80bbfec49b3d7a8255aa6204, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5386546998720915166, guid: e099748b80bbfec49b3d7a8255aa6204, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
