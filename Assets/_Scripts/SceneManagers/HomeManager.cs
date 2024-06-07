@@ -175,6 +175,7 @@ public class HomeManager: MonoBehaviour
     }
 
 
+    //USATO ON DESTROY PER DISINSCRIVERE
     private void OnDestroy()
     {
         foreach (Button3D button3D in _buttonsMain3D)
