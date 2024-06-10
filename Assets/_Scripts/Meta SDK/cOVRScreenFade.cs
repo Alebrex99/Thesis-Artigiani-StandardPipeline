@@ -56,7 +56,7 @@ public class cOVRScreenFade : MonoBehaviour
 
     private MeshRenderer fadeRenderer;
     private MeshFilter fadeMesh;
-    private Material fadeMaterial_underlay = null;
+    private Material fadeMaterial = null;
     private bool isFading = false;
 
     /// <summary>
@@ -71,8 +71,8 @@ public class cOVRScreenFade : MonoBehaviour
         }
 
         // create the fade material
-        //fadeMaterial= new Material(Shader.Find("Oculus/Unlit Transparent Color")); //BEFORE
-        fadeMaterial_underlay = new Material(Shader.Find("Oculus/Underlay Transparent Occluder"));
+        fadeMaterial= new Material(Shader.Find("Oculus/Unlit Transparent Color")); //BEFORE
+        //fadeMaterial = new Material(Shader.Find("Oculus/Underlay Transparent Occluder"));
         fadeMesh = gameObject.AddComponent<MeshFilter>();
         fadeRenderer = gameObject.AddComponent<MeshRenderer>();
 
@@ -81,6 +81,7 @@ public class cOVRScreenFade : MonoBehaviour
 
         Vector3[] vertices = new Vector3[4];
 
+        //ALE Change the width/height of the quad to match the screen
         float width = 2f;
         float height = 2f;
         float depth = 1f;
@@ -181,8 +182,8 @@ public class cOVRScreenFade : MonoBehaviour
         if (fadeRenderer != null)
             Destroy(fadeRenderer);
 
-        if (fadeMaterial_underlay != null)
-            Destroy(fadeMaterial_underlay);
+        if (fadeMaterial != null)
+            Destroy(fadeMaterial);
 
         if (fadeMesh != null)
             Destroy(fadeMesh);
@@ -234,11 +235,11 @@ public class cOVRScreenFade : MonoBehaviour
         Color color = fadeColor;
         color.a = currentAlpha;
         isFading = color.a > 0;
-        if (fadeMaterial_underlay != null)
+        if (fadeMaterial != null)
         {
-            fadeMaterial_underlay.color = color;
-            fadeMaterial_underlay.renderQueue = renderQueue;
-            fadeRenderer.material = fadeMaterial_underlay;
+            fadeMaterial.color = color;
+            fadeMaterial.renderQueue = renderQueue;
+            fadeRenderer.material = fadeMaterial;
             fadeRenderer.enabled = isFading;
         }
     }

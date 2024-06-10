@@ -21,17 +21,9 @@ public class Jewel3Manager : MonoBehaviour
     [SerializeField] private float _activationDelay = 1f;
     [SerializeField] private GameObject[] _lateActivatedObj;
 
-    //VIDEO/QUADRO SOROLLA
-    public VideoPlayer videoPlayer;
-    [SerializeField] private GameObject goVideoPlayer;
-    [SerializeField] private GameObject sorollaPicture;
     [SerializeField] private GameObject jewel3Informations;
-    int loopVideo = 0;
-    private bool bShowVideo = false;
-    [Range(0.1f, 10)]
-    [SerializeField] private float rotationVideoSpeed = 1;
 
-    //JEWEL 1
+    //JEWEL 3
     [SerializeField] private Jewel _jewel3;
     [SerializeField] private Transform _jewelInitPos;
 
@@ -105,7 +97,6 @@ public class Jewel3Manager : MonoBehaviour
     private void OnJewel3Touched(Jewel jewel, bool isJewelTouched)
     {
         //riduci regolarmente l'audio dell'ambiente nel giro di 5 secondi
-        sorollaPicture.SetActive(!isJewelTouched);
         jewel3Informations.SetActive(isJewelTouched);
         if (isJewelTouched)
         {
@@ -152,21 +143,6 @@ public class Jewel3Manager : MonoBehaviour
     }
 
 
-
-
-    private void PlayPicture()
-    {
-        if (bShowVideo)
-        {
-            videoPlayer.Stop();
-            bShowVideo = false;
-        }
-        else
-        {
-            videoPlayer.Play();
-            bShowVideo = true;
-        }
-    }
 
     public AudioSource GetAudioSource()
     {

@@ -103,6 +103,7 @@ public class Jewel1Manager : MonoBehaviour
         }
         //SETTA POSIZIONI
         _jewel1.transform.position = _jewelInitPos.position;
+        bShowVideo = true;
     }
 
     private IEnumerator PlayEnvMedia()
@@ -120,6 +121,7 @@ public class Jewel1Manager : MonoBehaviour
     {
         //riduci regolarmente l'audio dell'ambiente nel giro di 5 secondi
         sorollaPicture.SetActive(!isJewelTouched);
+        bShowVideo = isJewelTouched;
         jewel1Informations.SetActive(isJewelTouched);
         if(isJewelTouched) {
             StartCoroutine(FadeOutAudio(envAudioSrc, 2f));
@@ -145,7 +147,6 @@ public class Jewel1Manager : MonoBehaviour
         audioSrc.Pause();
         audioSrc.volume = startVolume;
     }
-
     private IEnumerator FadeInAudio(AudioSource audioSrc, float fadeTime)
     {
         audioSrc.clip = _envClips[1];
