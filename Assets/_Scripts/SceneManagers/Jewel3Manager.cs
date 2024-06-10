@@ -1,3 +1,4 @@
+using Evereal.VRVideoPlayer;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,7 +15,7 @@ public class Jewel3Manager : MonoBehaviour
     //GESTIONE SCENA + IMMERSIONE
     public AudioSource envAudioSrc;
     //public AudioClip[] _envClips;
-    public AudioClip _envClip;
+    public AudioClip[] _envClips;
     [Range(0, 60)]
     [SerializeField] private float _immersionDelay = 1f;
     [Range(0, 60)]
@@ -22,6 +23,9 @@ public class Jewel3Manager : MonoBehaviour
     [SerializeField] private GameObject[] _lateActivatedObj;
 
     [SerializeField] private GameObject jewel3Informations;
+    [SerializeField] private GameObject goVideoPlayer;
+    [Range(0.1f, 10)]
+    [SerializeField] private float rotationVideoSpeed = 1;
 
     //JEWEL 3
     [SerializeField] private Jewel _jewel3;
@@ -54,7 +58,19 @@ public class Jewel3Manager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        //FUNZIONA ANCHE QUESTO:
+        //Vector3 euler = Quaternion.LookRotation(goVideoPlayer.transform.position - cXRManager.GetTrCenterEye().position).eulerAngles;
+        //goVideoPlayer.transform.eulerAngles = new Vector3(0, euler.y, 0);
+
+        //Used Method lectures:
+        Vector3 targetDirection = goVideoPlayer.transform.position - cXRManager.GetTrCenterEye().position;
+        targetDirection.y = 0;
+        targetDirection.Normalize();
+        float rotationStep = rotationVideoSpeed * Time.deltaTime;
+
+        Vector3 newDirection = Vector3.RotateTowards(goVideoPlayer.transform.forward, targetDirection, rotationStep, 0.0f);
+        goVideoPlayer.transform.rotation = Quaternion.LookRotation(newDirection, goVideoPlayer.transform.up);
+
     }
     public Transform GetUserInitTr()
     {
@@ -85,13 +101,9 @@ public class Jewel3Manager : MonoBehaviour
 
     private IEnumerator PlayEnvMedia()
     {
-
-        //envAudioSrc.PlayOneShot(_envClips[0], 1f); //Environment sounds (già nel video)
+        envAudioSrc.PlayOneShot(_envClips[0], 1f); //Environment sounds (non ho un video)
         yield return new WaitForSeconds(_immersionDelay);
-        envAudioSrc.PlayOneShot(_envClip, 0.7f); //Environment explanation
-        //yield return new WaitForSeconds(_immersionDelay);
-        //PlayPicture(); //se verrà messo un video (per ora solo quadro)
-
+        envAudioSrc.PlayOneShot(_envClips[1], 1f); //Environment explanation
     }
 
     private void OnJewel3Touched(Jewel jewel, bool isJewelTouched)
@@ -106,12 +118,11 @@ public class Jewel3Manager : MonoBehaviour
         {
             StartCoroutine(FadeInAudio(envAudioSrc, 2f));
         }
-        //StartCoroutine(FadeOutAudio(envAudioSrc, 5f));
     }
 
     private IEnumerator FadeOutAudio(AudioSource audioSrc, float fadeTime)
     {
-        audioSrc.clip = _envClip;
+        //audioSrc.clip = _envClips[1];
         float startVolume = audioSrc.volume;
 
         while (audioSrc.volume > 0)
@@ -126,7 +137,7 @@ public class Jewel3Manager : MonoBehaviour
 
     private IEnumerator FadeInAudio(AudioSource audioSrc, float fadeTime)
     {
-        audioSrc.clip = _envClip;
+        //audioSrc.clip = _envClips[1];
         float startVolume = audioSrc.volume;
         audioSrc.volume = 0f;
         audioSrc.UnPause();
@@ -148,9 +159,9 @@ public class Jewel3Manager : MonoBehaviour
     {
         return envAudioSrc;
     }
-    public AudioClip GetEnvAudioCLips()
+    public AudioClip[] GetEnvAudioCLips()
     {
-        return _envClip;
+        return _envClips;
     }
 
     private void OnDestroy()

@@ -135,7 +135,7 @@ public class Jewel1Manager : MonoBehaviour
 
     private IEnumerator FadeOutAudio(AudioSource audioSrc, float fadeTime)
     {
-        audioSrc.clip = _envClips[1];
+        //audioSrc.clip = _envClips[1]; //decidi la CLip da settare (da usare con 2 audio source)
         float startVolume = audioSrc.volume;
 
         while (audioSrc.volume > 0)
@@ -149,7 +149,7 @@ public class Jewel1Manager : MonoBehaviour
     }
     private IEnumerator FadeInAudio(AudioSource audioSrc, float fadeTime)
     {
-        audioSrc.clip = _envClips[1];
+        //audioSrc.clip = _envClips[1]; //decidi la clip da settare (da usare con 2 audio source)
         float startVolume = audioSrc.volume;
         audioSrc.volume = 0f;
         audioSrc.UnPause();

@@ -120,7 +120,7 @@ public class cAppManager : MonoBehaviour {
             Debug.LogWarning("[APP] Se esta intentando cargar la misma scene: " + scene);
             return;
         }
-        Debug.Log("[App] Load Scene");
+        Debug.Log("[App] Load Scene: " + scene + " Unload Scene: " + actualScene);
         actualScene = scene; //SET LA SCENA CORRENTE (es. Intro)
         actualBuildScene = (int)scene;
         instance.StartCoroutine(instance.ChangeSceneCor(actualBuildScene));
