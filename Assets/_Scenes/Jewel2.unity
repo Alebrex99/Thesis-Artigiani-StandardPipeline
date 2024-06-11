@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18346176, g: 0.22903882, b: 0.3058677, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3452,7 +3452,7 @@ MonoBehaviour:
   useBicubicFiltering: 0
   useLegacyCubemapRotation: 0
   useEfficientSupersample: 0
-  useEfficientSharpen: 1
+  useEfficientSharpen: 0
   useAutomaticFiltering: 0
   _previewInEditor: 1
 --- !u!328 &870660315
@@ -3503,7 +3503,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b666ca80b3aa42efac718fe4903bff5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MovieName: joya 2 fireworks 4k
+  MovieName: joya 2 fireworks 4k.mp4
   DrmLicenseUrl: 
   LoopVideo: 1
   Shape: 1
