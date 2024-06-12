@@ -163,8 +163,6 @@ public class HomeManager: MonoBehaviour
 
         //CAMBIO SCENA:
         Scenes scene = GetNextScene(buttonPressed);
-        cAppManager.SelectedScene = (int)scene;
-
         cAppManager.LoadScene(scene);
 
     }

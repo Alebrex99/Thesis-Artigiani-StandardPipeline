@@ -57,9 +57,7 @@ public class cAppManager : MonoBehaviour {
     }
     private void Start()
     {
-        cOVRScreenFade.instance.fadeTime = fadeTime;
     }
-
     public static string UserID {
         get { return userID; }
         set {
@@ -124,8 +122,6 @@ public class cAppManager : MonoBehaviour {
         actualScene = scene; //SET LA SCENA CORRENTE (es. Intro)
         actualBuildScene = (int)scene;
         instance.StartCoroutine(instance.ChangeSceneCor(actualBuildScene));
-        //instance.StartCoroutine(instance.ChangeScene2(actualBuildScene));
-        //instance.StartCoroutine(instance.GoToSceneAsyncRoutine((int)scene));
     }
 
     IEnumerator GoToSceneAsyncRoutine(int sceneIndex)
@@ -159,6 +155,7 @@ public class cAppManager : MonoBehaviour {
     //VERSIONE LOADING (ALE)
     IEnumerator ChangeSceneCor(int sceneIndex)
     {
+        Debug.Log("Stai caricando la scena : " + sceneIndex);
         cMainUIManager.ShowLoading(); //cDontDestroy.instance.gameObject.SetActive(true);
         Scene sceneToLoad = SceneManager.GetSceneByBuildIndex(sceneIndex);
         Scene sceneToUnload = SceneManager.GetActiveScene(); //scena corrente
