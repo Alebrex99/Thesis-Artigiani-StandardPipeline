@@ -47,6 +47,7 @@ public class VoiceToTextHandler : MonoBehaviour
 
     private void Update()
     {
+        //finchè i secondi totali sono minori di 5 e la lunghezza del messaggio è maggiore di 0 : mi assicuro di inviare solo una volta al server
         if ((DateTime.Now - startListeningTime).TotalSeconds >= 5 && voiceToTextMessage.Length > 0 &&sentCount ==0)
         {
             Debug.Log("TEMPO : " + (DateTime.Now - startListeningTime).TotalSeconds);
@@ -58,7 +59,7 @@ public class VoiceToTextHandler : MonoBehaviour
 
     public void OnFullTranscription(string newVoiceToTextMessage)
     {
-        startListeningTime = DateTime.Now; //RESET TIMER
+        startListeningTime = DateTime.Now; //RESET TIMER nel caso in cui riconosca altro parlato
         if (newVoiceToTextMessage.Length < 0)
         {
             //text_window.text = newVoiceToTextMessage; //fatto direttamente da EDITOR con evento 

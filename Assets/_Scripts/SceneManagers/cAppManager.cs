@@ -252,6 +252,8 @@ public class cAppManager : MonoBehaviour {
                 break;
         }
         LoadScene(Scenes.HOME);
+        //PROVA
+        //LoadScene(SceneManager.GetSceneByName("Test_rig"));
     }
 
     //AI : CONVERSATIONAL AGENT

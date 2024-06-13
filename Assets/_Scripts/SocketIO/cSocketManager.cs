@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Collections.Generic;
 using SocketIOClient;
 using SocketIOClient.Newtonsoft.Json;
@@ -80,7 +81,7 @@ public class cSocketManager : MonoBehaviour
         };
         socket.OnPong += (sender, e) =>
         {
-            //Debug.Log("Pong: " + e.TotalMilliseconds);
+            //Debug.Log("Pong: " + e.TotalMilliseconds); //e contiene messaggio con info per es su latenza
         };
         socket.OnDisconnected += (sender, e) =>
         {
@@ -93,7 +94,7 @@ public class cSocketManager : MonoBehaviour
         };
        
 
-        //----------------CONNECTION ASYNC -------------------------------
+        //--------------------- CONNECTION ASYNC -------------------------------
         Debug.Log("Connecting...");
         socket.Connect(); //gestione interna di SocketIOUnity
         //await socket.ConnectAsync(); //cambio ad asincrono
@@ -132,13 +133,17 @@ public class cSocketManager : MonoBehaviour
             Debug.Log("Audio response end: " + response.ToString());
             responseCounter++;
 
-            //GESTIONE AUDIO BUFFER AT END: converto lista run time in array
+            //GESTIONE AUDIO BUFFER AT END: converto lista run time in array (come in Unity wrapper)
             audioBuffer = new byte[conversation.Count];
             conversation.CopyTo(audioBuffer);
             Debug.Log("Audio Buffer of BYTE created: " + audioBuffer.Length);
             audioBufferFloat = ConvertByteToFloat(audioBuffer); //per avere i samples dell'AudioClip
             Debug.Log("Audio Buffer of FLOAT converted: " + audioBufferFloat.Length);
             
+
+            //VERSIONE NLAYER LIBRARY
+            var memStream = new System.IO.MemoryStream(audioBuffer);
+
             bufferReady = true;
             /*if (!isPlaying) //serve per evitare che partano N coroutine separatamente...
             {
