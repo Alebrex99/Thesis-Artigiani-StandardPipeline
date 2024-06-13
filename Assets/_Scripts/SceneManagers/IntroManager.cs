@@ -69,10 +69,11 @@ public class IntroManager : MonoBehaviour
         _buttonHome.gameObject.SetActive(false);
         goVideoPlayer.gameObject.SetActive(false);
         ResetUserPosition();
+        chairInitPos.GetChild(0).gameObject.SetActive(true); //attivo sedia
         //MENU : cStMenu
         //chiama invoke con la conversione del nome del metodo in stringa
         StartCoroutine(InitMenuCanvas());
-        //cMainUIManager.ShowMenuCanvas(); //Problema : qui la posizione dell'occhio è a terra, ecco perchè il Menu compare a terra
+        //cMainUIManager.ShowMenuCanvas(); //Problema : qui la posizione dell'occhio ï¿½ a terra, ecco perchï¿½ il Menu compare a terra
         //SE FUNZIONA IL MENU : TUTTO LO START VIENE SPOSTATO DENTRO LA INIT APPLICATION
 
     }
@@ -97,7 +98,6 @@ public class IntroManager : MonoBehaviour
 
 
         //ACCENDO LA SCENA
-        chairInitPos.GetChild(0).gameObject.SetActive(true); //attivo sedia
         goVideoPlayer.gameObject.SetActive(true);
         videoPlayer.loopPointReached += EndVideo;
         //Start voice Audio
@@ -137,7 +137,7 @@ public class IntroManager : MonoBehaviour
             //ANIMAZIONI POSSIBILI : LOGO -> VIDEO
             /*animLogo.ResetTrigger("ShowVideo");
             animLogo.SetTrigger("HideVideo");*/
-            bShownVideo = false; //smetterà di seguire l'utente
+            bShownVideo = false; //smetterï¿½ di seguire l'utente
             cAppManager.LoadScene(Scenes.HOME);
         }
     }

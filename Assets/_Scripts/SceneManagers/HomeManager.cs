@@ -34,7 +34,7 @@ public class HomeManager: MonoBehaviour
     [SerializeField] GameObject _envMyMotivation;
     [SerializeField] GameObject _envOffice;
     [SerializeField] GameObject _envMyExperience;
-    [SerializeField] GameObject chairInitpos;
+    [SerializeField] Transform chairInitPos;
     [Range(0.1f, 1)]
     [SerializeField] private float rotationChairSpeed = 0.6f;
 
@@ -86,6 +86,9 @@ public class HomeManager: MonoBehaviour
         {
             lateObj.SetActive(false);
         }
+
+        //SEDIA
+        chairInitPos.GetChild(0).gameObject.SetActive(true); //attivo sedia
         StartCoroutine(LateActivation(_lateActivatedObj, _activationDelay));
     }
     private void Update()
@@ -97,8 +100,8 @@ public class HomeManager: MonoBehaviour
         targetDirection.y = 0;
         targetDirection.Normalize();
         float rotationStep = rotationChairSpeed * Time.deltaTime;
-        Vector3 newDirection = Vector3.RotateTowards(chairInitpos.transform.forward, targetDirection, rotationStep, 0.0f);
-        chairInitpos.transform.rotation = Quaternion.LookRotation(newDirection, chairInitpos.transform.up);
+        Vector3 newDirection = Vector3.RotateTowards(chairInitPos.forward, targetDirection, rotationStep, 0.0f);
+        chairInitPos.rotation = Quaternion.LookRotation(newDirection, chairInitPos.up);
 
         //La sedia segue il tuo sguardo
         /*Vector3 lookDirection = cXRManager.GetTrCenterEye().forward;
@@ -106,7 +109,7 @@ public class HomeManager: MonoBehaviour
         Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
         // Solo la rotazione attorno all'asse Y è necessaria
         Vector3 euler = targetRotation.eulerAngles;
-        chairInitpos.transform.eulerAngles = new Vector3(0, euler.y, 0);*/
+        chairInitPos.transform.eulerAngles = new Vector3(0, euler.y, 0);*/
     }
     private IEnumerator LateActivation(GameObject[] toActivate, float _activationDelay)
     {

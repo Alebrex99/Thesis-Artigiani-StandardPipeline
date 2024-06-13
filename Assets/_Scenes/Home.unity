@@ -31703,7 +31703,7 @@ MonoBehaviour:
   _envMyMotivation: {fileID: 3986565429088896251}
   _envOffice: {fileID: 9195698577739851204}
   _envMyExperience: {fileID: 872050315}
-  chairInitpos: {fileID: 59071150}
+  chairInitPos: {fileID: 59071151}
   rotationChairSpeed: 0.6
   _video2DScene: {fileID: 1493077502}
   _video180StereoScene: {fileID: 600851882}

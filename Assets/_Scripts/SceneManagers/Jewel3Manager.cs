@@ -24,6 +24,7 @@ public class Jewel3Manager : MonoBehaviour
 
     [SerializeField] private GameObject jewel3Informations;
     [SerializeField] private GameObject goVideoPlayer;
+    private bool bShowVideo = false;
     [Range(0.1f, 10)]
     [SerializeField] private float rotationVideoSpeed = 1;
 
@@ -61,16 +62,21 @@ public class Jewel3Manager : MonoBehaviour
         //FUNZIONA ANCHE QUESTO:
         //Vector3 euler = Quaternion.LookRotation(goVideoPlayer.transform.position - cXRManager.GetTrCenterEye().position).eulerAngles;
         //goVideoPlayer.transform.eulerAngles = new Vector3(0, euler.y, 0);
+        if (bShowVideo)
+        {
+            //Used Method lectures:
+            Vector3 targetDirection = goVideoPlayer.transform.position - cXRManager.GetTrCenterEye().position;
+            targetDirection.y = 0;
+            targetDirection.Normalize();
+            float rotationStep = rotationVideoSpeed * Time.deltaTime;
 
-        //Used Method lectures:
-        Vector3 targetDirection = goVideoPlayer.transform.position - cXRManager.GetTrCenterEye().position;
-        targetDirection.y = 0;
-        targetDirection.Normalize();
-        float rotationStep = rotationVideoSpeed * Time.deltaTime;
+            Vector3 newDirection = Vector3.RotateTowards(goVideoPlayer.transform.forward, targetDirection, rotationStep, 0.0f);
+            goVideoPlayer.transform.rotation = Quaternion.LookRotation(newDirection, goVideoPlayer.transform.up);
 
-        Vector3 newDirection = Vector3.RotateTowards(goVideoPlayer.transform.forward, targetDirection, rotationStep, 0.0f);
-        goVideoPlayer.transform.rotation = Quaternion.LookRotation(newDirection, goVideoPlayer.transform.up);
-
+        }
+        else
+        {}
+        
     }
     public Transform GetUserInitTr()
     {
@@ -110,6 +116,7 @@ public class Jewel3Manager : MonoBehaviour
     {
         //riduci regolarmente l'audio dell'ambiente nel giro di 5 secondi
         jewel3Informations.SetActive(isJewelTouched);
+        bShowVideo = isJewelTouched;
         if (isJewelTouched)
         {
             StartCoroutine(FadeOutAudio(envAudioSrc, 2f));
