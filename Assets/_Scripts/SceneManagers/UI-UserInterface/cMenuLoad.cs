@@ -21,8 +21,11 @@ public class cMenuLoad : MonoBehaviour
     public void ShowMenu()
     {
         menuLoadPanel.SetActive(true);
-        goBtLoad.SetActive(true);
-        goBtLoadPhysic.SetActive(true);
+        if (goBtLoad != null && goBtLoadPhysic!=null) 
+        { 
+            goBtLoad.SetActive(true);
+            goBtLoadPhysic.SetActive(true); 
+        }
         //possibili animazioni ... progress bar
     }
 
@@ -30,15 +33,22 @@ public class cMenuLoad : MonoBehaviour
     {
         //stop animazioni ... progress bar
         menuLoadPanel.SetActive(false);
-        goBtLoad.SetActive(false);
-        goBtLoadPhysic.SetActive(false);
+        if(goBtLoad != null && goBtLoadPhysic != null)
+        {
+            goBtLoad.SetActive(false);
+            goBtLoadPhysic.SetActive(false);
+        }
+       
     }
 
     public void ClickLoad()
     {
         menuLoadPanel.SetActive(false);
-        goBtLoad.SetActive(false);
-        goBtLoadPhysic.SetActive(false);
+        if(goBtLoad != null && goBtLoadPhysic != null)
+        {
+            goBtLoad.SetActive(false);
+            goBtLoadPhysic.SetActive(false);
+        }
         IntroManager.instance.InitApplication();
         //cMainUIManager.HideLoading();   
     }
