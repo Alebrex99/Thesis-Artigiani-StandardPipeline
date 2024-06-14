@@ -189,7 +189,7 @@ public class cSocketManager : MonoBehaviour
 
     void Update()
     {
-        //POLLING AUDIO BUFFER
+        //POLLING AUDIO BUFFER: non permette di creare audio source in runtime altrimenti
         if (bufferReady)
         {
             PlayAudioBuffer(audioBufferFloat);
