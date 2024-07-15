@@ -9,6 +9,7 @@ using System.Collections;
 using static SocketIOUnity;
 using System.Linq;
 using UnityEditor;
+using NLayer;
 
 
 public class cSocketManager : MonoBehaviour
@@ -20,19 +21,21 @@ public class cSocketManager : MonoBehaviour
 
     //RICEZIONE SERVER -> CLIENT
     public static List<byte> conversation = new List<byte>();
-    private byte[] audioBuffer;
+    //private byte[] audioBuffer;
     private float[] audioBufferFloat; //N bytes / 4byte (1 float = 4 byte)questi sono i SAMPLES dell' AudioClip
     private bool bufferReady = false;
     private int bufferIndex = 0;
     private int bufferSize = 0;
     private int chunkCounter = 0;
     private int responseCounter = 0;
-    private bool isPlaying = false;
     public AudioSource receiverAudioSrc;
-    public AudioClip clip;
     //Audio clip creata
-    private int channels = 2;
-    private int frequency = 44100;
+    //private int channels = 2;
+    //private int frequency = 44100;
+
+    //NLAYERS
+    private MemoryStream memStream;
+    private MpegFile mpgFile;
 
     [SerializeField] private GameObject objectToSpin;
     
@@ -64,7 +67,7 @@ public class cSocketManager : MonoBehaviour
         });
         socket.JsonSerializer = new NewtonsoftJsonSerializer();
 
-        //-------------- reserved socketio events-----------------------
+        //------------------RESERVED SOCKETIO EVENTS-----------------------
         /*Un "ping" è un messaggio inviato dal client al server per verificare se il server è ancora raggiungibile e per misurare il tempo di latenza 
          * tra il client e il server. Il server risponderà quindi con un "pong" per confermare la ricezione del messaggio e includerà informazioni 
          * sulla latenza, come ad esempio il tempo impiegato per ricevere il messaggio di ping.*/
@@ -134,16 +137,14 @@ public class cSocketManager : MonoBehaviour
             responseCounter++;
 
             //GESTIONE AUDIO BUFFER AT END: converto lista run time in array (come in Unity wrapper)
-            audioBuffer = new byte[conversation.Count];
-            conversation.CopyTo(audioBuffer);
-            Debug.Log("Audio Buffer of BYTE created: " + audioBuffer.Length);
-            audioBufferFloat = ConvertByteToFloat(audioBuffer); //per avere i samples dell'AudioClip
-            Debug.Log("Audio Buffer of FLOAT converted: " + audioBufferFloat.Length);
-            
+            /*audioBuffer = new byte[conversation.Count];
+            //conversation.CopyTo(audioBuffer);
+            //Debug.Log("Audio Buffer of BYTE created: " + audioBuffer.Length);
+            //audioBufferFloat = ConvertByteToFloat(audioBuffer); //per avere i samples dell'AudioClip
+            //Debug.Log("Audio Buffer of FLOAT converted: " + audioBufferFloat.Length);*/
 
             //VERSIONE NLAYER LIBRARY
-            var memStream = new System.IO.MemoryStream(audioBuffer);
-
+            LoadHelperNLayer();
             bufferReady = true;
             /*if (!isPlaying) //serve per evitare che partano N coroutine separatamente...
             {
@@ -190,11 +191,11 @@ public class cSocketManager : MonoBehaviour
     void Update()
     {
         //POLLING AUDIO BUFFER: non permette di creare audio source in runtime altrimenti
-        if (bufferReady)
-        {
+        if (bufferReady) //&& !receiverAudioSrc.isPlaying && receiverAudioSrc.clip != null && receiverAudioSrc.clip.loadState == AudioDataLoadState.Loaded
+        {         
             PlayAudioBuffer(audioBufferFloat);
-            bufferReady = false;
         }
+      
         //-------------------------EMITTING FROM CLIENT TO SERVER------------------------
         if (OVRInput.GetDown(OVRInput.RawButton.B))
         {
@@ -226,7 +227,6 @@ public class cSocketManager : MonoBehaviour
         Debug.Log("Float array: " + floatString);
         return floatArr;
     }
-
     private byte[] ConvertFloatToByte(float[] array)
     {
         byte[] byteArr = new byte[array.Length * 4];
@@ -240,12 +240,27 @@ public class cSocketManager : MonoBehaviour
         return byteArr;
     }
 
+    private void LoadHelperNLayer()
+    {
+        Debug.Log("Status : Loading...");
+        byte[] audioBuffer = new byte[conversation.Count];
+        conversation.CopyTo(audioBuffer);
+        var memStream = new MemoryStream(audioBuffer);
+        try
+        {  
+            mpgFile = new MpegFile(memStream);
+            audioBufferFloat = new float[mpgFile.Length];
+            mpgFile.ReadSamples(audioBufferFloat, 0, (int)mpgFile.Length);
+        }
+        catch (Exception ex) {
+            Debug.LogError("Error loading audio: " + ex.Message);
+        } 
+    }
+
     private void PlayAudioBuffer(float[] audioBufferFloat)
     {
         Debug.Log($"[PLAY] AudioResponse: {responseCounter}");
         Debug.Log("Length of audioBufferFloat: " + audioBufferFloat.Length);
-
-        isPlaying = true;
         //OPZIONE 2: Usare una clip creata esistente e raccogliere i byte per poi riassociarli con i miei
         /*int channels = this.clip.channels;
         int frequency = this.clip.frequency;
@@ -253,42 +268,28 @@ public class cSocketManager : MonoBehaviour
         this.clip.GetData(samples, 0);*/
         try
         {
-            clip = AudioClip.Create("AudioResponse", audioBufferFloat.Length, channels, frequency, false);
+            var clip = AudioClip.Create("AudioResponse", audioBufferFloat.Length, mpgFile.Channels, mpgFile.SampleRate, false);
             if (clip == null)
             {
                 Debug.LogError("Failed to create AudioClip");
             }
+            bool setDataSuccess = clip.SetData(audioBufferFloat, 0); //DEVE ESSERE FATTO NEL MAIN THREAD
+            Debug.Log("SetData success: " + setDataSuccess);
+            receiverAudioSrc.clip = clip;
+            receiverAudioSrc.PlayOneShot(clip, 1);
         }
         catch (Exception e)
         {
             Debug.LogError("Failed to create AudioClip: " + e.Message);
         }
-        try
-        {
-            bool setDataSuccess = clip.SetData(audioBufferFloat, 0); //DEVE ESSERE FATTO NEL MAIN THREAD
-            Debug.Log("SetData success: " + setDataSuccess);   
-            if(clip != null)
-            {
-                receiverAudioSrc.clip = clip;
-                receiverAudioSrc.PlayOneShot(clip, 1);
-            }
-            else
-            {
-                Debug.LogError("Audio source is null");
-            }
-        }
-        catch(Exception e)
-        {
-            Debug.LogError("Failed to set data to AudioClip: " + e.Message);
-        }
         //yield return new WaitWhile(() => receiverAudioSrc.isPlaying);
         
         //FINE OPERAZIONI CONVERSAZIONE i-esima
         conversation.Clear();
-        this.audioBuffer = new byte[0];
-        this.audioBufferFloat = new float[0];
-        Debug.Log("Audio Buffer cleared: " + audioBuffer.Length);
-        isPlaying = false;
+        //this.audioBuffer = new byte[0];
+        //this.audioBufferFloat = new float[0];
+        //Debug.Log("Audio Buffer cleared: " + audioBuffer.Length);
+        bufferReady = false;
     }
 
     void OnApplicationQuit()
@@ -330,6 +331,14 @@ public class cSocketManager : MonoBehaviour
 
 
 
+
+
+
+
+
+
+
+    //FUNZIONI DI SUPPLEMENTO
     public void EmitTest()
     {
         //string eventName = EventNameTxt.text.Trim().Length < 1 ? "hello" : EventNameTxt.text;
@@ -432,7 +441,6 @@ public class cSocketManager : MonoBehaviour
     //SECOND STEP : REPRODUCE REAL TIME CHUNKS WHEN I RECEVICE THEM
     private IEnumerator UseAudioBuffer(byte[] audioBuffer)
     {
-        isPlaying = true;
         /*
         while (audioQueue.Count>0)
         {
@@ -447,6 +455,5 @@ public class cSocketManager : MonoBehaviour
 
             //yield return StartCoroutine(PlayAudioBuffer(audioBufferFloat)); //es) buffer fino a metà
         }
-        isPlaying = false;
     }
 }
