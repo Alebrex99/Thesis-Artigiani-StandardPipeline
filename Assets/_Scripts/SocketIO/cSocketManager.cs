@@ -30,8 +30,6 @@ public class cSocketManager : MonoBehaviour
     //private byte[] audioBuffer;
     private float[] audioBufferFloat; //N bytes / 4byte (1 float = 4 byte)questi sono i SAMPLES dell' AudioClip
     private bool bufferReady = false;
-    private int bufferIndex = 0;
-    private int bufferSize = 0;
     private int responseCounter = 0;
     public AudioSource receiverAudioSrc;
 
@@ -50,12 +48,10 @@ public class cSocketManager : MonoBehaviour
     private const int initClipLength = 60; //samples = freq * channels * seconds
     private float[] audioBuffRT;
     private int bufferOffset = 0;
+    private bool bufferReadyRT = false;
 
     [SerializeField] private GameObject objectToSpin;
-    
-    //INVIO CLIENT -> SERVER
-    private string message = "Hello from Unity!";
-    private int replyCounter = 0;
+
 
     void Awake()
     {
@@ -66,15 +62,15 @@ public class cSocketManager : MonoBehaviour
     private void Start() //mettere async void Start() per asincrono
     {
         //SETTING REAL TIME AUDIO CLIP
-        totalSamples = sampleRate * initClipLength * channels;
+        /*totalSamples = sampleRate * initClipLength * channels;
         audioClip = AudioClip.Create("StreamingAudio", totalSamples, channels, sampleRate, true, OnAudioRead);
         receiverAudioSrc = GetComponent<AudioSource>();
-        //receiverAudioSrc.loop = true;
+        receiverAudioSrc.loop = true;
         receiverAudioSrc.clip = audioClip;
         //memStreamRT = new MemoryStream(); //è espandibile
         audioBuffRT = new float[totalSamples]; //non è dinamico
         Debug.Log("[AI] Creata Audio clip: " + totalSamples + " channels: " + channels + " Sample Rate frequency: " + sampleRate);
-
+        */
 
 
         //------------------SOCKET IO UNITY--------------------------------
@@ -152,7 +148,7 @@ public class cSocketManager : MonoBehaviour
 
             //GESTIONE AUDIO BUFFER REAL TIME:
             conversation.AddRange(chunk); //lista perchè il buffer non è dinamico
-            OnReceiveAudioChunk(chunk); //per gestire il buffer in tempo reale
+            //OnReceiveAudioChunk(chunk); //per gestire il buffer in tempo reale
         });
         socket.On("audio_response_end", response =>
         {
@@ -167,10 +163,9 @@ public class cSocketManager : MonoBehaviour
             //Debug.Log("Audio Buffer of FLOAT converted: " + audioBufferFloat.Length);*/
 
             //VERSIONE NLAYER LIBRARY
-            //LoadHelperNLayer();
+            LoadHelperNLayer();
 
-            //GESTIONE AUDIO BUFFER REAL TIME:
-            bufferOffset = 0;
+
 
             /*if (!isPlaying) //serve per evitare che partano N coroutine separatamente...
             {
@@ -221,13 +216,13 @@ public class cSocketManager : MonoBehaviour
         //POLLING AUDIO BUFFER (o usa un unity thread dispatcher): non permette di creare audio source in runtime altrimenti
         if (bufferReady && !receiverAudioSrc.isPlaying)
         {         
-            //PlayAudioBuffer(audioBufferFloat);
+            PlayAudioBuffer(audioBufferFloat);
         }
 
         //REAL TIME AUDIO BUFFER
-        if (audioQueue.Count >= 2 && !receiverAudioSrc.isPlaying)
+        if (audioQueue.Count >= 2)
         {
-            StartCoroutine(PlayAudioBufferRT()); //deve leggere il buffer
+            //StartCoroutine(PlayAudioBufferRT()); //deve leggere il buffer
         }
 
 
@@ -294,18 +289,20 @@ public class cSocketManager : MonoBehaviour
 
     IEnumerator PlayAudioBufferRT()
     {
+        yield return audioQueue.Count>2;
         while (audioQueue.Count > 0)
         {
+
             if (audioQueue.TryDequeue(out byte[] chunk))
             {
-                using (memStreamRT = new MemoryStream(chunk))
+                using (var memStreamRT = new MemoryStream(chunk)) //prendi un chunk di 10 byte
+                using (var mpgFileRT = new MpegFile(memStreamRT)) //crei un file di 10 byte
                 {
-                    using (mpgFileRT = new MpegFile(memStreamRT))
-                    {
-                        int samplesRead = mpgFileRT.ReadSamples(audioBuffRT, bufferOffset, (int)mpgFileRT.Length);
-                        bufferOffset += samplesRead;
-
-                    }
+                    int readSamplesFloat = mpgFileRT.ReadSamples(audioBuffRT, bufferOffset, (int)mpgFileRT.Length); //leggi meno elementi perchè sono float
+                    bufferOffset += readSamplesFloat;
+                    mpgFileRT.Position = 0;
+                    //Debug.Log(" samples read: " + samplesRead + "mpg length: " + mpgFileRT.Length + " bufferOffset: " + bufferOffset + " samplesToRead: " + samplesToRead);
+                    if(bufferOffset > 0) bufferReadyRT = true;
                 }
             }
             if (!receiverAudioSrc.isPlaying)
@@ -313,7 +310,6 @@ public class cSocketManager : MonoBehaviour
                 receiverAudioSrc.Play();
                 Debug.Log("Audio source started playing");
             }
-
             yield return null;
         }
     }
@@ -331,28 +327,27 @@ public class cSocketManager : MonoBehaviour
         int count = 0;
         //data sono i singoli campioni dell'AudioClip
 
-        while (count < data.Length) 
+        //FUNZIONA MA TAGLIA TUTTI  I CHUNKS A CAUSA DELLA CONCORRENZA: DA GESTIRE 
+        while (count < data.Length && bufferReadyRT) 
         {
             //legge i campioni dal buffer 
-            if (currentPosition < bufferOffset)
+            if (audioBuffRT != null)
             {
-                data[count] = audioBuffRT[currentPosition];
-                currentPosition++;
-            }
-            else
-            {
-                data[count] = 0; // Fill with silence if buffer is empty
+                if (currentPosition < audioBuffRT.Length)
+                {
+                    data[count] = audioBuffRT[currentPosition];
+                    currentPosition++;
+                }
+                else
+                {
+                    data[count] = 0; // Fill with silence if buffer is empty
+                }
             }
             count++;
 
         }
         
-    }
 
-
-    private void OnAudioSetPosition(int newPosition)
-    {
-        currentPosition = newPosition;
     }
 
 
@@ -364,7 +359,6 @@ public class cSocketManager : MonoBehaviour
             conversation.Clear();
             mpgFile = null;
             audioBufferFloat = new float[0];
-            bufferOffset = 0;
         }
     }
 
