@@ -65,10 +65,12 @@ public class Button3D : MonoBehaviour
         
     }
 
+    //AI : CONVERSATIONAL AGENT
     public void CallConversationalAgent()
     {
-        //Chiamare il Toggle activation di Meta
-        cAppManager.ToggleConversationalAgent();
+        Debug.Log("Toggle Conversational Agent");
+        //TOGGLE per zittire il conversational agent
+        cSocketManager.instance.ToggleSocket();
     }
 
 

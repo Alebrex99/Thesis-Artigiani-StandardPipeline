@@ -136,8 +136,20 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 181427883}
     - target: {fileID: 7516989854015812293, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
+      propertyPath: _whenInteractorViewAdded.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7516989854015812293, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
       propertyPath: _whenSelect.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: CallConversationalAgent
+      objectReference: {fileID: 0}
+    - target: {fileID: 7516989854015812293, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
+      propertyPath: _whenInteractorViewAdded.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7516989854015812293, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
+      propertyPath: _whenInteractorViewAdded.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7516989854015812293, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
       propertyPath: _whenSelect.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -430,8 +442,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8ad0f59252c19f4c9450bb83a38e962, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _dictationActivation: {fileID: 1023379276}
   receiverAudioSrc: {fileID: 793288943}
-  clip: {fileID: 0}
   objectToSpin: {fileID: 1781391135}
 --- !u!82 &793288943
 AudioSource:

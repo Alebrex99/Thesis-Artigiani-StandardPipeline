@@ -38,9 +38,6 @@ public class cAppManager : MonoBehaviour {
     //FROM CONFIG.CSV
     private float fadeTime = 5;
 
-    //CONVERSATIONAL AGENT
-    [SerializeField] private cDictationActivation _dictationActivation;
-
 
     void Awake() {
         if (null != instance) {
@@ -256,17 +253,6 @@ public class cAppManager : MonoBehaviour {
         }
         LoadScene(Scenes.HOME);
     }
-
-    //AI : CONVERSATIONAL AGENT
-    public static void ToggleConversationalAgent()
-    {
-        Debug.Log("Toggle Conversational Agent");
-        //TOGGLE per aprire il canale per parlare
-        instance._dictationActivation.ToggleActivation();
-        //TOGGLE per zittire il conversational agent
-        cSocketManager.instance.ToggleAudioBuffer();
-    }
-    
 
 
 

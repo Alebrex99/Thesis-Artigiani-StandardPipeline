@@ -53,6 +53,7 @@ public class VoiceToTextHandler : MonoBehaviour
             Debug.Log("TEMPO : " + (DateTime.Now - startListeningTime).TotalSeconds);
             Debug.Log("[SEND TO SERVER]");
             cSocketManager.instance.SendMessageToServer(this.voiceToTextMessage);
+            voiceToTextMessage = "";
             sentCount++;
         }
     }
