@@ -104,8 +104,8 @@ public class cSocketManager : MonoBehaviour
         socket.OnConnected += (sender, e) =>
         {
             //Debug.Log("socket.OnConnected");
-            socket.Emit("chat_message", "hola"); //message to INIT, chiama internamente EmitAsync
-            Debug.Log("Initial message sent from connect");
+            //socket.Emit("chat_message", "hola"); //message to INIT, chiama internamente EmitAsync
+            //Debug.Log("Initial message sent from connect");
             isConnected = true; // Set isConnected to true when connected
         };
         socket.OnPing += (sender, e) =>
@@ -134,13 +134,12 @@ public class cSocketManager : MonoBehaviour
 
 
         //------------------- RECEIVING = CLIENT REACTIONS TO SERVER (FOR AUDIO CHUNKS)-------------------------
-
         socket.On("audio_response_chunk", response =>
         {
             isReceiving = true;
             if (stopReceiving)
             {
-                conversation.Clear();
+                Debug.Log("DISCARD stopReceiving= " + stopReceiving);
                 return;
             }
 
@@ -173,6 +172,7 @@ public class cSocketManager : MonoBehaviour
             {
                 conversation.Clear();
                 stopReceiving = false;
+                Debug.Log("ALL SENT : CHANGE stop receiving -> " + stopReceiving);
                 return;
             }
             Debug.Log("Audio response end: " + response.ToString());
@@ -251,11 +251,12 @@ public class cSocketManager : MonoBehaviour
                 audioBufferFloat = new float[mpgFile.Length];
                 mpgFile.ReadSamples(audioBufferFloat, 0, (int)mpgFile.Length);
             }
+            bufferReady = true;
         }
         catch (Exception ex) {
-            Debug.LogError("Error loading audio: " + ex.Message);
+            Debug.LogError("Custom Error: error loading audio: " + ex.Message);
         }
-        bufferReady = true;
+        
     }
 
     private void PlayAudioBuffer(float[] audioBufferFloat)
@@ -272,7 +273,7 @@ public class cSocketManager : MonoBehaviour
         }
         catch (Exception e)
         {
-            Debug.LogError("Failed to create AudioClip: " + e.Message);
+            Debug.LogError("Custom Error: Failed to create AudioClip: " + e.Message);
         }
         //PULIZIA DEI BUFFERS:
         conversation.Clear();
@@ -382,30 +383,34 @@ public class cSocketManager : MonoBehaviour
 
     public void ToggleSocket()
     {
-        Debug.Log("isReceving: " + isReceiving + " stopReceiving: " + stopReceiving);
         if(isReceiving)
         {
             stopReceiving = true;
-            isReceiving = false;
+            Debug.Log("CHANGE stop receiving -> " + stopReceiving);
         }
         else
         {
             stopReceiving = false;
+            Debug.Log("CHANGE stop Receiving -> " + stopReceiving);
         }
         
         if (receiverAudioSrc.isPlaying)
         {
             receiverAudioSrc.Stop();
+            stopReceiving = false;
         }
         conversation.Clear();
-        instance._dictationActivation.ToggleActivation();
+        _dictationActivation.ToggleActivation();
     }
+
 
 
     void OnApplicationQuit()
     {
         //StartCoroutine(Disconnect());
         socket.Disconnect(); //gstione interna di SocketIOUnity
+        //disconnessione completa dal server
+        socket.Dispose();
         Debug.Log("Application ending after " + Time.realtimeSinceStartup + " seconds");
     }
 

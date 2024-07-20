@@ -17,7 +17,7 @@ public class VoiceToTextHandler : MonoBehaviour
     [SerializeField] private AppDictationExperience appDictationExperience;
     private bool appVoiceActive = false;
     private DateTime startListeningTime;
-    private int sentCount = 0;
+    private bool isSent = false;
 
     private string voiceToTextMessage ="";
     private void Awake()
@@ -26,7 +26,7 @@ public class VoiceToTextHandler : MonoBehaviour
         appDictationExperience.AudioEvents.OnMicStartedListening.AddListener(() =>
         {
             appVoiceActive = true;
-            sentCount = 0;
+            isSent = false;
             voiceToTextMessage = "";
             //START TIMER: Per esser sicuro di inviare al server ciò che ho preso finora
             startListeningTime = DateTime.Now;
@@ -36,25 +36,27 @@ public class VoiceToTextHandler : MonoBehaviour
         {
             appVoiceActive = false;
             text_window.text = "Stopped Listening";
-            if(sentCount == 0)
+            //se toggle bottone -> stop listening -> cancelli dati e non invii al server
+            //se attendi perchè sei sicuro di inviarli 4.5 secondi -> prima invii al server, poi pulisci (stop listening)
+            voiceToTextMessage = "";
+            /*if(sentCount == 0)
             {
                 Debug.Log("[SEND TO SERVER]");
                 cSocketManager.instance.SendMessageToServer(this.voiceToTextMessage);
                 sentCount++;
-            }
+            }*/
         });
     }
 
     private void Update()
     {
         //finchè i secondi totali sono minori di 5 e la lunghezza del messaggio è maggiore di 0 : mi assicuro di inviare solo una volta al server
-        if ((DateTime.Now - startListeningTime).TotalSeconds >= 5 && voiceToTextMessage.Length > 0 &&sentCount ==0)
+        if ((DateTime.Now - startListeningTime).TotalSeconds >= 4.5 && voiceToTextMessage.Length > 0 &&!isSent)
         {
-            Debug.Log("TEMPO : " + (DateTime.Now - startListeningTime).TotalSeconds);
-            Debug.Log("[SEND TO SERVER]");
+            Debug.Log("[SENT TO SERVER] time: " + (DateTime.Now - startListeningTime).TotalSeconds);
             cSocketManager.instance.SendMessageToServer(this.voiceToTextMessage);
             voiceToTextMessage = "";
-            sentCount++;
+            isSent = true;
         }
     }
 
