@@ -30,12 +30,12 @@ public class VoiceToTextHandler : MonoBehaviour
             voiceToTextMessage = "";
             //START TIMER: Per esser sicuro di inviare al server ciò che ho preso finora
             startListeningTime = DateTime.Now;
-            text_window.text = "Listening...";
+            if(text_window != null) text_window.text = "Listening...";
         });
         appDictationExperience.AudioEvents.OnMicStoppedListening.AddListener(() =>
         {
             appVoiceActive = false;
-            text_window.text = "Stopped Listening";
+            if(text_window != null) text_window.text = "Stopped Listening";
             //se toggle bottone -> stop listening -> cancelli dati e non invii al server
             //se attendi perchè sei sicuro di inviarli 4.5 secondi -> prima invii al server, poi pulisci (stop listening)
             voiceToTextMessage = "";
@@ -70,7 +70,7 @@ public class VoiceToTextHandler : MonoBehaviour
             return;
         }
         voiceToTextMessage += newVoiceToTextMessage;
-        text_window.text = voiceToTextMessage;
+        if(text_window != null) text_window.text = voiceToTextMessage;
         //CHIAMATA ALL'AI : METTO SE DEVE ESSERE POSSIBILE OVUNQUE; altrimenti solo da bottoni
         Debug.Log("Call Conversational Agent: " + voiceToTextMessage);
 

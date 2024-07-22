@@ -118,8 +118,6 @@ public class HomeManager: MonoBehaviour
         var forwardCamx = new Vector3(cXRManager.GetTrCenterEye().forward.x, 0, cXRManager.GetTrCenterEye().forward.z);
         var forwardButtx = new Vector3(mainInteractablesInitPos.forward.x, 0, mainInteractablesInitPos.forward.z);
         var angleRotation = Vector3.SignedAngle(forwardCamx, forwardButtx, -Vector3.up);
-
-        Debug.Log(angleRotation);
         if(angleRotation > 70 && angleRotation <180)
         {
             if (!envAudioSrc[1].isPlaying && !isRotated)
