@@ -34,7 +34,7 @@ public class cXRManager : MonoBehaviour{
         poseUnselectLeftPistol = new UnityEvent();
     }
     public static Hand GetLeftHand() { return instance.leftHand; }
-    public static Hand GetRighttHand() { return instance.rightHand; }
+    public static Hand GetRightHand() { return instance.rightHand; }
     public static Transform GetTrCenterEye() { return instance.trCenterEye; }
     //ALE public static Transform GetTrMunyecaLeft() { return instance.trMunyecaLeft; }
     //ALE public static Transform GetTrMunyecaRight() { return instance.trMunyecaRight; }

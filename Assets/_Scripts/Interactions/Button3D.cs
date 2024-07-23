@@ -10,21 +10,19 @@ public class Button3D : MonoBehaviour
 {
     //Notifiche cambio stato a FSM: scegliere Azione/Variabile
     public Action<Button3D, bool> OnButtonPressed;
+    //public Action OnEnvironmentChanged;
     private bool isButtonPressed = false;
     public string ButtonName;
     [SerializeField] Image infoimage;
     [SerializeField] Image closeimage;
-    //Elementi da spegnere e da accendere
-    //[SerializeField] Material _skyboxOn;
-    //[SerializeField] Material _skyboxMain;
-    //[SerializeField] GameObject[] _envsOn;
     [SerializeField] GameObject _environmentOn;
     [SerializeField] GameObject _environmentMain;
-    public static GameObject _currentEnvironment; //accessibile da qualunque altro script senza un rifeirmento necessario
+    private static Button3D activeButton = null;
+    //public static GameObject _currentEnvironment; //accessibile da qualunque altro script senza un rifeirmento necessario
 
     void Start ()
     {
-        _currentEnvironment = _environmentMain;
+
     }
 
     public void Press()
@@ -37,13 +35,8 @@ public class Button3D : MonoBehaviour
         //ACTION SE VUOI CAMBIO STATO/CHANGE SCENE: se bottoni fanno stessa cosa (gestione in HomeManager)
         if (OnButtonPressed != null)
             OnButtonPressed(this, isButtonPressed);
-        
 
-        //DEMO: logica nel bottone:
-        Debug.Log(_currentEnvironment.name);
         Debug.Log(_environmentOn.name);
-        //ChangeEnvironment(); //ATTIVARE SOLO PER DEMO, disattiare per gestione in HomeManager
-
         isButtonPressed = false;
 
     }
@@ -55,10 +48,7 @@ public class Button3D : MonoBehaviour
 
     public void BackToHome()
     {
-        //gameObject.SetActive(false); //sistemato con il trigger sul info canvas
         cAppManager.BackHome();
-        /*Scenes scene = Scenes.HOME;
-        cAppManager.LoadScene(scene);*/
     }
 
     public void OpenCloseInformations()
@@ -80,39 +70,49 @@ public class Button3D : MonoBehaviour
     //PER DEMO + PER MY HISTORY ECC.
     public void ChangeEnvironment()
     {
-        //se l'ambiente corrente è quello da accendere, lo spegni e accendi quello principale
-        if (_currentEnvironment == _environmentOn)
+        /*if(OnEnvironmentChanged != null)
+            OnEnvironmentChanged(); //scritto per utilità futura
+        */
+        HomeManager.instance.envAudioSrc[0].Pause();
+        HomeManager.instance.envAudioSrc[1].Pause();
+
+        // Se c'è già un altro bottone attivo, ripristina la sua icona
+        if (activeButton != null && activeButton != this)
         {
-            _currentEnvironment.SetActive(false);
-            _currentEnvironment = _environmentMain;
-            _currentEnvironment.SetActive(true);
+            activeButton.ResetIcon();
+        }
+
+        //CAMBIO AMBIENTE:
+        //se l'ambiente corrente è quello da accendere, lo spegni e accendi quello principale
+        //DA ON -> HOME
+        if (HomeManager._currentEnvironment == _environmentOn)
+        {
+            HomeManager._currentEnvironment.SetActive(false);
+            HomeManager._currentEnvironment = _environmentMain;
+            HomeManager._currentEnvironment.SetActive(true);
+            HomeManager.instance.isEnvironmentChanged = false;
+            infoimage.gameObject.SetActive(true);
+            if(HandDetectionManager.instance!=null) HandDetectionManager.instance.Deactivate();
         }
         //se l'ambiente corrente non è quello da accendere, spegni quello corrente e accendi quello da accendere
+        //DA HOME -> ON
         else
         {
-            _currentEnvironment.SetActive(false);
-            _currentEnvironment = _environmentOn;
-            _currentEnvironment.SetActive(true);
+            HomeManager._currentEnvironment.SetActive(false);
+            HomeManager._currentEnvironment = _environmentOn;
+            HomeManager._currentEnvironment.SetActive(true);
+            HomeManager.instance.isEnvironmentChanged = true;
+            infoimage.gameObject.SetActive(false);
+            if(HandDetectionManager.instance!=null) HandDetectionManager.instance.Activate();
         }
-
-        Debug.Log(_currentEnvironment.name);
-        Debug.Log(_environmentOn.name);
-
-        if (infoimage != null && closeimage != null)
-        {
-            infoimage.gameObject.SetActive(!infoimage.gameObject.activeSelf);
-        }
-
-        /* if (RenderSettings.skybox == _skyboxOn)
-        {
-            RenderSettings.skybox = _skyboxOff;
-        }
-        else
-        {
-            RenderSettings.skybox = _skyboxOn;
-        }*/
+        activeButton = this;
     }
 
+
+    public void ResetIcon()
+    {
+        infoimage.gameObject.SetActive(true);
+    }
 
     public GameObject GetAssociatedEnvironment()
     {

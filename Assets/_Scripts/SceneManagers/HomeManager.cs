@@ -21,6 +21,7 @@ public class HomeManager: MonoBehaviour
     //GESTIONE BOTTONI
     public AudioSource[] envAudioSrc; //voce spiegazione
     private bool isRotated = false;
+    private bool isLateActive = false;
     public AudioClip[] _buttonExplainClips;
     [SerializeField] private GameObject[] _lateActivatedObj; //interagibili principali (bottoni main ecc)
     [Range(0,60)]
@@ -30,11 +31,12 @@ public class HomeManager: MonoBehaviour
 
     //GESTIONE FSM / AMBIENTI HOME
     State _currentState;
-    private GameObject _currentEnvironment;
+    public static GameObject _currentEnvironment;
     [SerializeField] GameObject _environmentMain;
     //[SerializeField] GameObject _envMyMotivation;
     [SerializeField] GameObject _envOffice;
     [SerializeField] GameObject _envMyExperience;
+    public bool isEnvironmentChanged = false;
     [SerializeField] Transform chairInitPos;
     [Range(0.1f, 1)]
     [SerializeField] private float rotationChairSpeed = 0.6f;
@@ -91,6 +93,7 @@ public class HomeManager: MonoBehaviour
 
         //SEDIA
         chairInitPos.GetChild(0).gameObject.SetActive(true); //attivo sedia
+        //ATTIVAZIONI RITARDATE
         StartCoroutine(LateActivation(_lateActivatedObj, _activationDelay));
     }
     private void Update()
@@ -106,38 +109,38 @@ public class HomeManager: MonoBehaviour
         Vector3 newDirection = Vector3.RotateTowards(chairInitPos.forward, targetDirection, rotationStep, 0.0f);
         chairInitPos.rotation = Quaternion.LookRotation(newDirection, chairInitPos.up);
 
-        //La sedia segue il tuo sguardo
-        /*Vector3 lookDirection = cXRManager.GetTrCenterEye().forward;
-        // Calcola la rotazione target in base alla direzione dello sguardo
-        Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
-        // Solo la rotazione attorno all'asse Y è necessaria
-        Vector3 euler = targetRotation.eulerAngles;
-        chairInitPos.transform.eulerAngles = new Vector3(0, euler.y, 0);*/
-
         //QUANDO TI GIRI VERSO I BOTTINI SECONDARI -> AVVIA SECONDA CLIP
+        if(!isEnvironmentChanged && isLateActive)
+        {
+            SwitchAudioRotation();
+        }
+        
+        
+    }
+    private void SwitchAudioRotation()
+    {
         var forwardCamx = new Vector3(cXRManager.GetTrCenterEye().forward.x, 0, cXRManager.GetTrCenterEye().forward.z);
         var forwardButtx = new Vector3(mainInteractablesInitPos.forward.x, 0, mainInteractablesInitPos.forward.z);
         var angleRotation = Vector3.SignedAngle(forwardCamx, forwardButtx, -Vector3.up);
-        if(angleRotation > 70 && angleRotation <180)
+        if (angleRotation > 80 || angleRotation < -90)
         {
-            if (!envAudioSrc[1].isPlaying && !isRotated)
+            if (!envAudioSrc[1].isPlaying)
             {
-                isRotated = true;
                 StartCoroutine(FadeOutAudio(envAudioSrc[0], 2f));
                 StartCoroutine(FadeInAudio(envAudioSrc[1], 2f));
             }
+            isRotated = true;
         }
         else
         {
-            if (!envAudioSrc[0].isPlaying && isRotated)
+            if (!envAudioSrc[0].isPlaying)
             {
-                isRotated = false;
                 StartCoroutine(FadeOutAudio(envAudioSrc[1], 2f));
                 StartCoroutine(FadeInAudio(envAudioSrc[0], 2f));
             }
         }
-        
     }
+
     private IEnumerator FadeOutAudio(AudioSource audioSrc, float fadeTime)
     {
         //audioSrc.clip = _envClips[1]; //decidi la CLip da settare (da usare con 2 audio source)
@@ -157,7 +160,7 @@ public class HomeManager: MonoBehaviour
         //audioSrc.clip = _envClips[1]; //decidi la clip da settare (da usare con 2 audio source)
         float startVolume = audioSrc.volume;
         audioSrc.volume = 0f;
-        if(isRotated)
+        if(!isRotated)
         {
             audioSrc.Play();
         }
@@ -192,6 +195,7 @@ public class HomeManager: MonoBehaviour
         {
             envAudioSrc[1].PlayOneShot(_buttonExplainClips[1]);
         }
+        isLateActive = true;
     }
     public Transform GetUserInitTr()
     {
@@ -233,6 +237,7 @@ public class HomeManager: MonoBehaviour
 
         //CAMBIO SCENA:
         Scenes scene = GetNextScene(buttonPressed);
+        isEnvironmentChanged = true;
         cAppManager.LoadScene(scene);
 
     }
