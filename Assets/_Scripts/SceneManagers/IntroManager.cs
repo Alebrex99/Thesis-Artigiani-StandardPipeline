@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Video;
+using static Unity.VisualScripting.Member;
 
 public class IntroManager : MonoBehaviour
 {
@@ -149,10 +150,12 @@ public class IntroManager : MonoBehaviour
             cAppManager.LoadScene(Scenes.HOME);
         }
     }
-    private void EndAudio()
+    public void ClickSkipVideo()
     {
+        videoPlayer.loopPointReached -= EndVideo;
+        videoPlayer.Stop();
+        bShownVideo = false; 
         cAppManager.LoadScene(Scenes.HOME);
-        //ANIMAZIONI POSSIBILI : LOGO -> VIDEO
     }
     public Transform GetUserInitTr()
     {

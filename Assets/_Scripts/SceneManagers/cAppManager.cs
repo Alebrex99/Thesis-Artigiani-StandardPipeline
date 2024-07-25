@@ -37,6 +37,7 @@ public class cAppManager : MonoBehaviour {
 
     //FROM CONFIG.CSV
     private float fadeTime = 5;
+    public static bool isBackHome = false;
 
 
     void Awake() {
@@ -226,24 +227,22 @@ public class cAppManager : MonoBehaviour {
         {
             case Scenes.INTRO:
                 if (IntroManager.instance != null)
-                {
                     IntroManager.instance.videoPlayer.Stop();
-                }
                 break;
             case Scenes.HOME:
                 
                 break;
             case Scenes.JEWEL1:
                 if(Jewel1Manager.instance != null)
-                {
                     Jewel1Manager.instance.GetAudioSource().Stop();
-                }
                 break;
             case Scenes.JEWEL2:
-                
+                if(Jewel2Manager.instance != null)
+                    Jewel2Manager.instance.GetAudioSource().Stop();
                 break;
             case Scenes.JEWEL3:
-                
+                if (Jewel3Manager.instance != null)
+                    Jewel3Manager.instance.GetAudioSource().Stop();
                 break;
             case Scenes.JEWEL4:
                 
@@ -251,6 +250,7 @@ public class cAppManager : MonoBehaviour {
             default:
                 break;
         }
+        isBackHome = true;
         LoadScene(Scenes.HOME);
     }
 

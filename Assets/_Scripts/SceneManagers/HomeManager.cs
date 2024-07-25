@@ -21,6 +21,7 @@ public class HomeManager: MonoBehaviour
     //GESTIONE BOTTONI
     public AudioSource[] envAudioSrc; //voce spiegazione
     private bool isRotated = false;
+    private bool initialPlayDone = false;
     private bool isLateActive = false;
     public AudioClip[] _buttonExplainClips;
     [SerializeField] private GameObject[] _lateActivatedObj; //interagibili principali (bottoni main ecc)
@@ -109,8 +110,9 @@ public class HomeManager: MonoBehaviour
         Vector3 newDirection = Vector3.RotateTowards(chairInitPos.forward, targetDirection, rotationStep, 0.0f);
         chairInitPos.rotation = Quaternion.LookRotation(newDirection, chairInitPos.up);
 
+        Debug.Log(" ENV CHANGED: " + isEnvironmentChanged + " isBack home: " + cAppManager.isBackHome + "isRotated: " + isRotated);
         //QUANDO TI GIRI VERSO I BOTTINI SECONDARI -> AVVIA SECONDA CLIP
-        if(!isEnvironmentChanged && isLateActive)
+        if (!isEnvironmentChanged && !cAppManager.isBackHome && isLateActive)
         {
             SwitchAudioRotation();
         }
@@ -121,23 +123,25 @@ public class HomeManager: MonoBehaviour
     {
         var forwardCamx = new Vector3(cXRManager.GetTrCenterEye().forward.x, 0, cXRManager.GetTrCenterEye().forward.z);
         var forwardButtx = new Vector3(mainInteractablesInitPos.forward.x, 0, mainInteractablesInitPos.forward.z);
-        var angleRotation = Vector3.SignedAngle(forwardCamx, forwardButtx, -Vector3.up);
-        if (angleRotation > 80 || angleRotation < -90)
+        var angleRotation = Vector3.Angle(forwardCamx, forwardButtx);
+        if (angleRotation > 80 && angleRotation < 270)
         {
-            if (!envAudioSrc[1].isPlaying)
+            if (!isRotated) //!envAudioSrc[1].isPlaying
             {
                 StartCoroutine(FadeOutAudio(envAudioSrc[0], 2f));
                 StartCoroutine(FadeInAudio(envAudioSrc[1], 2f));
             }
             isRotated = true;
+
         }
         else
         {
-            if (!envAudioSrc[0].isPlaying)
+            if (isRotated)//!envAudioSrc[0].isPlaying
             {
                 StartCoroutine(FadeOutAudio(envAudioSrc[1], 2f));
                 StartCoroutine(FadeInAudio(envAudioSrc[0], 2f));
             }
+            isRotated = false;
         }
     }
 
@@ -158,11 +162,12 @@ public class HomeManager: MonoBehaviour
     private IEnumerator FadeInAudio(AudioSource audioSrc, float fadeTime)
     {
         //audioSrc.clip = _envClips[1]; //decidi la clip da settare (da usare con 2 audio source)
-        float startVolume = audioSrc.volume;
+        float startVolume = 1f;
         audioSrc.volume = 0f;
-        if(!isRotated)
+        if(!initialPlayDone)
         {
             audioSrc.Play();
+            initialPlayDone = true;
         }
         else audioSrc.UnPause();
 
@@ -187,7 +192,7 @@ public class HomeManager: MonoBehaviour
             //toActivate[i].transform.position = mainInteractablesInitPos.position; //togliere se si usa cPanelHMDFollower
         }
         //SETTO E ATTIVO CLIP SPIEGAZIONE BOTTONI
-        if(envAudioSrc!= null)
+        if(!isRotated)
         {
             envAudioSrc[0].PlayOneShot(_buttonExplainClips[0]); //start when the buttons appear
         }

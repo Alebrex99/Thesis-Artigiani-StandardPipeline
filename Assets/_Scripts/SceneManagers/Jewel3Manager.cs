@@ -14,7 +14,6 @@ public class Jewel3Manager : MonoBehaviour
 
     //GESTIONE SCENA + IMMERSIONE
     public AudioSource envAudioSrc;
-    //public AudioClip[] _envClips;
     public AudioClip[] _envClips;
     [Range(0, 60)]
     [SerializeField] private float _immersionDelay = 1f;
@@ -22,8 +21,10 @@ public class Jewel3Manager : MonoBehaviour
     [SerializeField] private float _activationDelay = 1f;
     [SerializeField] private GameObject[] _lateActivatedObj;
 
-    [SerializeField] private GameObject jewel3Informations;
+    //IMMAGINE/DESCRIZIONE
     [SerializeField] private GameObject goVideoPlayer;
+    [SerializeField] private GameObject treePicture;
+    [SerializeField] private GameObject jewel3Informations;
     private bool bShowVideo = false;
     [Range(0.1f, 10)]
     [SerializeField] private float rotationVideoSpeed = 1;
