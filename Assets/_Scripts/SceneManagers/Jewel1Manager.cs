@@ -116,7 +116,7 @@ public class Jewel1Manager : MonoBehaviour
 
         //envAudioSrc.PlayOneShot(_envClips[0], 1f); //Environment sounds (già nel video)
         yield return new WaitForSeconds(_immersionDelay);
-        interactAudioSrc.PlayOneShot(_envClips[0], 1f); //Environment explanation
+        envAudioSrc.PlayOneShot(_envClips[0], 1f); //Environment explanation
         //yield return new WaitForSeconds(_immersionDelay);
         //PlayPicture(); //se verrà messo un video (per ora solo quadro)
 

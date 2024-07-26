@@ -143,7 +143,7 @@ public class Jewel2Manager : MonoBehaviour
     {
         //riduci regolarmente l'audio dell'ambiente nel giro di 5 secondi
         fireworksPicture.SetActive(isJewelTouched);
-        jewel2Informations.SetActive(isJewelTouched);
+        jewel2Informations.SetActive(!isJewelTouched);
         bShowVideo = true;
         if (isJewelTouched)
         {

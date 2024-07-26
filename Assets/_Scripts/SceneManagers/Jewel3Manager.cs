@@ -37,15 +37,20 @@ public class Jewel3Manager : MonoBehaviour
     [SerializeField] private Jewel _jewel3;
     [SerializeField] private Transform _jewelInitPos;
 
+    //GAME JEWEL 3
+    [SerializeField] private GameObject jewel3Game;
+
 
     // Start is called before the first frame update
     private void Awake()
     {
         instance = this;
+
         _jewel3.OnJewelTouched += OnJewel3Touched;
         ResetUserPosition();
         treePicture.SetActive(false);
         jewel3Informations.SetActive(false);
+        jewel3Game.SetActive(false);
         if (_lateActivatedObj.Length > 0)
         {
             foreach (GameObject lateObj in _lateActivatedObj)
@@ -59,8 +64,8 @@ public class Jewel3Manager : MonoBehaviour
     {
         //StartCoroutine(PlayEnvMedia());
         //StartCoroutine(LateActivation(_lateActivatedObj, _activationDelay));
-        StartCoroutine(PlayEnvMedia());
-        StartCoroutine(LateActivation(_lateActivatedObj, _activationDelay));
+        StartCoroutine(LateActivationJewel(_lateActivatedObj, _immersionDelay)); //dopo 15 secondi compare gioiello + audio1 
+        StartCoroutine(LateActivationButtons(_lateActivatedObj, _activationDelay));
     }
 
     // Update is called once per frame
@@ -114,29 +119,75 @@ public class Jewel3Manager : MonoBehaviour
 
     private IEnumerator PlayEnvMedia()
     {
-        envAudioSrc.PlayOneShot(_envClips[0], 1f); //Environment sounds (non ho un video)
+        //envAudioSrc.PlayOneShot(_envClips[0], 1f); //Environment sounds (non ho un video)
         yield return new WaitForSeconds(_immersionDelay);
         envAudioSrc.PlayOneShot(_envClips[1], 1f); //Environment explanation
     }
 
+    private IEnumerator LateActivationJewel(GameObject[] toActivate, float _immersionDelay)
+    {
+        yield return new WaitForSeconds(_immersionDelay); //se c'è sostituisci _envExplainDelay
+        toActivate[0].SetActive(true);
+        StartCoroutine(FadeInMaterial(jewel3Game.GetComponent<Renderer>().material, 3f)); //Fade in jewel3Game material
+        
+        //SETTA POSIZIONI
+        _jewel3.transform.position = _jewelInitPos.position;
+        StartCoroutine(FadeInAudio(interactAudioSrc, 3f, _envClips[1])); //Jewel explanation
+    }
+
+    private IEnumerator FadeInMaterial(Material material, float fadeTime)
+    {
+        float startAlpha = 0f;
+        float targetAlpha = 1f;
+        float currentTime = 0f;
+
+        while (currentTime < fadeTime)
+        {
+            currentTime += Time.deltaTime;
+            float newAlpha = Mathf.Lerp(startAlpha, targetAlpha, currentTime / fadeTime);
+            material.SetFloat("_Alpha", newAlpha);
+            yield return null;
+        }
+
+        material.SetFloat("_Alpha", targetAlpha);
+    }
+
+    private IEnumerator LateActivationButtons(GameObject[] toActivate, float _activationDelay)
+    {
+        yield return new WaitForSeconds(_activationDelay);
+        yield return new WaitUntil(() => !interactAudioSrc.isPlaying); //attendi che l'audio prec sia finito
+
+        toActivate[1].SetActive(true);
+        StartCoroutine(FadeInAudio(interactAudioSrc, 2f, _envClips[2]));  //Buttons explanation
+        /*if(!envAudioSrc.isPlaying)
+            envAudioSrc.PlayOneShot(_envClips[2], 1); //Buttons explanation*/
+    }
+
+
     private void OnJewel3Touched(Jewel jewel, bool isJewelTouched)
     {
         //riduci regolarmente l'audio dell'ambiente nel giro di 5 secondi
-        jewel3Informations.SetActive(isJewelTouched);
-        bShowVideo = isJewelTouched;
+        treePicture.SetActive(isJewelTouched);
+        jewel3Informations.SetActive(!isJewelTouched);
+        bShowVideo = true;
         if (isJewelTouched)
         {
-            StartCoroutine(FadeOutAudio(envAudioSrc, 2f));
+            StartCoroutine(FadeOutAudio(interactAudioSrc, 2f));
+            clipPoint = interactAudioSrc.time;
+            Debug.Log("Clip point: " + clipPoint);
         }
-        else
+        else if (clipPoint <= interactAudioSrc.clip.length && clipPoint != 0)
         {
-            StartCoroutine(FadeInAudio(envAudioSrc, 2f));
+            Debug.Log("TIME: " + interactAudioSrc.time + " CLIP : " + interactAudioSrc.clip.length + " condition: " + (interactAudioSrc.time >= interactAudioSrc.clip.length));
+            StartCoroutine(FadeInAudio(interactAudioSrc, 2f));
         }
     }
 
-    private IEnumerator FadeOutAudio(AudioSource audioSrc, float fadeTime)
+    private IEnumerator FadeOutAudio(AudioSource audioSrc, float fadeTime, AudioClip clip = null)
     {
-        //audioSrc.clip = _envClips[1];
+        if (clip != null)
+            audioSrc.clip = clip;
+        //audioSrc.clip = _envClips[1]; //decidi la CLip da settare (da usare con 2 audio source)
         float startVolume = audioSrc.volume;
 
         while (audioSrc.volume > 0)
@@ -144,18 +195,22 @@ public class Jewel3Manager : MonoBehaviour
             audioSrc.volume -= startVolume * Time.deltaTime / fadeTime;
             yield return null;
         }
-
         audioSrc.Pause();
         audioSrc.volume = startVolume;
     }
 
-    private IEnumerator FadeInAudio(AudioSource audioSrc, float fadeTime)
+    private IEnumerator FadeInAudio(AudioSource audioSrc, float fadeTime, AudioClip clip = null)
     {
-        //audioSrc.clip = _envClips[1];
-        float startVolume = audioSrc.volume;
+        if (clip != null)
+            audioSrc.clip = clip;
+        //audioSrc.clip = _envClips[1]; //decidi la clip da settare (da usare con 2 audio source)
+        float startVolume = 1;
         audioSrc.volume = 0f;
-        audioSrc.UnPause();
-
+        if (!audioSrc.isPlaying)
+        {
+            audioSrc.Play();
+        }
+        else audioSrc.UnPause();
         float currentTime = 0f;
         while (currentTime < fadeTime)
         {
@@ -171,7 +226,7 @@ public class Jewel3Manager : MonoBehaviour
 
     public AudioSource GetAudioSource()
     {
-        return envAudioSrc;
+        return interactAudioSrc;
     }
     public AudioClip[] GetEnvAudioCLips()
     {
@@ -183,5 +238,6 @@ public class Jewel3Manager : MonoBehaviour
         //videoPlayer.Stop();
         //envAudioSrc.Stop(); //non puoi farlo!
         _jewel3.OnJewelTouched -= OnJewel3Touched;
+        StopAllCoroutines();
     }
 }
