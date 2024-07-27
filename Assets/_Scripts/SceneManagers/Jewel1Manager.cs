@@ -142,7 +142,6 @@ public class Jewel1Manager : MonoBehaviour
             envAudioSrc.PlayOneShot(_envClips[2], 1); //Buttons explanation*/
     }
 
-
     private void OnJewel1Touched(Jewel jewel, bool isJewelTouched)
     {
         //riduci regolarmente l'audio dell'ambiente nel giro di 5 secondi
@@ -162,7 +161,7 @@ public class Jewel1Manager : MonoBehaviour
         //StartCoroutine(FadeOutAudio(envAudioSrc, 5f));
     }
 
-    private IEnumerator FadeOutAudio(AudioSource audioSrc, float fadeTime, AudioClip clip = null)
+    public IEnumerator FadeOutAudio(AudioSource audioSrc, float fadeTime, AudioClip clip = null)
     {
         if(clip !=null)
             audioSrc.clip = clip;
@@ -177,7 +176,7 @@ public class Jewel1Manager : MonoBehaviour
         audioSrc.Pause();
         audioSrc.volume = startVolume;
     }
-    private IEnumerator FadeInAudio(AudioSource audioSrc, float fadeTime, AudioClip clip=null)
+    public IEnumerator FadeInAudio(AudioSource audioSrc, float fadeTime, AudioClip clip=null)
     {
         if(clip !=null)
             audioSrc.clip = clip;
@@ -200,6 +199,10 @@ public class Jewel1Manager : MonoBehaviour
         audioSrc.volume = startVolume;
     }
 
+    public AudioSource GetJewelAudioSource()
+    {
+       return _jewel1.GetAudioSource();
+    }
     public AudioSource GetAudioSource()
     {
         return interactAudioSrc;
@@ -209,7 +212,9 @@ public class Jewel1Manager : MonoBehaviour
         return envAudioSrc;
     }
 
-    public AudioClip[] GetEnvAudioCLips()
+
+
+    public AudioClip[] GetEnvAudioClips()
     {
        return _envClips;
     }

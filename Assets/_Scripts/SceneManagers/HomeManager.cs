@@ -95,7 +95,10 @@ public class HomeManager: MonoBehaviour
         chairInitPos.GetChild(0).gameObject.SetActive(true); //attivo sedia
 
         //CONVERSATIONAL AGENT
-        cSocketManager.instance.OnAgentResponseFinished += PauseAudioScene;
+        if (cSocketManager.instance != null)
+        {
+            cSocketManager.instance.OnAgentResponseFinished += UnPauseAudioScene;
+        }
     }
 
     private void Start()
@@ -152,7 +155,7 @@ public class HomeManager: MonoBehaviour
         }
     }
 
-    private IEnumerator FadeOutAudio(AudioSource audioSrc, float fadeTime)
+    public IEnumerator FadeOutAudio(AudioSource audioSrc, float fadeTime)
     {
         //audioSrc.clip = _envClips[1]; //decidi la CLip da settare (da usare con 2 audio source)
         float startVolume = audioSrc.volume;
@@ -166,7 +169,7 @@ public class HomeManager: MonoBehaviour
         audioSrc.Pause();
         audioSrc.volume = startVolume;
     }
-    private IEnumerator FadeInAudio(AudioSource audioSrc, float fadeTime)
+    public IEnumerator FadeInAudio(AudioSource audioSrc, float fadeTime)
     {
         //audioSrc.clip = _envClips[1]; //decidi la clip da settare (da usare con 2 audio source)
         float startVolume = 1f;
@@ -269,10 +272,30 @@ public class HomeManager: MonoBehaviour
             isMyHistoryOpened = true;
         }
     }
-    private void PauseAudioScene()
+
+    public AudioSource[] GetAudioSources()
+    {
+        return envAudioSrc;
+    }
+    public void PauseAudioScene()
     {
         //metti in pausa 
-
+        foreach(AudioSource audioSrc in envAudioSrc)
+        {
+            if (audioSrc.isPlaying)
+            {
+                //audioSrc.Pause();
+                StartCoroutine(FadeOutAudio(audioSrc, 2f));
+            }
+        }
+    }
+    public void UnPauseAudioScene()
+    {
+        if (!envAudioSrc[1].isPlaying)
+        {
+            //audioSrc.UnPause();
+            StartCoroutine(FadeInAudio(envAudioSrc[1], 2f));
+        }
     }
 
 
@@ -283,6 +306,7 @@ public class HomeManager: MonoBehaviour
         {
             button3D.OnButtonPressed -= OnButtonPressedEffect;
         }
+        cSocketManager.instance.OnAgentResponseFinished -= UnPauseAudioScene;
         StopAllCoroutines();
 
     }

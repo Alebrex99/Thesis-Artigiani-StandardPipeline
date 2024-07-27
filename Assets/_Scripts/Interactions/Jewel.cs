@@ -104,5 +104,10 @@ public class Jewel : MonoBehaviour
         audioSrc.volume = startVolume;
     }
 
+    public AudioSource GetAudioSource()
+    {
+        return pictureAudioSrc;
+    }
+
 
 }

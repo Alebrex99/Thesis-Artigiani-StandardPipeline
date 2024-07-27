@@ -159,7 +159,7 @@ public class Jewel2Manager : MonoBehaviour
         //StartCoroutine(FadeOutAudio(envAudioSrc, 5f));
     }
 
-    private IEnumerator FadeOutAudio(AudioSource audioSrc, float fadeTime, AudioClip clip = null)
+    public IEnumerator FadeOutAudio(AudioSource audioSrc, float fadeTime, AudioClip clip = null)
     {
         if (clip != null)
             audioSrc.clip = clip;
@@ -174,7 +174,7 @@ public class Jewel2Manager : MonoBehaviour
         audioSrc.Pause();
         audioSrc.volume = startVolume;
     }
-    private IEnumerator FadeInAudio(AudioSource audioSrc, float fadeTime, AudioClip clip = null)
+    public IEnumerator FadeInAudio(AudioSource audioSrc, float fadeTime, AudioClip clip = null)
     {
         if (clip != null)
             audioSrc.clip = clip;

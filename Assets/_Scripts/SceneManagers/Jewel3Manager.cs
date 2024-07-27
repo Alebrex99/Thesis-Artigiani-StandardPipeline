@@ -193,7 +193,7 @@ public class Jewel3Manager : MonoBehaviour
         }
     }
 
-    private IEnumerator FadeOutAudio(AudioSource audioSrc, float fadeTime, AudioClip clip = null)
+    public IEnumerator FadeOutAudio(AudioSource audioSrc, float fadeTime, AudioClip clip = null)
     {
         if (clip != null)
             audioSrc.clip = clip;
@@ -209,7 +209,7 @@ public class Jewel3Manager : MonoBehaviour
         audioSrc.volume = startVolume;
     }
 
-    private IEnumerator FadeInAudio(AudioSource audioSrc, float fadeTime, AudioClip clip = null)
+    public IEnumerator FadeInAudio(AudioSource audioSrc, float fadeTime, AudioClip clip = null)
     {
         if (clip != null)
             audioSrc.clip = clip;

@@ -29,12 +29,12 @@ namespace Meta.Voice.Samples.Dictation
     {
         [FormerlySerializedAs("dictation")]
         [SerializeField] private DictationService _dictation;
-        private bool _isToggled = false;
 
-        public void ToggleActivation()
+        public void ToggleActivation(bool switchOff = false) 
         {
             if (_dictation.MicActive)
             {
+                cSocketManager.instance.OnCallToggleManagerAudios(true); 
                 _dictation.Deactivate();
             }
             else
@@ -42,5 +42,20 @@ namespace Meta.Voice.Samples.Dictation
                 _dictation.Activate();
             }
         }
+
+        /*public void ToggleActivation()
+        {
+            if (_dictation.MicActive)
+            {
+                cSocketManager.instance.OnCallToggleManagerAudios(_dictation.MicActive); //TRUE è attivo, ma riclicco -> riaccendo audio scena
+                _dictation.Deactivate();
+            }
+            else
+            {
+                cSocketManager.instance.OnCallToggleManagerAudios(_dictation.MicActive); //FALSE non è attivo perchè dati appena inviati/smesso ascolto, clicco -> spengo audio scena
+                _dictation.Activate();
+            }
+        }*/
+
     }
 }

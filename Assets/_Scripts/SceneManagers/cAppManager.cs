@@ -110,25 +110,6 @@ public class cAppManager : MonoBehaviour {
             return actualBuildScene;
         return prevBuildScene;
     }
-    public static MonoBehaviour GetSceneManager()
-    {
-        switch (actualScene)
-        {
-            case Scenes.INTRO:
-                return IntroManager.instance != null ? IntroManager.instance : null;
-            case Scenes.HOME:
-                return HomeManager.instance != null ? HomeManager.instance : null;
-            case Scenes.JEWEL1:
-                return Jewel1Manager.instance!=null ? Jewel1Manager.instance : null; 
-            case Scenes.JEWEL2:
-                return Jewel2Manager.instance!=null ? Jewel2Manager.instance : null;
-            case Scenes.JEWEL3:
-                return Jewel3Manager.instance!=null ? Jewel3Manager.instance : null;
-            default:
-                return default;
-        }
-
-    }
 
     //ALE: Funzione cambio Scena
     public static void LoadScene(Scenes scene)

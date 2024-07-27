@@ -57,9 +57,8 @@ public class cSocketManager : MonoBehaviour
     private bool bufferReadyRT = false;
 
     //EFFETTI SULLA SCENA
-    public Action OnAgentReady;
-    public Action OnAgentPlay;
     public Action OnAgentResponseFinished;
+    private bool isSocketToggled = false;
     [SerializeField] private GameObject objectToSpin;
 
 
@@ -232,7 +231,7 @@ public class cSocketManager : MonoBehaviour
         //POLLING AUDIO BUFFER (o usa un unity thread dispatcher): non permette di creare audio source in runtime altrimenti
         if (bufferReady && !receiverAudioSrc.isPlaying)
         {
-            OnAgentReady?.Invoke();
+            //OnAgentReady?.Invoke();
             //PlayAudioBuffer(audioBufferFloat);
             StartCoroutine(PlayAudioBufferCor(audioBufferFloat));
         }
@@ -261,7 +260,6 @@ public class cSocketManager : MonoBehaviour
         catch (Exception ex) {
             Debug.LogError("Custom Error: error loading audio: " + ex.Message);
         }
-        
     }
 
     private void PlayAudioBuffer(float[] audioBufferFloat)
@@ -303,13 +301,15 @@ public class cSocketManager : MonoBehaviour
         //PULIZIA DEI BUFFERS:
         conversation.Clear();
         bufferReady = false;
+        // Verifica se la clip è terminata
         yield return new WaitForSeconds(clip.length);
-        OnAgentResponseFinished?.Invoke();
+        Debug.Log("Audio clip ended");
+        //_dictationActivation.ToggleActivation(false);
         
     }
 
 
-    //NON FUNZIONA PERCHE' A CAUSA DELLA CONCORRENZA PRELEVANO CHUNKS DALAL CODA NON IN ORDINE RELATVIO
+    //PROVA VERSIONE RUN TIME
     IEnumerator PlayAudioBufferRT()
     {
         while (audioQueue.Count > 0)
@@ -408,10 +408,9 @@ public class cSocketManager : MonoBehaviour
 
     }
 
-
+    //CONTROLLO DELLA RICEZIONE E ABILITAZIONE A PARLARE
     public void ToggleSocket()
     {
-        OnAgentPlay?.Invoke();
         if(isReceiving)
         {
             stopReceiving = true;
@@ -422,14 +421,69 @@ public class cSocketManager : MonoBehaviour
             stopReceiving = false;
             Debug.Log("CHANGE stop Receiving -> " + stopReceiving);
         }
-        
         if (receiverAudioSrc.isPlaying)
         {
             receiverAudioSrc.Stop();
             stopReceiving = false;
         }
+        OnCallToggleManagerAudios(false);
+
+        //CLICCHI -> PARLI E ASCOLTI E RIPARLI 
+        //RICLICCHI -> CHIUDI TUTTO
+        _dictationActivation.ToggleActivation(); //isSocketToggled se vuoi cambiare la logica
+        isSocketToggled = !isSocketToggled;
         conversation.Clear();
-        _dictationActivation.ToggleActivation();
+    }
+
+    public void OnCallToggleManagerAudios(bool isToggled = false)
+    {
+        switch (cAppManager.GetActualScene())
+        {
+            case Scenes.HOME:
+                if (HomeManager.instance != null)
+                {
+                    if (isToggled == false)
+                        HomeManager.instance.PauseAudioScene();
+                    else HomeManager.instance.UnPauseAudioScene();
+                }
+                break;
+            case Scenes.JEWEL1:
+                if (Jewel1Manager.instance != null)
+                {
+                    var audioSrc1 = Jewel1Manager.instance.GetAudioSource();
+                    var audioSrc2 = Jewel1Manager.instance.GetJewelAudioSource();
+                    if (isToggled == false)
+                    {
+                        StartCoroutine(Jewel1Manager.instance.FadeOutAudio(audioSrc1, 2f));
+                        StartCoroutine(Jewel1Manager.instance.FadeOutAudio(audioSrc2, 2f));
+                    }
+                    else StartCoroutine(Jewel1Manager.instance.FadeInAudio(audioSrc1, 2f));
+                }
+                break;
+            case Scenes.JEWEL2:
+                if (Jewel2Manager.instance != null)
+                {
+                    var audioSrc = Jewel2Manager.instance.GetAudioSource();
+                    if (isToggled == false)
+                        StartCoroutine(Jewel2Manager.instance.FadeOutAudio(audioSrc, 2f));
+                    else StartCoroutine(Jewel2Manager.instance.FadeInAudio(audioSrc, 2f));
+                }
+                break;
+            case Scenes.JEWEL3:
+                if (Jewel3Manager.instance != null)
+                {
+                    var audioSrc = Jewel3Manager.instance.GetAudioSource();
+                    if (isToggled == false)
+                        StartCoroutine(Jewel3Manager.instance.FadeOutAudio(audioSrc, 2f));
+                    else StartCoroutine(Jewel3Manager.instance.FadeInAudio(audioSrc, 2f));
+                }
+                break;
+            case Scenes.JEWEL4:
+
+                break;
+            default:
+                break;
+        }
     }
 
 

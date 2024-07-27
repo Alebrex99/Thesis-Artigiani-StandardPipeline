@@ -50,7 +50,7 @@ public class VoiceToTextHandler : MonoBehaviour
 
     private void Update()
     {
-        //finchè i secondi totali sono minori di 5 e la lunghezza del messaggio è maggiore di 0 : mi assicuro di inviare solo una volta al server
+        //finchè i secondi totali sono minori di 4.5 e la lunghezza del messaggio è maggiore di 0 : mi assicuro di inviare solo una volta al server
         if ((DateTime.Now - startListeningTime).TotalSeconds >= 4.5 && voiceToTextMessage.Length > 0 &&!isSent)
         {
             Debug.Log("[SENT TO SERVER] time: " + (DateTime.Now - startListeningTime).TotalSeconds);
