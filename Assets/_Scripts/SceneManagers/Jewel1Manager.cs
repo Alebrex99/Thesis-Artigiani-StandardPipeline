@@ -59,6 +59,7 @@ public class Jewel1Manager : MonoBehaviour
         //StartCoroutine(PlayEnvMedia());
         //StartCoroutine(LateActivation(_lateActivatedObj, _activationDelay));
         ResetUserPosition();
+        envAudioSrc.Play(); //attivato sempre quando ritorno in scena anche
         StartCoroutine(LateActivationJewel(_lateActivatedObj, _immersionDelay)); //dopo 15 secondi compare gioiello + audio1 
         StartCoroutine(LateActivationButtons(_lateActivatedObj, _activationDelay));
     }
@@ -128,19 +129,29 @@ public class Jewel1Manager : MonoBehaviour
         toActivate[0].SetActive(true);
         //SETTA POSIZIONI
         _jewel1.transform.position = _jewelInitPos.position;
-        StartCoroutine(FadeInAudio(interactAudioSrc, 3f, _envClips[1])); //Jewel explaination
+        envAudioSrc.volume = 0.5f;
+        StartCoroutine(FadeInAudio(interactAudioSrc, 3f, _envClips[0])); //Jewel explaination
         //envAudioSrc.PlayOneShot(_envClips[1], 1); //Jewel explaination
     }
 
     private IEnumerator LateActivationButtons(GameObject[] toActivate, float _activationDelay)
     {
-        yield return new WaitForSeconds(_activationDelay);
+        yield return new WaitForSeconds(_immersionDelay);
         yield return new WaitUntil(() => !interactAudioSrc.isPlaying); //attendi che l'audio prec sia finito
-        
+        yield return new WaitForSeconds(_activationDelay);
         toActivate[1].SetActive(true);
-        StartCoroutine(FadeInAudio(interactAudioSrc, 2f, _envClips[2]));  //Buttons explanation
-        /*if(!envAudioSrc.isPlaying)
-            envAudioSrc.PlayOneShot(_envClips[2], 1); //Buttons explanation*/
+        if (!cAppManager.isBackHome)
+        {
+            envAudioSrc.volume = 0.5f;
+            StartCoroutine(FadeInAudio(interactAudioSrc, 2f, _envClips[1]));  //Buttons explanation
+            /*if(!envAudioSrc.isPlaying)
+                envAudioSrc.PlayOneShot(_envClips[2], 1); //Buttons explanation*/
+        }
+        else
+        {
+            envAudioSrc.volume = 1f;
+            interactAudioSrc.Stop();
+        }
     }
 
     private void OnJewel1Touched(Jewel jewel, bool isJewelTouched)
@@ -185,7 +196,7 @@ public class Jewel1Manager : MonoBehaviour
         //audioSrc.clip = _envClips[1]; //decidi la clip da settare (da usare con 2 audio source)
         float startVolume = 1;
         audioSrc.volume = 0f;
-        if(!audioSrc.isPlaying)
+        if(!audioSrc.isPlaying) //&&!cAppManager.isBackHome && audioSrc.clip == _envClips[0]
         {
             audioSrc.Play();
         }

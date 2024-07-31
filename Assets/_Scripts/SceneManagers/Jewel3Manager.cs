@@ -67,6 +67,7 @@ public class Jewel3Manager : MonoBehaviour
         //StartCoroutine(PlayEnvMedia());
         //StartCoroutine(LateActivation(_lateActivatedObj, _activationDelay));
         ResetUserPosition();
+        envAudioSrc.Play(); //attivato sempre quando ritorno in scena anche
         StartCoroutine(LateActivationJewel(_lateActivatedObj, _immersionDelay)); //dopo 15 secondi compare gioiello + audio1 
         StartCoroutine(LateActivationButtons(_lateActivatedObj, _activationDelay));
         /*foreach (Renderer renderer in jewel3GameRenderers)
@@ -144,7 +145,8 @@ public class Jewel3Manager : MonoBehaviour
         }*/
         //SETTA POSIZIONI
         _jewel3.transform.position = _jewelInitPos.position;
-        StartCoroutine(FadeInAudio(interactAudioSrc, 3f, _envClips[1])); //Jewel explanation
+        envAudioSrc.volume = 0.5f;
+        StartCoroutine(FadeInAudio(interactAudioSrc, 3f, _envClips[0])); //Jewel explanation
     }
 
     private IEnumerator FadeInMaterial(Material material, float fadeTime)
@@ -165,13 +167,22 @@ public class Jewel3Manager : MonoBehaviour
 
     private IEnumerator LateActivationButtons(GameObject[] toActivate, float _activationDelay)
     {
-        yield return new WaitForSeconds(_activationDelay);
+        yield return new WaitForSeconds(_immersionDelay);
         yield return new WaitUntil(() => !interactAudioSrc.isPlaying); //attendi che l'audio prec sia finito
-
+        yield return new WaitForSeconds(_activationDelay);
         toActivate[1].SetActive(true);
-        StartCoroutine(FadeInAudio(interactAudioSrc, 2f, _envClips[2]));  //Buttons explanation
-        /*if(!envAudioSrc.isPlaying)
-            envAudioSrc.PlayOneShot(_envClips[2], 1); //Buttons explanation*/
+        if (!cAppManager.isBackHome)
+        {
+            envAudioSrc.volume = 0.5f;
+            StartCoroutine(FadeInAudio(interactAudioSrc, 2f, _envClips[1]));  //Buttons explanation
+            /*if(!envAudioSrc.isPlaying)
+                envAudioSrc.PlayOneShot(_envClips[2], 1); //Buttons explanation*/
+        }
+        else
+        {
+            envAudioSrc.volume = 1f;
+            interactAudioSrc.Stop();
+        }
     }
 
 

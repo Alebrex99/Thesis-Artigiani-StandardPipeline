@@ -445,7 +445,7 @@ VideoPlayer:
   m_DataSource: 0
   m_TimeUpdateMode: 2
   m_PlaybackSpeed: 1
-  m_AudioOutputMode: 2
+  m_AudioOutputMode: 0
   m_TargetAudioSources:
   - {fileID: 0}
   m_DirectAudioVolumes:
@@ -1952,12 +1952,11 @@ MonoBehaviour:
   envAudioSrc: {fileID: 6291268883067543746}
   interactAudioSrc: {fileID: 1775056024}
   _envClips:
-  - {fileID: 8300000, guid: 7050f350067260f4fb288932435e0f77, type: 3}
-  - {fileID: 8300000, guid: c60b8ac4916103d41abbb35a9287ff09, type: 3}
-  - {fileID: 8300000, guid: 617f2c717c1dedc4785b6201c6fe878f, type: 3}
+  - {fileID: 8300000, guid: 864c1b9ec96bab545949b49cfa1c63a8, type: 3}
+  - {fileID: 8300000, guid: bc1176162c1255b4f837d2f35df71685, type: 3}
   _envExplainDelay: 1
-  _immersionDelay: 10
-  _activationDelay: 15
+  _immersionDelay: 15
+  _activationDelay: 5
   _lateActivatedObj:
   - {fileID: 1775056021}
   - {fileID: 363151285}
@@ -5877,8 +5876,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_audioClip: {fileID: 8300000, guid: 61a4be28bda0c464db35d2e7f851ba2f, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

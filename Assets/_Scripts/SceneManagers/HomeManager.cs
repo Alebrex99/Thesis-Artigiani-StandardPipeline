@@ -56,6 +56,7 @@ public class HomeManager: MonoBehaviour
     //MY HISTORY + MI TALLER
     [SerializeField] GameObject informations;
     private bool isMyHistoryOpened=false;
+    
     private bool isAgentCalled = false;
 
 
@@ -133,8 +134,9 @@ public class HomeManager: MonoBehaviour
         {
             if (!isRotated) //!envAudioSrc[1].isPlaying
             {
-                StartCoroutine(FadeOutAudio(envAudioSrc[0], 2f));
-                StartCoroutine(FadeInAudio(envAudioSrc[1], 2f));
+                //StartCoroutine(FadeOutAudio(envAudioSrc[0], 2f));
+                //StartCoroutine(FadeInAudio(envAudioSrc[1], 2f));
+                StartCoroutine(SwitchAudio(envAudioSrc[0], envAudioSrc[1], 2f));
             }
             isRotated = true;
 
@@ -143,18 +145,25 @@ public class HomeManager: MonoBehaviour
         {
             if (isRotated)//!envAudioSrc[0].isPlaying
             {
-                StartCoroutine(FadeOutAudio(envAudioSrc[1], 2f));
-                StartCoroutine(FadeInAudio(envAudioSrc[0], 2f));
+                //StartCoroutine(FadeOutAudio(envAudioSrc[1], 2f));
+                //StartCoroutine(FadeInAudio(envAudioSrc[0], 2f));
+                StartCoroutine(SwitchAudio(envAudioSrc[1], envAudioSrc[0], 2f));
             }
             isRotated = false;
         }
     }
 
+    private IEnumerator SwitchAudio(AudioSource fadeOutSrc, AudioSource fadeInSrc, float fadeTime)
+    {
+        yield return StartCoroutine(FadeOutAudio(fadeOutSrc, fadeTime));
+        yield return StartCoroutine(FadeInAudio(fadeInSrc, fadeTime));
+    }
+
+
     public IEnumerator FadeOutAudio(AudioSource audioSrc, float fadeTime)
     {
         //audioSrc.clip = _envClips[1]; //decidi la CLip da settare (da usare con 2 audio source)
         float startVolume = audioSrc.volume;
-
         while (audioSrc.volume > 0)
         {
             audioSrc.volume -= startVolume * Time.deltaTime / fadeTime;
