@@ -167,30 +167,42 @@ public class Jewel1Manager : MonoBehaviour
         sorollaPicture.SetActive(isJewelTouched);
         bShowVideo = true;
         if (isJewelTouched) {
+            envAudioSrc.volume = 0.3f;
             //StartCoroutine(FadeOutAudio(interactAudioSrc, 2f));
             if (currentCoroutine != null) StopCoroutine(currentCoroutine);
             currentCoroutine = StartCoroutine(SwitchAudio(interactAudioSrc, GetJewelAudioSource(), 2f));
-            clipPoint = interactAudioSrc.time;
+            clipPoint = interactAudioSrc.time; //segna il punto del clip che sta uscendo
             Debug.Log("Clip point: " + clipPoint);
             //StartCoroutine(CheckIfClipFinished(GetJewelAudioSource()));
         }
         else
         {
-            //se la clip non è già avviata
-            if (clipPoint <= interactAudioSrc.clip.length && clipPoint != 0)
+            if (!cAppManager.isBackHome)
             {
-                Debug.Log("TIME: " + interactAudioSrc.time + " CLIP : " + interactAudioSrc.clip.length + " condition: " + (interactAudioSrc.time >= interactAudioSrc.clip.length));
-                //StartCoroutine(FadeInAudio(interactAudioSrc, 2f));
-                if (currentCoroutine != null) StopCoroutine(currentCoroutine);
-                currentCoroutine = StartCoroutine(SwitchAudio(GetJewelAudioSource(), interactAudioSrc, 2f));
-                clipPointJewel = GetJewelAudioSource().time; //appena tolgo l'audio del gioiello salvo il punto del clip
-                Debug.Log("Clip point Jewel: " + clipPointJewel);
-                //StartCoroutine(CheckIfClipFinished(interactAudioSrc));
+                //se la clip non è terminata
+                if (clipPoint <= interactAudioSrc.clip.length && clipPoint != 0)
+                {
+                    envAudioSrc.volume = 0.3f;
+                    Debug.Log("TIME: " + interactAudioSrc.time + " CLIP : " + interactAudioSrc.clip.length + " condition: " + (interactAudioSrc.time >= interactAudioSrc.clip.length));
+                    //StartCoroutine(FadeInAudio(interactAudioSrc, 2f));
+                    if (currentCoroutine != null) StopCoroutine(currentCoroutine);
+                    currentCoroutine = StartCoroutine(SwitchAudio(GetJewelAudioSource(), interactAudioSrc, 2f));
+                    //clipPointJewel = GetJewelAudioSource().time; //appena tolgo l'audio del gioiello salvo il punto del clip
+                    //Debug.Log("Clip point Jewel: " + clipPointJewel);
+                    //StartCoroutine(CheckIfClipFinished(interactAudioSrc));
+                }
+                else
+                {
+                    StartCoroutine(FadeOutAudio(GetJewelAudioSource(), 2f));
+                    envAudioSrc.volume = 1f;
+                }
             }
             else
             {
                 StartCoroutine(FadeOutAudio(GetJewelAudioSource(), 2f));
+                envAudioSrc.volume = 1f;
             }
+
         }
     }
 
@@ -289,6 +301,7 @@ public class Jewel1Manager : MonoBehaviour
         {
             StartCoroutine(FadeOutAudio(GetJewelAudioSource(), 2f));
         }
+        envAudioSrc.volume = 0.3f;
     }
     public void UnPauseAudioScene()
     {
@@ -298,12 +311,29 @@ public class Jewel1Manager : MonoBehaviour
         if (isJewelTouched)
         {
             Debug.Log("UnPause Audio Source Sorolla");
+            envAudioSrc.volume = 0.3f;
             StartCoroutine(FadeInAudio(GetJewelAudioSource(), 2f));
         }
         else
         {
-            Debug.Log("UnPause Audio Source Jewel");
-            StartCoroutine(FadeInAudio(interactAudioSrc, 2f));
+            if (!cAppManager.isBackHome)
+            {
+                if (interactAudioSrc.time <= interactAudioSrc.clip.length && interactAudioSrc.time!=0) //se la clip non è finita e non è ripartira
+                {
+                    envAudioSrc.volume = 0.3f;
+                    Debug.Log("UnPause Audio Source Jewel");
+                    StartCoroutine(FadeInAudio(interactAudioSrc, 2f));
+                }
+                else
+                {
+                    envAudioSrc.volume = 1f;
+                }
+            }
+            else
+            {
+                envAudioSrc.volume = 1f;
+            }
+
         }
     }
 

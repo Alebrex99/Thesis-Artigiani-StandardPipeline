@@ -98,7 +98,7 @@ public class Button3D : MonoBehaviour
 
 
 
-    //PER DEMO + PER MY HISTORY ECC.
+    //PER DEMO + PER MY HISTORY + MY EXPERIENCE : SOLO SCENA HOME
     public void ChangeEnvironment()
     {
         /*if(OnEnvironmentChanged != null)
