@@ -11,7 +11,7 @@ public class Jewel : MonoBehaviour
     [SerializeField] private AudioClip pictureClip;
     public Action<Jewel, bool> OnJewelTouched;
     private bool isJewelTouched = false;
-    public bool intJewelActivate = false;
+    public bool interactJewelActivate = false;
     [SerializeField] Image playImg;
     [SerializeField] Image pauseImg;
 
@@ -19,7 +19,7 @@ public class Jewel : MonoBehaviour
     private void Awake()
     {
         isJewelTouched = false;
-        intJewelActivate = false;
+        interactJewelActivate = false;
         pictureAudioSrc.clip = pictureClip;
     }
     void Start()
@@ -39,7 +39,7 @@ public class Jewel : MonoBehaviour
 
     public void TouchJewel()
     {
-        if(intJewelActivate == false)
+        if(interactJewelActivate == false)
         {
             return;
         }
@@ -115,5 +115,9 @@ public class Jewel : MonoBehaviour
         return pictureAudioSrc;
     }
 
+    public void SetInteractJewel(bool value)
+    {
+        interactJewelActivate = value;
+    }
 
 }
