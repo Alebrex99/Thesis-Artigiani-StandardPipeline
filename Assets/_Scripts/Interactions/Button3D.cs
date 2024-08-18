@@ -71,15 +71,8 @@ public class Button3D : MonoBehaviour
         Debug.Log("Toggle Conversational Agent");
         //TOGGLE per zittire il conversational agent
         if (cSocketManager.instance == null) return;
+        cSocketManager.instance.OnAgentActivation += OnAgentActivationEffect;
         cSocketManager.instance.ToggleSocket();
-        if (cSocketManager.agentActivate)
-        {
-            buttonAIMaterial.color = Color.green;
-        }
-        else
-        {
-            buttonAIMaterial.color = originalColor;
-        }
 
         /*if (playImg != null && pauseImg != null)
         {
@@ -94,6 +87,18 @@ public class Button3D : MonoBehaviour
                 playImg.gameObject.SetActive(true);
             }
         }*/
+    }
+
+    public void OnAgentActivationEffect(bool agentActivate)
+    {
+        if (agentActivate)
+        {
+            buttonAIMaterial.color = Color.green;
+        }
+        else
+        {
+            buttonAIMaterial.color = originalColor;
+        }
     }
 
 
@@ -150,5 +155,11 @@ public class Button3D : MonoBehaviour
         return _environmentOn;
     }
 
-    
+    private void OnDestroy()
+    {
+        if (cSocketManager.instance != null)
+            cSocketManager.instance.OnAgentActivation -= OnAgentActivationEffect;
+    }
+
+
 }

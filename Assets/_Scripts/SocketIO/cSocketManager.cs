@@ -72,7 +72,7 @@ public class cSocketManager : MonoBehaviour
     [Header("Bip Clips")]
     [SerializeField] private AudioClip[] agentBipClips; //0 ON , 1 OFF, 2 SENT, 3 WAIT
     public static bool agentActivate = false;
-    //public Action<bool> OnAgentActivation;
+    public Action<bool> OnAgentActivation;
     [SerializeField] private GameObject objectToSpin;
 
 
@@ -247,8 +247,8 @@ public class cSocketManager : MonoBehaviour
         {
             //OnAgentReady?.Invoke();
             //PlayAudioBuffer(audioBufferFloat);
-            receiverAudioSrc.loop = false;
-            receiverAudioSrc.Stop();
+            agentBipSrc.loop = false;
+            agentBipSrc.Stop();
             StartCoroutine(PlayAudioBufferCor(audioBufferFloat));
         }
 
@@ -268,7 +268,7 @@ public class cSocketManager : MonoBehaviour
             using (var memStream = new MemoryStream(conversation.ToArray()))
             using(var mpgFile = new MpegFile(memStream))
             {
-                audioBufferFloat = new float[mpgFile.Length];
+                audioBufferFloat = new float[mpgFile.Length]; //provare con /4 (è in BYTE !!!)
                 mpgFile.ReadSamples(audioBufferFloat, 0, (int)mpgFile.Length);
             }
             bufferReady = true;
@@ -309,7 +309,7 @@ public class cSocketManager : MonoBehaviour
             bool setDataSuccess = clip.SetData(audioBufferFloat, 0); //DEVE ESSERE FATTO NEL MAIN THREAD
             receiverAudioSrc.clip = clip;
             receiverAudioSrc.PlayOneShot(clip, 1f);
-            Debug.Log("[MPEG AUDIO CONVERSION] samples: " + audioBufferFloat.Length + " channels: " + channels + " Sample Rate frequency: " + sampleRate);
+            Debug.Log("[MPEG AUDIO CONVERSION] samples: " + audioBufferFloat.Length + " clip duration: " + clip.length + " channels: " + channels + " Sample Rate frequency: " + sampleRate);
             //INFO : [MPEG AUDIO CONVERSION] samples: 3497472 channels: 1 Sample Rate frequency: 44100
         }
         catch (Exception e)
@@ -319,12 +319,40 @@ public class cSocketManager : MonoBehaviour
         //PULIZIA DEI BUFFERS:
         conversation.Clear();
         bufferReady = false;
+
+        //VERSIONE 1 : RESET POCO USER FREDLY
         //agentActivate = false; //RESET permette nuovamente di parlare
 
-        // Attendi finché l'audio è in riproduzione
-        yield return new WaitWhile(() => receiverAudioSrc.isPlaying);
+        //VERSIONE 2 : RESET USER FRIENDLY
+        // Controllo dei campioni per individuare silenzio alla fine
+        // Monitoraggio manuale del tempo di riproduzione
+        // Monitora il buffer per silenzio
+        int silentSamples = 0;
+        int silenceSampleCount = 1000; // Numero di campioni silenziosi consecutivi per fermare la riproduzione
+        float silenceThreshold = 0.0001f;
+        /*for (int i = 0; i < audioBufferFloat.Length; i++)
+        {
+            if (Mathf.Abs(audioBufferFloat[i]) < silenceThreshold)
+            {
+                silentSamples++;
+                if (silentSamples >= silenceSampleCount)
+                {
+                    // Se abbiamo trovato abbastanza campioni silenziosi consecutivi, fermiamo il ciclo
+                    break;
+                }
+            }
+            else
+            {
+                silentSamples = 0; // Reset se troviamo un campione non silenzioso
+            }
+            yield return null; // Aspetta il prossimo frame, continuando la riproduzione
+        }*/
+
+        yield return new WaitForSeconds(receiverAudioSrc.clip.length/4); //aspetta che finisca di parlare
+
         Debug.Log("Audio source stopped playing");
-        //OnCallToggleManagerAudios(true);
+        ResetAgent();
+        OnCallToggleManagerAudios(true); //accendi audio scena (puoi convertirlo ad azione nel manager)
     }
 
 
@@ -453,29 +481,13 @@ public class cSocketManager : MonoBehaviour
         //CONTROLLO AGENTE :
         if (!agentActivate) //se agente è disattivato -> lo attivi
         {
-            //OnAgentActivation?.Invoke(true);
-            OnCallToggleManagerAudios(false); //spegni audio scena
-            agentActivate = true; // attivi agente
-            _dictationActivation.ToggleActivation(agentActivate); //attivi microfono
-            Debug.Log("[CONV AGENT] ATTIVO CONVERSATIONAL AGENT " + agentActivate);
-
-            //BIP ATTIVAZIONE -> parli -> invii -> ricevi -> agente parla
-            if(agentBipSrc!=null)
-                agentBipSrc.PlayOneShot(agentBipClips[0], 1f);
+            ActivateAgent();
+            OnCallToggleManagerAudios(false); //spegni audio scena (puoi convertirlo ad azione nel manager)
         }
         else // se agente è attivato -> lo spegni
         {
-            //OnAgentActivation?.Invoke(false);
-            OnCallToggleManagerAudios(true); //accendo audio scena
-            agentActivate = false; //disattivi agente
-            _dictationActivation.ToggleActivation(agentActivate); //disattivi microfono
-            Debug.Log("[CONV AGENT] DISATTIVO CONVERSATIONAL AGENT " + agentActivate);
-            stopReceiving = true;
-            Debug.Log("CHANGE stop Receiving -> " + stopReceiving);
-
-            //BIP DISATTIVAZIONE -> quando lo disattivi: mentre parli / mentre ricevi / mentre agente parla
-            if (agentBipSrc != null)
-                agentBipSrc.PlayOneShot(agentBipClips[1], 1f);
+            ResetAgent();
+            OnCallToggleManagerAudios(true); //accendo audio scena (puoi convertirlo ad azione nel manager)
         }
         conversation.Clear();
     }
@@ -526,6 +538,29 @@ public class cSocketManager : MonoBehaviour
         }
     }
 
+    private void ActivateAgent()
+    {
+        agentActivate = true; // attivi agente
+        OnAgentActivation?.Invoke(agentActivate);
+        _dictationActivation.ToggleActivation(agentActivate); //attivi microfono
+        Debug.Log("[CONV AGENT] ATTIVO CONVERSATIONAL AGENT " + agentActivate);
+        //BIP ATTIVAZIONE -> parli -> invii -> ricevi -> agente parla
+        if (agentBipSrc != null)
+            agentBipSrc.PlayOneShot(agentBipClips[0], 1f);
+    }
+
+    private void ResetAgent()
+    {
+        agentActivate = false; //disattivi agente
+        OnAgentActivation?.Invoke(agentActivate);
+        _dictationActivation.ToggleActivation(agentActivate); //disattivi microfono
+        Debug.Log("[CONV AGENT] DISATTIVO CONVERSATIONAL AGENT " + agentActivate);
+        stopReceiving = true;
+        Debug.Log("CHANGE stop Receiving -> " + stopReceiving);
+        //BIP DISATTIVAZIONE -> quando lo disattivi: mentre parli / mentre ricevi / mentre agente parla
+        if (agentBipSrc != null)
+            agentBipSrc.PlayOneShot(agentBipClips[1], 1f);
+    }
 
     /*public void CheckTransition()
     {
@@ -606,8 +641,8 @@ public class cSocketManager : MonoBehaviour
         }
         yield return new WaitForSeconds(1f);
         //waiting background sound
-        receiverAudioSrc.loop = true;
-        receiverAudioSrc.PlayOneShot(agentBipClips[3], 1f); //clip attesa messaggio
+        agentBipSrc.loop = true;
+        agentBipSrc.PlayOneShot(agentBipClips[3], 1f); //clip attesa messaggio
 
         yield return null;
     }
