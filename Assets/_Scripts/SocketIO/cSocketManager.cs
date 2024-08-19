@@ -266,10 +266,11 @@ public class cSocketManager : MonoBehaviour
         try
         {
             using (var memStream = new MemoryStream(conversation.ToArray()))
-            using(var mpgFile = new MpegFile(memStream))
+            using(var mpgFile = new MpegFile(memStream)) //crea un mpgFile in byte (es 100)
             {
-                audioBufferFloat = new float[mpgFile.Length]; //provare con /4 (è in BYTE !!!)
-                mpgFile.ReadSamples(audioBufferFloat, 0, (int)mpgFile.Length);
+                int samplesCount = (int)mpgFile.Length/4; //lunghezza in float
+                audioBufferFloat = new float[samplesCount]; //crei un buffer di float (1 float = 4 byte), es 100 floats
+                mpgFile.ReadSamples(audioBufferFloat, 0, samplesCount); //leggi 
             }
             bufferReady = true;
         }
@@ -324,32 +325,8 @@ public class cSocketManager : MonoBehaviour
         //agentActivate = false; //RESET permette nuovamente di parlare
 
         //VERSIONE 2 : RESET USER FRIENDLY
-        // Controllo dei campioni per individuare silenzio alla fine
-        // Monitoraggio manuale del tempo di riproduzione
-        // Monitora il buffer per silenzio
-        int silentSamples = 0;
-        int silenceSampleCount = 1000; // Numero di campioni silenziosi consecutivi per fermare la riproduzione
-        float silenceThreshold = 0.0001f;
-        /*for (int i = 0; i < audioBufferFloat.Length; i++)
-        {
-            if (Mathf.Abs(audioBufferFloat[i]) < silenceThreshold)
-            {
-                silentSamples++;
-                if (silentSamples >= silenceSampleCount)
-                {
-                    // Se abbiamo trovato abbastanza campioni silenziosi consecutivi, fermiamo il ciclo
-                    break;
-                }
-            }
-            else
-            {
-                silentSamples = 0; // Reset se troviamo un campione non silenzioso
-            }
-            yield return null; // Aspetta il prossimo frame, continuando la riproduzione
-        }*/
-
-        yield return new WaitForSeconds(receiverAudioSrc.clip.length/4); //aspetta che finisca di parlare
-
+        //yield return new WaitForSeconds(receiverAudioSrc.clip.length); //se crei il buffer con lunghezza in byte (4 volte la lenght in floats) -> receiverAudioSrc.clip.length/4
+        yield return new WaitUntil(() => !receiverAudioSrc.isPlaying); //aspetta che finisca di parlare
         Debug.Log("Audio source stopped playing");
         ResetAgent();
         OnCallToggleManagerAudios(true); //accendi audio scena (puoi convertirlo ad azione nel manager)
@@ -627,7 +604,7 @@ public class cSocketManager : MonoBehaviour
     public IEnumerator SendMessageToServer(string message, string evenName = "")
     {
         //AUDIO OF SENDING MESSAGE
-        agentBipSrc.PlayOneShot(agentBipClips[2], 1f); //clip invio messagio
+        if(agentBipSrc!=null) agentBipSrc.PlayOneShot(agentBipClips[2], 1f); //clip invio messagio
         //TO SEND MESSAGES FROM CLIENT TO SERVER
         if (isConnected)
         {
@@ -641,9 +618,11 @@ public class cSocketManager : MonoBehaviour
         }
         yield return new WaitForSeconds(1f);
         //waiting background sound
-        agentBipSrc.loop = true;
-        agentBipSrc.PlayOneShot(agentBipClips[3], 1f); //clip attesa messaggio
-
+        if (agentBipSrc != null)
+        {
+            agentBipSrc.loop = true;
+            agentBipSrc.PlayOneShot(agentBipClips[3], 1f); //clip attesa messaggio
+        }
         yield return null;
     }
 

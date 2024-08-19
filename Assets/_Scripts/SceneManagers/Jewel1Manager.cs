@@ -21,6 +21,7 @@ public class Jewel1Manager : MonoBehaviour
     private float clipPoint = 0;
     private float clipPointJewel = 0;  
     private bool hasClipFinished = false;
+    private bool isAgentCalled = false;
     [Range(0, 60)]
     [SerializeField] private float _envExplainDelay = 1f;
     [Range(0, 60)]
@@ -51,6 +52,13 @@ public class Jewel1Manager : MonoBehaviour
         instance = this;
 
         _jewel1.OnJewelTouched += OnJewel1Touched;
+        if(cSocketManager.instance != null)
+        {
+            cSocketManager.instance.OnAgentActivation = (bool agentActivate) =>
+            {
+                isAgentCalled = agentActivate;
+            };
+        }
         sorollaPicture.SetActive(false);
         //jewel1Informations.SetActive(false);
         foreach (GameObject lateObj in _lateActivatedObj)
@@ -170,7 +178,7 @@ public class Jewel1Manager : MonoBehaviour
 
         //AUDIO
         //se clicco sul gioiello, ma l'agente è attivo, non fare nulla
-        if (cSocketManager.instance!=null && cSocketManager.agentActivate)
+        if (isAgentCalled)
         {
             return;
         }
