@@ -108,6 +108,20 @@ public class HomeManager: MonoBehaviour
 
         //ATTIVAZIONI RITARDATE
         StartCoroutine(LateActivation(_lateActivatedObj, _activationDelay));
+
+        //SET VALORI DA FILE CONFIGURAZIONE
+        string currentSceneName = "HOME";
+        if (ReadConfig.configDataMap.ContainsKey(currentSceneName))
+        {
+            Dictionary<string, float> parameters = ReadConfig.configDataMap[currentSceneName];
+            if (parameters.TryGetValue("ActivationDelay", out float activationDelay))
+                _activationDelay = activationDelay;
+            if (parameters.TryGetValue("ChairSpeed", out float chairSpeed))
+                rotationChairSpeed = chairSpeed;
+            if(parameters.TryGetValue("AngleSwitch", out float angleSwitchValue))
+                angleSwitch = (int)angleSwitchValue;
+        }
+
     }
     private void Update()
     {

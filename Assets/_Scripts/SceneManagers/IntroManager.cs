@@ -105,9 +105,18 @@ public class IntroManager : MonoBehaviour
         Debug.Log("[Init Application]: FILE CONFIG.CSV READ");
         cMainUIManager.HideLoading();
 
-        //READ CSV FILE: loading distance + fadetime + rotation video speed + activation delay
         //READ FROM FILE CSV
-        string introData = ReadConfig.configData.Find((string line) => line.Contains("INTRO"));
+        //string introData = ReadConfig.configData.Find((string line) => line.Contains("INTRO"));
+
+        string currentSceneName = "INTRO";
+        if (ReadConfig.configDataMap.ContainsKey(currentSceneName))
+        {
+            Dictionary<string, float> parameters = ReadConfig.configDataMap[currentSceneName];
+            if(parameters.TryGetValue("ActivationButtonDelay", out float buttonDelay)) 
+                _activationButtonDelay = buttonDelay;
+            if(parameters.TryGetValue("ChairSpeed", out float chairSpeed)) 
+                rotationChairSpeed = chairSpeed;
+        }
 
         //ACCENDO LA SCENA
         goVideoPlayer.gameObject.SetActive(true);
