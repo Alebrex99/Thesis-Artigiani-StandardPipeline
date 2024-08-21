@@ -53,6 +53,8 @@ public class cSocketManager : MonoBehaviour
     private int channels = 1;
     //private MpegFile mpgFile;
     private Coroutine playAudioBufferCor;
+    public static bool serverException = false;
+    public Action<int> OnAgentException;
 
     //VERSIONE RUN TIME PLAYBACK
     public ConcurrentQueue<byte[]> audioQueue = new ConcurrentQueue<byte[]>(); //usa concurrent queue per thread safety
@@ -252,6 +254,11 @@ public class cSocketManager : MonoBehaviour
             agentBipSrc.Stop();
             playAudioBufferCor = StartCoroutine(PlayAudioBufferCor(audioBufferFloat));
         }
+        if (serverException)
+        {
+            OnAgentExceptionLauncher(0);
+            serverException = false;
+        }
 
         //REAL TIME AUDIO BUFFER
         /*if (audioQueue.Count > 2)
@@ -277,6 +284,9 @@ public class cSocketManager : MonoBehaviour
         }
         catch (Exception ex) {
             Debug.LogError("Custom Error: error loading audio: " + ex.Message);
+            if(conversation.Count ==0) Debug.LogWarning("Conversation is empty");
+            else Debug.Log("Conversation length: " + conversation.Count);
+            serverException = true;
         }
     }
 
@@ -438,6 +448,7 @@ public class cSocketManager : MonoBehaviour
     //CONTROLLO DELLA RICEZIONE E ABILITAZIONE A PARLARE
     public void ToggleSocket()
     {
+        Debug.Log("Toggle SOCKET Conversational Agent");
         //CheckTransition();
 
         //OPERAZIONI GENERALI DEL SOCKET
@@ -528,7 +539,7 @@ public class cSocketManager : MonoBehaviour
     {
         agentActivate = true; // attivi agente
         _dictationActivation.ToggleActivation(agentActivate); //attivi microfono
-        Debug.Log("[CONV AGENT] ATTIVO CONVERSATIONAL AGENT " + agentActivate);
+        Debug.Log("[CONV AGENT]--------ATTIVO CONVERSATIONAL AGENT------- " + agentActivate);
         //BIP ATTIVAZIONE -> parli -> invii -> ricevi -> agente parla
         if (agentBipSrc != null)
             agentBipSrc.PlayOneShot(agentBipClips[0], 1f);
@@ -538,18 +549,28 @@ public class cSocketManager : MonoBehaviour
     {
         agentActivate = false; //disattivi agente
         _dictationActivation.ToggleActivation(agentActivate); //disattivi microfono
-        Debug.Log("[CONV AGENT] DISATTIVO CONVERSATIONAL AGENT " + agentActivate);
+        Debug.Log("[CONV AGENT]--------DISATTIVO CONVERSATIONAL AGENT------ " + agentActivate);
         stopReceiving = true;
         Debug.Log("CHANGE stop Receiving -> " + stopReceiving);
         
         agentBipSrc.loop = false;
         if (agentBipSrc.isPlaying) agentBipSrc.Stop();
-        if(playAudioBufferCor!=null) StopCoroutine(playAudioBufferCor);
+        if (playAudioBufferCor!=null) StopCoroutine(playAudioBufferCor);
         if (receiverAudioSrc.isPlaying) receiverAudioSrc.Stop();
         
         //BIP DISATTIVAZIONE -> quando lo disattivi: mentre parli / mentre ricevi / mentre agente parla
         if (agentBipSrc != null)
             agentBipSrc.PlayOneShot(agentBipClips[1], 1f);
+    }
+
+    public void OnAgentExceptionLauncher(int exceptionNumber)
+    {
+        if (agentActivate)
+        {
+            ResetAgent();
+            OnAgentActivation?.Invoke(agentActivate);
+        }
+        OnAgentException?.Invoke(exceptionNumber);
     }
 
     /*public void CheckTransition()
@@ -629,7 +650,7 @@ public class cSocketManager : MonoBehaviour
             socket.Emit("chat_message", message); //.Wait() (usato nei thread per attendere che il thread finisca) ma si bloccava prima
             Debug.Log("Message sent");
         }
-        yield return new WaitForSeconds(1f);
+        //yield return new WaitForSeconds(1f);
         //waiting background sound
         if (agentBipSrc != null)
         {

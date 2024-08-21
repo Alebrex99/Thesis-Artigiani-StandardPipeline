@@ -70,10 +70,11 @@ public class Button3D : MonoBehaviour
     //AI : CONVERSATIONAL AGENT
     public void CallConversationalAgent()
     {
-        Debug.Log("Toggle Conversational Agent");
+        Debug.Log("--------Toggle Conversational Agent----------");
         //TOGGLE per zittire il conversational agent
         if (cSocketManager.instance == null) return;
         cSocketManager.instance.OnAgentActivation += OnAgentActivationEffect;
+        cSocketManager.instance.OnAgentException += OnAgentExceptionHandle;
         cSocketManager.instance.ToggleSocket();
         /*if (playImg != null && pauseImg != null)
         {
@@ -102,6 +103,20 @@ public class Button3D : MonoBehaviour
             buttonAIMaterial.color = originalColor;
             text_label.text = "Habla con JOSE MARIN";
 
+        }
+    }
+
+    public void OnAgentExceptionHandle(int exceptionNumber)
+    {
+        if (exceptionNumber==0) //server exception
+        {
+            text_label.text = "Error de conexión";
+            return;
+        }
+        if (exceptionNumber==1) //message exception
+        {
+            text_label.text = "No te he escuchado bien...";
+            return;
         }
     }
 
@@ -162,7 +177,10 @@ public class Button3D : MonoBehaviour
     private void OnDestroy()
     {
         if (cSocketManager.instance != null)
+        {
             cSocketManager.instance.OnAgentActivation -= OnAgentActivationEffect;
+            cSocketManager.instance.OnAgentException -= OnAgentExceptionHandle;
+        }
     }
 
 

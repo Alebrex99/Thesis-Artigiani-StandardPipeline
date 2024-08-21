@@ -44,7 +44,7 @@ public class LoadingTrigger : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
 
-        Debug.Log("ENTRATO: " + other.gameObject.name);
+        //Debug.Log("ENTRATO: " + other.gameObject.name);
         if (cMenuLoad.IsShowing() && goToSwitchOffMenu.Contains(other.gameObject))
         {
             if(other.GetComponentInParent<OVRCameraRig>() == null)

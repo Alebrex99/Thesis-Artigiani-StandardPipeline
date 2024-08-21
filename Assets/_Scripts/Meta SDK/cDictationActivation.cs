@@ -35,6 +35,7 @@ namespace Meta.Voice.Samples.Dictation
             //accendo il microfono
             if (agentActivate)
             {
+                Debug.Log("Dictation Activation");
                 //AVVIO DEL BIP
                 //se mi stava ascoltando
                 if (_dictation.MicActive)

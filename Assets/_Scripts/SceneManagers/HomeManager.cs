@@ -3,6 +3,7 @@ using Meta.WitAi;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Video;
 
@@ -201,6 +202,7 @@ public class HomeManager: MonoBehaviour
             yield return null;  // Attendere un frame e riprovare
         }
         yield return StartCoroutine(FadeOutAudio(fadeOutSrc, fadeTime));
+        if (isAgentCalled) yield break; //per evitare che si attivi l'audio frontale
         yield return StartCoroutine(FadeInAudio(fadeInSrc, fadeTime));
     }
 
@@ -358,18 +360,20 @@ public class HomeManager: MonoBehaviour
         //metti in pausa 
         foreach(AudioSource audioSrc in envAudioSrc)
         {
-            if (audioSrc.isPlaying)
+            if (audioSrc.isPlaying && audioSrc != envAudioSrc[2])
             {
                 audioSrc.Pause();
                 //StartCoroutine(FadeOutAudio(audioSrc, 2f));
             }
         }
         myExpVideoPlayer.SetDirectAudioVolume(0, 0f);
+        envAudioSrc[2].volume = 0.3f;
         //isAgentCalled = true;
     }
     public void UnPauseAudioScene()
     {
         myExpVideoPlayer.SetDirectAudioVolume(0, 0.5f);
+        envAudioSrc[2].volume = 1f;
         //isAgentCalled = false;
     }
 

@@ -25,6 +25,7 @@ public class VoiceToTextHandler : MonoBehaviour
         appDictationExperience.TranscriptionEvents.OnFullTranscription.AddListener(OnFullTranscription);
         appDictationExperience.AudioEvents.OnMicStartedListening.AddListener(() =>
         {
+            if(appVoiceActive) return; //assicura 1 chiamata sola
             appVoiceActive = true;
             isSent = false;
             voiceToTextMessage = "";
@@ -35,9 +36,14 @@ public class VoiceToTextHandler : MonoBehaviour
         });
         appDictationExperience.AudioEvents.OnMicStoppedListening.AddListener(() =>
         {
+            if(!appVoiceActive) return; //assicura 1 chiamata sola
             appVoiceActive = false;
             if(text_window != null) text_window.text = "Stopped Listening";
             else Debug.Log("Stopped Listening");
+            if(voiceToTextMessage.Length <= 0)
+            {
+                cSocketManager.instance.OnAgentExceptionLauncher(1);
+            }
             //se toggle bottone -> stop listening -> cancelli dati e non invii al server
             //se attendi perchè sei sicuro di inviarli 4.5 secondi -> prima invii al server, poi pulisci (stop listening)
             voiceToTextMessage = "";
@@ -52,7 +58,6 @@ public class VoiceToTextHandler : MonoBehaviour
             if (!cSocketManager.agentActivate) return;
             Debug.Log("[SENT TO SERVER] time: " + (DateTime.Now - startListeningTime).TotalSeconds);
             StartCoroutine(cSocketManager.instance.SendMessageToServer(this.voiceToTextMessage));
-            voiceToTextMessage = "";
             isSent = true;
         }
     }
@@ -71,5 +76,32 @@ public class VoiceToTextHandler : MonoBehaviour
         //CHIAMATA ALL'AI : METTO SE DEVE ESSERE POSSIBILE OVUNQUE; altrimenti solo da bottoni
         Debug.Log("Conversational Agent Message: " + voiceToTextMessage);
 
+    }
+
+    public void OnStartedListening()
+    {
+        appVoiceActive = true;
+        isSent = false;
+        voiceToTextMessage = "";
+        //START TIMER: Per esser sicuro di inviare al server ciò che ho preso finora
+        startListeningTime = DateTime.Now;
+        if (text_window != null) text_window.text = "Listening...";
+        else Debug.Log("Listening...");
+    }
+
+    public void OnStoppedListening()
+    {
+        appVoiceActive = false;
+        if (text_window != null) text_window.text = "Stopped Listening";
+        else Debug.Log("Stopped Listening");
+        if (voiceToTextMessage.Length <= 0)
+        {
+            cSocketManager.instance.ResetAgent();
+            cSocketManager.instance.OnAgentActivation?.Invoke(false);
+            cSocketManager.instance.OnAgentException?.Invoke(1);
+        }
+        //se toggle bottone -> stop listening -> cancelli dati e non invii al server
+        //se attendi perchè sei sicuro di inviarli 4.5 secondi -> prima invii al server, poi pulisci (stop listening)
+        voiceToTextMessage = "";
     }
 }
