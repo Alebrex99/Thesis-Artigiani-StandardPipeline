@@ -27,7 +27,7 @@ public class HomeManager: MonoBehaviour
     public AudioClip[] _buttonExplainClips;
     [SerializeField] private GameObject[] _lateActivatedObj; //interagibili principali (bottoni main ecc)
     [Range(0,60)]
-    [SerializeField] private float _activationDelay = 1f;
+    [SerializeField] private float _activationDelay = 4f;
     [SerializeField] private Transform mainInteractablesInitPos;
     [SerializeField] private Button3D[] _buttonsMain3D;
 
@@ -44,7 +44,8 @@ public class HomeManager: MonoBehaviour
     [Range(0.1f, 1)]
     [SerializeField] private float rotationChairSpeed = 0.6f;
     [Range(30, 200)]
-    [SerializeField] public int angleSwitch = 80;
+    [SerializeField] public int angleSwitch = 70;
+    private float _switchAudioDelay = 2f;
     private Coroutine currentCoroutine;
     private bool isFading = false;
 
@@ -164,35 +165,21 @@ public class HomeManager: MonoBehaviour
             }
             isRotated = false;
         }*/
-        if(isFading) return;
-        if (IsRotated())
+        if (isFading) return;
+        if (IsRotated() && !isRotated)
         {
-            if (!isRotated) //!envAudioSrc[1].isPlaying
-            {
-                if (currentCoroutine != null)
-                {
-                    StopCoroutine(currentCoroutine);
-                    Debug.Log("IS FADING: " + isFading);
-                    //isFading = false;
-                }
-                currentCoroutine = StartCoroutine(SwitchAudio(envAudioSrc[0], envAudioSrc[1], 2f));
-                isRotated = true;
-            }
+            if (currentCoroutine != null) StopCoroutine(currentCoroutine);
+            currentCoroutine = StartCoroutine(SwitchAudio(envAudioSrc[0], envAudioSrc[1], _switchAudioDelay));
+            isRotated = true;
         }
-        else
+        else if (!IsRotated() && isRotated)
         {
-            if (isRotated)//!envAudioSrc[0].isPlaying
-            {
-                if (currentCoroutine != null) { 
-                    StopCoroutine(currentCoroutine);
-                    Debug.Log("IS FADING: " + isFading);
-                    //isFading = false;
-                }
-                currentCoroutine = StartCoroutine(SwitchAudio(envAudioSrc[1], envAudioSrc[0], 2f));
-                isRotated = false;
-            }
+            if (currentCoroutine != null) StopCoroutine(currentCoroutine);
+            currentCoroutine = StartCoroutine(SwitchAudio(envAudioSrc[1], envAudioSrc[0], _switchAudioDelay));
+            isRotated = false;
         }
-        //if (isAgentCalled) PauseAudioScene(); //per sicurezza è necessario in caso mi giri mentre c'è il fade out audio frontale
+
+        if (isAgentCalled) PauseAudioScene(); //per sicurezza è necessario in caso mi giri mentre c'è il fade out audio frontale
     }
 
     private bool IsRotated()
@@ -211,7 +198,62 @@ public class HomeManager: MonoBehaviour
         }
     }
 
+    public void ResetSwitch()
+    {
+        if(currentCoroutine != null) StopCoroutine(currentCoroutine);
+        envAudioSrc[2].UnPause(); //unpause audio ambiente
+        if(IsRotated()) isRotated = false;
+        else isRotated = true;
+        isFading = false;
+        _switchAudioDelay = 1f;
+        isEnvironmentChanged = false;
+    }
+    public void StopSwitch()
+    {
+        if(currentCoroutine != null) StopCoroutine(currentCoroutine);
+        envAudioSrc[2].Pause();
+        isEnvironmentChanged = true;
+    }
+
     private IEnumerator SwitchAudio(AudioSource fadeOutSrc, AudioSource fadeInSrc, float fadeTime)
+    {
+        isFading = true;
+        //----------FADE OUT--------------
+        float startVolume = fadeOutSrc.volume;
+        while (fadeOutSrc.volume > 0)
+        {
+            fadeOutSrc.volume -= startVolume * Time.deltaTime / fadeTime;
+            yield return null;
+        }
+
+        fadeOutSrc.Pause();
+        fadeOutSrc.volume = startVolume;
+
+        //-----------FADE IN--------------
+        float startVolumeIn = 1f;
+        fadeInSrc.volume = 0f;
+        if (!initialPlayDone)
+        {
+            fadeInSrc.Play();
+            initialPlayDone = true;
+        }
+        else fadeInSrc.UnPause();
+        Debug.Log("UNPAUSE FADIN");
+
+        float currentTime = 0f;
+        while (currentTime < fadeTime)
+        {
+            currentTime += Time.deltaTime;
+            fadeInSrc.volume = Mathf.Lerp(0f, startVolumeIn, currentTime / fadeTime);
+            yield return null;
+        }
+
+        fadeInSrc.volume = startVolumeIn;
+
+        isFading = false;
+    }
+
+    /*private IEnumerator OldSwitchAudio(AudioSource fadeOutSrc, AudioSource fadeInSrc, float fadeTime)
     {
         while (isFading)
         {
@@ -220,9 +262,7 @@ public class HomeManager: MonoBehaviour
         yield return StartCoroutine(FadeOutAudio(fadeOutSrc, fadeTime));
         if (isAgentCalled) yield break; //per evitare che si attivi l'audio frontale
         yield return StartCoroutine(FadeInAudio(fadeInSrc, fadeTime));
-    }
-
-
+    }*/
     public IEnumerator FadeOutAudio(AudioSource audioSrc, float fadeTime)
     {
         isFading = true;
@@ -263,6 +303,7 @@ public class HomeManager: MonoBehaviour
         audioSrc.volume = startVolume;
         isFading = false;
     }
+    
     private IEnumerator LateActivation(GameObject[] toActivate, float _activationDelay)
     {
         yield return new WaitForSeconds(_activationDelay);

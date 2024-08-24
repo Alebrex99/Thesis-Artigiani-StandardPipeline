@@ -140,6 +140,7 @@ public class Button3D : MonoBehaviour
         if (activeButton != null && activeButton != this)
         {
             activeButton.ResetIcon();
+            activeButton.ResetLabel();
         }
 
         //CAMBIO AMBIENTE:
@@ -150,10 +151,12 @@ public class Button3D : MonoBehaviour
             HomeManager._currentEnvironment.SetActive(false);
             HomeManager._currentEnvironment = _environmentMain;
             HomeManager._currentEnvironment.SetActive(true);
-            HomeManager.instance.isEnvironmentChanged = false;
-            HomeManager.instance.envAudioSrc[2].UnPause();
+            //HomeManager.instance.isEnvironmentChanged = false;
+            //HomeManager.instance.envAudioSrc[2].UnPause();
+            HomeManager.instance.ResetSwitch();
+            activeButton.ResetLabel();
             infoimage.gameObject.SetActive(true);
-            if(HandDetectionManager.instance!=null) HandDetectionManager.instance.Deactivate();
+            if (HandDetectionManager.instance!=null) HandDetectionManager.instance.Deactivate();
         }
         //se l'ambiente corrente non è quello da accendere, spegni quello corrente e accendi quello da accendere
         //DA HOME -> ON
@@ -162,9 +165,12 @@ public class Button3D : MonoBehaviour
             HomeManager._currentEnvironment.SetActive(false);
             HomeManager._currentEnvironment = _environmentOn;
             HomeManager._currentEnvironment.SetActive(true);
-            HomeManager.instance.isEnvironmentChanged = true;
+            //HomeManager.instance.isEnvironmentChanged = true;
+            //HomeManager.instance.envAudioSrc[2].Pause();
+            HomeManager.instance.StopSwitch();
             infoimage.gameObject.SetActive(false);
-            HomeManager.instance.envAudioSrc[2].Pause();
+            if (text_label != null) text_label.text = "INFO a la izquierda";
+
             if (HandDetectionManager.instance!=null) HandDetectionManager.instance.Activate();
         }
         activeButton = this;
@@ -174,6 +180,11 @@ public class Button3D : MonoBehaviour
     public void ResetIcon()
     {
         infoimage.gameObject.SetActive(true);
+    }
+    public void ResetLabel()
+    {
+        if (text_label != null && getButtonName() == "ButtonMyExperience") text_label.text = "Mi experiencia";
+        if (text_label != null && getButtonName() == "ButtonMyHistory") text_label.text = "Mi historia";
     }
 
     public GameObject GetAssociatedEnvironment()

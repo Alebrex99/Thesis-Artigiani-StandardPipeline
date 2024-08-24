@@ -13,7 +13,7 @@ public class cMainUIManager : MonoBehaviour{
     [Range(0,10)]
     private float loadingTime= 1f;
     [Range(0, 2)]
-    public float loadingDistance = 0.5f;
+    public float loadingDistance = 1f;
     //ALE public cAlertWindow scrAlert;
     //ALE public cUITutorial scrTutorial;
     //ALE public TextMeshProUGUI txLog;
@@ -58,14 +58,26 @@ public class cMainUIManager : MonoBehaviour{
     public static void ShowMenuCanvas()
     {
         instance.goMainCanvas.SetActive(true); //show canvas of the Menu (managed from cMenuLoad)
+        //OLD VERSION
         //instance.goMainCanvas.transform.position = cXRManager.GetTrCenterEye().position + cXRManager.GetTrCenterEye().forward * instance.loadingDistance; // ALE 0.5f
         //instance.goMainCanvas.transform.rotation = Quaternion.LookRotation(instance.goMainCanvas.transform.position - cXRManager.GetTrCenterEye().position); //ALE
         //instance.goMainCanvas.transform.eulerAngles = new Vector3(0, instance.goMainCanvas.transform.eulerAngles.y, 0);
         //instance.scrMenuLoad.ShowMenu();
 
-        Vector3 forwardDirection = new Vector3(cXRManager.GetTrCenterEye().forward.x, 0, cXRManager.GetTrCenterEye().forward.z).normalized;
+        //VERSIONE CENTER EYE FUNZIONANTE
+        /*Vector3 forwardDirection = new Vector3(cXRManager.GetTrCenterEye().forward.x, 0, cXRManager.GetTrCenterEye().forward.z).normalized;
         instance.goMainCanvas.transform.position = cXRManager.GetTrCenterEye().position + forwardDirection * instance.loadingDistance; // ALE 0.5f
         instance.goMainCanvas.transform.rotation = Quaternion.LookRotation(forwardDirection); //ALE
+        instance.goMainCanvas.transform.eulerAngles = new Vector3(0, instance.goMainCanvas.transform.eulerAngles.y, 0);
+        instance.scrMenuLoad.ShowMenu();*/
+
+        //VERSIONE USER POSITION
+        Vector3 userPosition = cXRManager.GetTrUserPosition().position;
+        Vector3 forwardDirection = cXRManager.GetTrUserPosition().forward * instance.loadingDistance;
+        float userHeight = cXRManager.GetTrCenterEye().position.y;
+        Vector3 menuPosition = userPosition + new Vector3(userPosition.x, userHeight, forwardDirection.z);
+        instance.goMainCanvas.transform.position = menuPosition; 
+        instance.goMainCanvas.transform.rotation = cXRManager.GetTrUserPosition().rotation; //ALE
         instance.goMainCanvas.transform.eulerAngles = new Vector3(0, instance.goMainCanvas.transform.eulerAngles.y, 0);
         instance.scrMenuLoad.ShowMenu();
     }

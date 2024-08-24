@@ -127,7 +127,8 @@ public class IntroManager : MonoBehaviour
         yield return new WaitUntil(() => cXRManager.GetTrCenterEye().position != GetUserInitTr().position);
         cMainUIManager.ShowMenuCanvas();
         chairInitPos.gameObject.SetActive(true); //attivo sedia
-        chairInitPos.position = new Vector3(chairInitPos.position.x, GetUserInitTr().position.y+0.6f, GetUserInitTr().position.z-0.2f);
+        float userX = cXRManager.GetTrUserPosition().position.x;
+        chairInitPos.position = new Vector3(userX, GetUserInitTr().position.y+0.6f, GetUserInitTr().position.z);
         //chairInitPos.position = new Vector3(chairInitPos.position.x, cXRManager.GetTrCenterEye().position.y - 0.6f, cXRManager.GetTrCenterEye().position.z -0.2f);
     }
 
