@@ -2750,8 +2750,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4279245567
-  m_fontColor: {r: 1, g: 0.101960786, b: 0.0627451, a: 1}
+    rgba: 4285756275
+  m_fontColor: {r: 0.4528302, g: 0.4528302, b: 0.4528302, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -9336,7 +9336,7 @@ Transform:
   m_GameObject: {fileID: 566155003}
   serializedVersion: 2
   m_LocalRotation: {x: 0.70710677, y: 0, z: 0, w: 0.70710677}
-  m_LocalPosition: {x: -0.00006448422, y: -3.32, z: -3.995}
+  m_LocalPosition: {x: -0.00006448422, y: -3.505, z: -4.012}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -12281,7 +12281,7 @@ MonoBehaviour:
   isExternalSurface: 1
   externalSurfaceWidth: 4096
   externalSurfaceHeight: 2048
-  compositionDepth: 0
+  compositionDepth: 1
   noDepthBufferTesting: 0
   layerTextureFormat: 0
   currentOverlayShape: 5
@@ -12348,7 +12348,7 @@ MonoBehaviour:
   LoopVideo: 1
   Shape: 1
   Stereo: 2
-  AutoDetectStereoLayout: 1
+  AutoDetectStereoLayout: 0
   DisplayMono: 0
 --- !u!23 &737297688
 MeshRenderer:
@@ -21384,7 +21384,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7114770130731238583, guid: d6733f35cecdc984c9d50925eb25939e, type: 3}
       propertyPath: m_Color.a
-      value: 0.8
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 7114770130731238583, guid: d6733f35cecdc984c9d50925eb25939e, type: 3}
       propertyPath: m_Color.b

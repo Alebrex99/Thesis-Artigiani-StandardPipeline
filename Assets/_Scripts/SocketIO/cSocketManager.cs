@@ -569,6 +569,10 @@ public class cSocketManager : MonoBehaviour
             agentBipSrc.PlayOneShot(agentBipClips[1], 1f);
     }
 
+    //EXCEPTIONS:
+    /*0 : server exception = fail creation MP3
+      1 : message legth = 0
+      2 : socket not connected*/
     public void OnAgentExceptionLauncher(int exceptionNumber)
     {
         if (agentActivate)

@@ -1,6 +1,8 @@
+using Evereal.VRVideoPlayer;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,8 +14,11 @@ public class Jewel : MonoBehaviour
     public Action<Jewel, bool> OnJewelTouched;
     private bool isJewelTouched = false;
     public bool interactJewelActivate = false;
+    [SerializeField] string jewelName;
     [SerializeField] Image playImg;
     [SerializeField] Image pauseImg;
+    [SerializeField] private TMP_Text text_label;
+    private Color text_label_color;
 
     // Start is called before the first frame update
     private void Awake()
@@ -55,11 +60,13 @@ public class Jewel : MonoBehaviour
             {
                 playImg.gameObject.SetActive(false);
                 pauseImg.gameObject.SetActive(true);
+                ChangeLabel();
             }
             else
             {
                 pauseImg.gameObject.SetActive(false);
                 playImg.gameObject.SetActive(true);
+                ResetLabel();
             }
         }
         //se la clip non è già avviata
@@ -73,6 +80,26 @@ public class Jewel : MonoBehaviour
         {
             StartCoroutine(FadeOutAudio(pictureAudioSrc, 2f));
         }*/
+    }
+
+    public void ChangeLabel()
+    {
+        if (text_label != null)
+        {
+            text_label_color = text_label.color;
+            if(GetJewelName()== "Jewel1") text_label.color = new Color(0, 152, 255, 255); // Set the color to #0098FF
+            if(GetJewelName() == "Jewel2") text_label.color = Color.white; // Set the color to #FF0000
+            if (GetJewelName() == "Jewel3") text_label.color = new Color(146, 226, 0, 255); // Set the color to #92E200
+            text_label.text = "Mira a derecha";
+        }
+    }
+    public void ResetLabel()
+    {
+        if (text_label != null)
+        {
+            text_label.color = text_label_color;
+            text_label.text = "Pulse o toca la joya";
+        }
     }
 
     private IEnumerator FadeOutAudio(AudioSource audioSrc, float fadeTime)
@@ -118,6 +145,11 @@ public class Jewel : MonoBehaviour
     public void SetInteractJewel(bool value)
     {
         interactJewelActivate = value;
+    }
+
+    public string GetJewelName()
+    {
+        return jewelName;
     }
 
 }

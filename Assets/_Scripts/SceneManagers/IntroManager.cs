@@ -128,7 +128,14 @@ public class IntroManager : MonoBehaviour
         cMainUIManager.ShowMenuCanvas();
         chairInitPos.gameObject.SetActive(true); //attivo sedia
         float userX = cXRManager.GetTrUserPosition().position.x;
-        chairInitPos.position = new Vector3(userX, GetUserInitTr().position.y+0.6f, GetUserInitTr().position.z);
+        float userYEye = cXRManager.GetTrCenterEye().position.y;
+        float userY = cXRManager.GetTrUserPosition().position.y;
+        float userZ = cXRManager.GetTrUserPosition().position.z;
+        chairInitPos.position = new Vector3(userX, userY +0.6f, userZ);
+        //Funzionante
+        //chairInitPos.position = new Vector3(userX, GetUserInitTr().position.y+0.6f, GetUserInitTr().position.z);
+
+        //OLD VERSION
         //chairInitPos.position = new Vector3(chairInitPos.position.x, cXRManager.GetTrCenterEye().position.y - 0.6f, cXRManager.GetTrCenterEye().position.z -0.2f);
     }
 

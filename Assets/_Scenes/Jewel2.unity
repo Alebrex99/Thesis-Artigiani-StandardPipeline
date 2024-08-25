@@ -135,6 +135,22 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4200847497137210523, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
+      propertyPath: m_text
+      value: Pulse o toca la joya
+      objectReference: {fileID: 0}
+    - target: {fileID: 4200847497137210523, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
+      propertyPath: m_fontSize
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 4200847497137210523, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
+      propertyPath: m_fontStyle
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4200847497137210523, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 24
+      objectReference: {fileID: 0}
     - target: {fileID: 6575183054115778708, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -225,7 +241,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 2b1c46355a445214791e295eb1dfb11c, type: 2}
     - target: {fileID: 8457344631187891265, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8758223155494518657, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
       propertyPath: _whenSelect.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -264,6 +280,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5382752485870627598, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
   m_PrefabInstance: {fileID: 11930487}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &11930490 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4200847497137210523, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
+  m_PrefabInstance: {fileID: 11930487}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &97496278
 GameObject:
   m_ObjectHideFlags: 0
@@ -3450,7 +3477,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.6999997, y: 1.6999999, z: 1}
+  m_LocalScale: {x: 1.4, y: 1.4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 250466360}
@@ -4022,15 +4049,15 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1718419707}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.040599983, y: 0.04059999, z: 0.0406}
+  m_LocalPosition: {x: 0, y: 0, z: -0.00000003352762}
+  m_LocalScale: {x: 0.065, y: 0.065, z: 0.065}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 11930489}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.04}
+  m_AnchoredPosition: {x: -0.00000013131651, y: -0.00000002980233}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1718419709
@@ -4281,8 +4308,10 @@ MonoBehaviour:
   pictureAudioSrc: {fileID: 1453770905}
   pictureClip: {fileID: 8300000, guid: a62223da1b1b8c841884c5ee7da2319d, type: 3}
   interactJewelActivate: 0
+  jewelName: Jewel2
   playImg: {fileID: 1718419709}
   pauseImg: {fileID: 961674380}
+  text_label: {fileID: 11930490}
 --- !u!4 &1846694509
 Transform:
   m_ObjectHideFlags: 0
@@ -4345,7 +4374,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.8, y: 1, z: 0.3}
+  m_Size: {x: 0.8, y: 1, z: 0.39}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1846694512
 MonoBehaviour:
@@ -4661,7 +4690,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Tocar para informaciones
+  m_text: Tocar el cuadro para informaciones
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

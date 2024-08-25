@@ -719,15 +719,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 665346951}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.5857798, z: -0, w: 0.8104702}
-  m_LocalPosition: {x: -4.0744677, y: 0, z: -2.5134935}
+  m_LocalRotation: {x: 0, y: -0.46715835, z: 0, w: 0.8841737}
+  m_LocalPosition: {x: -3.47, y: 0, z: -1.53}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1902200735}
   - {fileID: 543450652216636686}
   m_Father: {fileID: 1732209683}
-  m_LocalEulerAnglesHint: {x: 0, y: -71.716, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -55.7, z: 0}
 --- !u!1 &744749143
 GameObject:
   m_ObjectHideFlags: 0
@@ -1463,8 +1463,10 @@ MonoBehaviour:
   pictureAudioSrc: {fileID: 1355346726}
   pictureClip: {fileID: 8300000, guid: a62223da1b1b8c841884c5ee7da2319d, type: 3}
   interactJewelActivate: 0
+  jewelName: Jewel3
   playImg: {fileID: 1242747276}
   pauseImg: {fileID: 1961757133}
+  text_label: {fileID: 1892379697}
 --- !u!54 &1098822583
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1634,7 +1636,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Tocar para informaciones
+  m_text: Tocar el cuadro para informaciones
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1740,7 +1742,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.6999997, y: 1.6999999, z: 1}
+  m_LocalScale: {x: 1.4, y: 1.4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1683689480}
@@ -1885,15 +1887,15 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1242747274}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.040603, y: 0.040603, z: 0.040603}
+  m_LocalPosition: {x: 0, y: 0, z: -0.00000012293461}
+  m_LocalScale: {x: 0.065, y: 0.065, z: 0.065}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1555948799}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.04}
+  m_AnchoredPosition: {x: -0.00000013131651, y: -0.000000081956415}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1242747276
@@ -2486,7 +2488,7 @@ Transform:
   m_GameObject: {fileID: 1581376899}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.36, z: -3.49}
+  m_LocalPosition: {x: 0, y: 1.36, z: -3.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2764,7 +2766,7 @@ Transform:
   m_GameObject: {fileID: 1627217614}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.36, z: -3}
+  m_LocalPosition: {x: 0, y: 1.36, z: -3.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2962,6 +2964,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1585551896868121886, guid: dda2aeea1faae654d8986620127b767e, type: 3}
+      propertyPath: useExpensiveSharpen
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1585551896868121886, guid: dda2aeea1faae654d8986620127b767e, type: 3}
       propertyPath: noDepthBufferTesting
       value: 0
       objectReference: {fileID: 0}
@@ -2979,6 +2985,10 @@ PrefabInstance:
       objectReference: {fileID: 2800000, guid: 726b01e616c4add4a9d4444c15a7e3c5, type: 3}
     - target: {fileID: 1585551896868121886, guid: dda2aeea1faae654d8986620127b767e, type: 3}
       propertyPath: useEfficientSupersample
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1585551896868121886, guid: dda2aeea1faae654d8986620127b767e, type: 3}
+      propertyPath: useExpensiveSuperSample
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2740586813578101109, guid: dda2aeea1faae654d8986620127b767e, type: 3}
@@ -4140,6 +4150,22 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4200847497137210523, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
+      propertyPath: m_text
+      value: Pulse o toca la joya
+      objectReference: {fileID: 0}
+    - target: {fileID: 4200847497137210523, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
+      propertyPath: m_fontSize
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 4200847497137210523, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
+      propertyPath: m_fontStyle
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4200847497137210523, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 24
+      objectReference: {fileID: 0}
     - target: {fileID: 6575183054115778708, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -4226,7 +4252,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 2b1c46355a445214791e295eb1dfb11c, type: 2}
     - target: {fileID: 8457344631187891265, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8758223155494518657, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
       propertyPath: _whenSelect.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -4260,6 +4286,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7516989854395125638, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
   m_PrefabInstance: {fileID: 1892379695}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1892379697 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4200847497137210523, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
+  m_PrefabInstance: {fileID: 1892379695}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1902200734
 PrefabInstance:
   m_ObjectHideFlags: 0

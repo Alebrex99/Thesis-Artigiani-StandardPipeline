@@ -26,6 +26,7 @@ public class Button3D : MonoBehaviour
     [SerializeField] Image infoimage;
     [SerializeField] Image closeimage;
     [SerializeField] private TMP_Text text_label;
+    private Color text_label_color;
     void Awake()
     {
         if (buttonAIMaterial != null && getButtonName()=="ButtonAI")
@@ -154,7 +155,7 @@ public class Button3D : MonoBehaviour
             //HomeManager.instance.isEnvironmentChanged = false;
             //HomeManager.instance.envAudioSrc[2].UnPause();
             HomeManager.instance.ResetSwitch();
-            activeButton.ResetLabel();
+            ResetLabel();
             infoimage.gameObject.SetActive(true);
             if (HandDetectionManager.instance!=null) HandDetectionManager.instance.Deactivate();
         }
@@ -168,9 +169,8 @@ public class Button3D : MonoBehaviour
             //HomeManager.instance.isEnvironmentChanged = true;
             //HomeManager.instance.envAudioSrc[2].Pause();
             HomeManager.instance.StopSwitch();
+            SetLabel();
             infoimage.gameObject.SetActive(false);
-            if (text_label != null) text_label.text = "INFO a la izquierda";
-
             if (HandDetectionManager.instance!=null) HandDetectionManager.instance.Activate();
         }
         activeButton = this;
@@ -183,8 +183,18 @@ public class Button3D : MonoBehaviour
     }
     public void ResetLabel()
     {
+        if(text_label !=null) text_label.color = text_label_color;
         if (text_label != null && getButtonName() == "ButtonMyExperience") text_label.text = "Mi experiencia";
         if (text_label != null && getButtonName() == "ButtonMyHistory") text_label.text = "Mi historia";
+    }
+    public void SetLabel()
+    {
+        if (text_label != null)
+        {
+            text_label_color = text_label.color;
+            text_label.color = Color.black;
+            text_label.text = "INFO a la izquierda";
+        }
     }
 
     public GameObject GetAssociatedEnvironment()

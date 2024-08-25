@@ -201,11 +201,14 @@ public class HomeManager: MonoBehaviour
     public void ResetSwitch()
     {
         if(currentCoroutine != null) StopCoroutine(currentCoroutine);
+        //StopAllCoroutines();
         envAudioSrc[2].UnPause(); //unpause audio ambiente
-        if(IsRotated()) isRotated = false;
-        else isRotated = true;
-        isFading = false;
         _switchAudioDelay = 1f;
+        /*if(IsRotated()) isRotated = false;
+        else isRotated = true;*/
+        Debug.Log("IsRotated " + isRotated);
+        isRotated = false; //in ogni caso riparte l'audio 
+        isFading = false;
         isEnvironmentChanged = false;
     }
     public void StopSwitch()
@@ -213,6 +216,7 @@ public class HomeManager: MonoBehaviour
         if(currentCoroutine != null) StopCoroutine(currentCoroutine);
         envAudioSrc[2].Pause();
         isEnvironmentChanged = true;
+        myExpVideoPlayer.Prepare();
     }
 
     private IEnumerator SwitchAudio(AudioSource fadeOutSrc, AudioSource fadeInSrc, float fadeTime)
