@@ -103,7 +103,8 @@ public class cSocketManager : MonoBehaviour
         //------------------SOCKET IO UNITY--------------------------------
         //var uri = new Uri("http://192.168.1.107:11100"); //DEFAULT: IP non corretto
         //var uri = new Uri("http://localhost:11100"); //Funziona con SERVER: C:\Users\Utente\UnityProjects\SocketIOUnity\Samples~\Server
-        var uri = new Uri("http://localhost:5000"); //Funziona con server MIKEL; bisognerà poi modificare l'indirizzo con uno internet
+        //var uri = new Uri("http://localhost:5000"); //Funziona con server MIKEL; bisognerà poi modificare l'indirizzo con uno internet
+        var uri = new Uri("http://192.168.56.1:5000"); //IP locale casa Bergamo
         socket = new SocketIOUnity(uri, new SocketIOOptions
         {
             Query = new Dictionary<string, string>

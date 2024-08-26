@@ -199,7 +199,7 @@ public class Jewel3Manager : MonoBehaviour
         //riduci regolarmente l'audio dell'ambiente nel giro di 5 secondi
         treePicture.SetActive(isJewelTouched);
         jewel3Informations.SetActive(false);
-        bShowVideo = true;
+        bShowVideo = isJewelTouched;
 
         //AUDIO
         //se clicco sul gioiello, ma l'agente è attivo, non fare nulla
@@ -326,6 +326,7 @@ public class Jewel3Manager : MonoBehaviour
     }
     public void PauseAudioScene()
     {
+        if (isFading) StopAllCoroutines();
         if (interactAudioSrc.isPlaying)
         {
             //audioSrc.Pause();

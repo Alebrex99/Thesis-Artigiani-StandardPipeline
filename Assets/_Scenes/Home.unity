@@ -12444,8 +12444,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9b2f43411f88ed45beda7c488d95d14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jewelsButtons: {fileID: 0}
-  informationsButtons: {fileID: 0}
+  jewelsButtons: {fileID: 4430889951645568787}
+  informationsButtons: {fileID: 1015565703}
   buttonHome1: {fileID: 2064211097}
   buttonHome2: {fileID: 1987800079}
   hideDelay: 3

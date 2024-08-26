@@ -116,7 +116,7 @@ public class Button3D : MonoBehaviour
         }
         if (exceptionNumber==1) //message exception
         {
-            text_label.text = "No te he escuchado bien...";
+            text_label.text = "Te he escuchado mal...";
             return;
         }
         if(exceptionNumber==2) //socket non connesso
@@ -155,6 +155,8 @@ public class Button3D : MonoBehaviour
             //HomeManager.instance.isEnvironmentChanged = false;
             //HomeManager.instance.envAudioSrc[2].UnPause();
             HomeManager.instance.ResetSwitch();
+            HomeManager.instance.envAudioSrc[2].UnPause();
+            HomeManager.instance.isEnvironmentChanged = false;
             ResetLabel();
             infoimage.gameObject.SetActive(true);
             if (HandDetectionManager.instance!=null) HandDetectionManager.instance.Deactivate();
@@ -169,6 +171,8 @@ public class Button3D : MonoBehaviour
             //HomeManager.instance.isEnvironmentChanged = true;
             //HomeManager.instance.envAudioSrc[2].Pause();
             HomeManager.instance.StopSwitch();
+            HomeManager.instance.envAudioSrc[2].Pause();
+            HomeManager.instance.isEnvironmentChanged = true;
             SetLabel();
             infoimage.gameObject.SetActive(false);
             if (HandDetectionManager.instance!=null) HandDetectionManager.instance.Activate();

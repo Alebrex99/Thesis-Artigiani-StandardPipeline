@@ -124,24 +124,24 @@ public class HandDetectionManager : MonoBehaviour
     {
         if (activator.GetActivatorName() == "JewelsButtons") 
         { 
-            jewelsButtons = activator; 
+            if(jewelsButtons==null) jewelsButtons = activator; 
             count++; 
             Debug.Log("JewelsButtons subscribed " + count);
         }
         if (activator.GetActivatorName() == "InformationsButtons") { 
-            informationsButtons = activator; 
+            if(informationsButtons==null) informationsButtons = activator; 
             count++;
             Debug.Log("InformationsButtons subscribed " + count);
         }
         if (activator.GetActivatorName() == "ButtonHome1") 
         { 
-            buttonHome1 = activator; 
+            if(buttonHome1==null) buttonHome1 = activator; 
             count++;
             Debug.Log("ButtonHome1 subscribed " + count);
         }
         if (activator.GetActivatorName() == "ButtonHome2") 
         { 
-            buttonHome2 = activator; 
+            if(buttonHome2==null) buttonHome2 = activator; 
             count++;
             Debug.Log("ButtonHome2 subscribed " + count);
         }

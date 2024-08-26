@@ -201,20 +201,20 @@ public class HomeManager: MonoBehaviour
     public void ResetSwitch()
     {
         if(currentCoroutine != null) StopCoroutine(currentCoroutine);
-        envAudioSrc[2].UnPause(); //unpause audio ambiente
         _switchAudioDelay = 1f;
         /*if(IsRotated()) isRotated = false;
         else isRotated = true;*/
         Debug.Log("IsRotated " + isRotated);
         isRotated = false; //in ogni caso riparte l'audio 
         isFading = false;
-        isEnvironmentChanged = false;
+        //envAudioSrc[2].UnPause(); //unpause audio ambiente; messo in Button3D
+        //isEnvironmentChanged = false; //messo in Button3D
     }
     public void StopSwitch()
     {
         if(currentCoroutine != null) StopCoroutine(currentCoroutine);
-        envAudioSrc[2].Pause();
-        isEnvironmentChanged = true;
+        //envAudioSrc[2].Pause(); //messo in Button3D
+        //isEnvironmentChanged = true; //messo in Button3D
         myExpVideoPlayer.Prepare();
     }
 
@@ -419,6 +419,7 @@ public class HomeManager: MonoBehaviour
     public void PauseAudioScene()
     {
         //metti in pausa 
+        StopSwitch();
         foreach(AudioSource audioSrc in envAudioSrc)
         {
             if (audioSrc.isPlaying && audioSrc != envAudioSrc[2])
@@ -433,6 +434,7 @@ public class HomeManager: MonoBehaviour
     }
     public void UnPauseAudioScene()
     {
+        ResetSwitch();
         myExpVideoPlayer.SetDirectAudioVolume(0, 0.5f);
         envAudioSrc[2].volume = 1f;
         //isAgentCalled = false;

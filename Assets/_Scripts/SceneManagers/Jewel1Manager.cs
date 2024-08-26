@@ -171,7 +171,7 @@ public class Jewel1Manager : MonoBehaviour
         //riduci regolarmente l'audio dell'ambiente nel giro di 5 secondi
         jewel1Informations.SetActive(false);
         sorollaPicture.SetActive(isJewelTouched);
-        bShowVideo = true;
+        bShowVideo = isJewelTouched;
 
         //AUDIO
         //se clicco sul gioiello, ma l'agente è attivo, non fare nulla
@@ -306,6 +306,7 @@ public class Jewel1Manager : MonoBehaviour
 
     public void OnAgentActivationEffect(bool agentActivate)
     {
+        Debug.Log("OnAgent in JEWELS");
         isAgentCalled = agentActivate;
         if (agentActivate)
         {
@@ -319,6 +320,7 @@ public class Jewel1Manager : MonoBehaviour
 
     public void PauseAudioScene()
     {
+        if (isFading) StopAllCoroutines();
         if (interactAudioSrc.isPlaying)
         {
             //audioSrc.Pause();
