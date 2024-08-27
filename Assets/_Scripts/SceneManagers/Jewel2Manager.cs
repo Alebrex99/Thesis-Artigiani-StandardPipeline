@@ -67,7 +67,7 @@ public class Jewel2Manager : MonoBehaviour
         //StartCoroutine(LateActivation(_lateActivatedObj, _activationDelay));
         ResetUserPosition();
         envAudioSrc.Play(); //attivato sempre quando ritorno in scena anche
-        if (cAppManager.isBackHome)
+        if (cAppManager.isJewel2Visited)
         {
             _immersionDelay = 5f;
             _activationDelay = 1f;

@@ -39,6 +39,10 @@ public class cAppManager : MonoBehaviour {
     private float fadeTime = 5;
 
     public static bool isBackHome = false;
+    public static bool isHomeVisited = false;
+    public static bool isJewel1Visited = false;
+    public static bool isJewel2Visited = false;
+    public static bool isJewel3Visited = false;
 
 
     void Awake() {
@@ -167,11 +171,12 @@ public class cAppManager : MonoBehaviour {
                     IntroManager.instance.videoPlayer.Stop();
                 break;
             case Scenes.HOME:
-
+                isHomeVisited = true;
                 break;
             case Scenes.JEWEL1:
                 if (Jewel1Manager.instance != null)
                 {
+                    isJewel1Visited = true;
                     Jewel1Manager.instance.GetAudioSource().Stop();
                     Jewel1Manager.instance.GetEnvAudioSource().Stop();
                     Jewel1Manager.instance.GetJewelAudioSource().Stop();
@@ -180,6 +185,7 @@ public class cAppManager : MonoBehaviour {
             case Scenes.JEWEL2:
                 if (Jewel2Manager.instance != null)
                 {
+                    isJewel2Visited = true;
                     Jewel2Manager.instance.GetAudioSource().Stop();
                     Jewel2Manager.instance.GetEnvAudioSource().Stop();
                     Jewel2Manager.instance.GetJewelAudioSource().Stop();
@@ -188,6 +194,7 @@ public class cAppManager : MonoBehaviour {
             case Scenes.JEWEL3:
                 if (Jewel3Manager.instance != null)
                 {
+                    isJewel3Visited = true;
                     Jewel3Manager.instance.GetAudioSource().Stop();
                     Jewel3Manager.instance.GetEnvAudioSource().Stop();
                     Jewel3Manager.instance.GetJewelAudioSource().Stop();
