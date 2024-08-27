@@ -84,6 +84,8 @@ public class Jewel1Manager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        trLightJewel.position = cXRManager.GetTrCenterEye().position;
+        trLightJewel.rotation = cXRManager.GetTrCenterEye().rotation;
         if (bShowVideo)
         {
             //FUNZIONA ANCHE QUESTO:

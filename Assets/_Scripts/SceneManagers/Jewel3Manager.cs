@@ -94,6 +94,8 @@ public class Jewel3Manager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        trLightJewel.position = cXRManager.GetTrCenterEye().position;
+        trLightJewel.rotation = cXRManager.GetTrCenterEye().rotation;
         //FUNZIONA ANCHE QUESTO:
         //Vector3 euler = Quaternion.LookRotation(goVideoPlayer.transform.position - cXRManager.GetTrCenterEye().position).eulerAngles;
         //goVideoPlayer.transform.eulerAngles = new Vector3(0, euler.y, 0);
