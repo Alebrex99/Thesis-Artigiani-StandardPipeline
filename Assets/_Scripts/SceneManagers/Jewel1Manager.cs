@@ -344,7 +344,7 @@ public class Jewel1Manager : MonoBehaviour
         {
             fadeOutCor = StartCoroutine(FadeOutAudio(GetJewelAudioSource(), 2f));
         }
-        envAudioSrc.volume = 0.3f;
+        envAudioSrc.volume = 0.1f;
     }
     public void UnPauseAudioScene()
     {

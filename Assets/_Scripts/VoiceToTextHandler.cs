@@ -44,6 +44,12 @@ public class VoiceToTextHandler : MonoBehaviour
             {
                 cSocketManager.instance.OnAgentExceptionLauncher(1);
             }
+            if(!isSent && voiceToTextMessage.Length > 0 && cSocketManager.agentActivate)
+            {
+                isSent = true;
+                Debug.Log("[SENT TO SERVER] time: " + (DateTime.Now - startListeningTime).TotalSeconds);
+                StartCoroutine(cSocketManager.instance.SendMessageToServer(this.voiceToTextMessage));
+            }
             //se toggle bottone -> stop listening -> cancelli dati e non invii al server
             //se attendi perchè sei sicuro di inviarli 4.5 secondi -> prima invii al server, poi pulisci (stop listening)
             voiceToTextMessage = "";
@@ -56,9 +62,9 @@ public class VoiceToTextHandler : MonoBehaviour
         if ((DateTime.Now - startListeningTime).TotalSeconds >= 4 && voiceToTextMessage.Length > 0 &&!isSent)
         {
             if (!cSocketManager.agentActivate) return;
+            isSent = true;
             Debug.Log("[SENT TO SERVER] time: " + (DateTime.Now - startListeningTime).TotalSeconds);
             StartCoroutine(cSocketManager.instance.SendMessageToServer(this.voiceToTextMessage));
-            isSent = true;
         }
     }
 
