@@ -192,6 +192,7 @@ public class Jewel1Manager : MonoBehaviour
         //lo spegnimento dell'agente è già gestito (sistemare i bip e la logica)
         if (isJewelTouched) {
             envAudioSrc.volume = 0.3f;
+            GetJewelAudioSource().Stop(); // ogni volta che entro nel gioiello, riavvierò il suo audio
             //StartCoroutine(FadeOutAudio(interactAudioSrc, 2f));
             if (currentCoroutine != null) StopCoroutine(currentCoroutine);
             currentCoroutine = StartCoroutine(SwitchAudio(interactAudioSrc, GetJewelAudioSource(), 2f));

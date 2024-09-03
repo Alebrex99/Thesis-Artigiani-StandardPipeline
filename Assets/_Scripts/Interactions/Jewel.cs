@@ -88,9 +88,9 @@ public class Jewel : MonoBehaviour
         if (text_label != null)
         {
             text_label_color = text_label.color;
-            if(GetJewelName()== "Jewel1") text_label.color = new Color(0, 152, 255, 255); // Set the color to #0098FF
+            if(GetJewelName()== "Jewel1") text_label.color = new Color(0, 0.5960785f, 1,1); // Set the color to #0098FF 
             if(GetJewelName() == "Jewel2") text_label.color = Color.white; // Set the color to #FF0000
-            if (GetJewelName() == "Jewel3") text_label.color = new Color(146, 226, 0, 255); // Set the color to #92E200
+            if (GetJewelName() == "Jewel3") text_label.color = new Color(0.572549f,0.8862745f,0,1); // Set the color to #92E200
             text_label.text = "Mira a derecha";
         }
     }

@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 3e5399bd195de7649b874f58c1b9f8a3, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -1888,7 +1888,7 @@ RectTransform:
   m_GameObject: {fileID: 1242747274}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -0.00000012293461}
-  m_LocalScale: {x: 0.065, y: 0.065, z: 0.065}
+  m_LocalScale: {x: 0.05, y: 0.05, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1555948799}
@@ -4166,6 +4166,18 @@ PrefabInstance:
       propertyPath: m_fontSizeBase
       value: 24
       objectReference: {fileID: 0}
+    - target: {fileID: 5320148921079924370, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.85916656
+      objectReference: {fileID: 0}
+    - target: {fileID: 5320148921079924370, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.85916656
+      objectReference: {fileID: 0}
+    - target: {fileID: 5320148921079924370, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.85916656
+      objectReference: {fileID: 0}
     - target: {fileID: 6575183054115778708, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -4200,7 +4212,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7516989854395125638, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.4
+      value: -0.4
       objectReference: {fileID: 0}
     - target: {fileID: 7516989854395125638, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4249,7 +4261,19 @@ PrefabInstance:
     - target: {fileID: 7516989854951799700, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 2b1c46355a445214791e295eb1dfb11c, type: 2}
+      objectReference: {fileID: 2100000, guid: 0170203b9ff500d4eb35c2f3a9d292da, type: 2}
+    - target: {fileID: 7516989854951799702, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
+      propertyPath: _normalColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7516989854951799702, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
+      propertyPath: _normalColor.g
+      value: 0.8862745
+      objectReference: {fileID: 0}
+    - target: {fileID: 7516989854951799702, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
+      propertyPath: _normalColor.r
+      value: 0.57254905
+      objectReference: {fileID: 0}
     - target: {fileID: 8457344631187891265, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -4269,7 +4293,7 @@ PrefabInstance:
     - target: {fileID: 9053949503814100435, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
       propertyPath: m_Texture
       value: 
-      objectReference: {fileID: 2800000, guid: 0783c572228db1e49afd56b0463f2a2f, type: 3}
+      objectReference: {fileID: 2800000, guid: 51c729208e4bff545a4722da17339b38, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -4699,7 +4723,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7516989854395125638, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.4
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 7516989854395125638, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
       propertyPath: m_LocalPosition.y

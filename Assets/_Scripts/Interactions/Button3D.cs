@@ -171,7 +171,10 @@ public class Button3D : MonoBehaviour
             //HomeManager.instance.isEnvironmentChanged = true;
             //HomeManager.instance.envAudioSrc[2].Pause();
             HomeManager.instance.StopSwitch();
-            HomeManager.instance.envAudioSrc[2].Pause();
+            if(getButtonName() == "ButtonMyExperience")
+            {
+                HomeManager.instance.envAudioSrc[2].Pause();
+            }
             HomeManager.instance.isEnvironmentChanged = true;
             SetLabel();
             infoimage.gameObject.SetActive(false);

@@ -151,6 +151,30 @@ PrefabInstance:
       propertyPath: m_fontSizeBase
       value: 24
       objectReference: {fileID: 0}
+    - target: {fileID: 5320148921079924370, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.79656726
+      objectReference: {fileID: 0}
+    - target: {fileID: 5320148921079924370, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.79656726
+      objectReference: {fileID: 0}
+    - target: {fileID: 5320148921079924370, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.79656726
+      objectReference: {fileID: 0}
+    - target: {fileID: 5320148921079924370, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5320148921079924370, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.0034
+      objectReference: {fileID: 0}
+    - target: {fileID: 5320148921079924370, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.0036
+      objectReference: {fileID: 0}
     - target: {fileID: 6575183054115778708, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -185,7 +209,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7516989854395125638, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.4
+      value: -0.4
       objectReference: {fileID: 0}
     - target: {fileID: 7516989854395125638, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
       propertyPath: m_LocalPosition.y
@@ -238,7 +262,19 @@ PrefabInstance:
     - target: {fileID: 7516989854951799700, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 2b1c46355a445214791e295eb1dfb11c, type: 2}
+      objectReference: {fileID: 2100000, guid: a63d87476bbe6cf468d39c944d5db056, type: 2}
+    - target: {fileID: 7516989854951799702, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
+      propertyPath: _normalColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7516989854951799702, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
+      propertyPath: _normalColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7516989854951799702, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
+      propertyPath: _normalColor.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8457344631187891265, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -258,7 +294,7 @@ PrefabInstance:
     - target: {fileID: 9053949503814100435, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
       propertyPath: m_Texture
       value: 
-      objectReference: {fileID: 2800000, guid: 0e0d13997d12f4a48b08c8270c04aa8f, type: 3}
+      objectReference: {fileID: 2800000, guid: 9c8bc80ae2119ef41aa2153e203702c8, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -2421,7 +2457,7 @@ MonoBehaviour:
   userInitPos: {fileID: 2076840333}
   trLightJewel: {fileID: 298896055}
   envAudioSrc: {fileID: 97496280}
-  envVideoPlayer: {fileID: 0}
+  envVideoPlayer: {fileID: 870660315}
   interactAudioSrc: {fileID: 2059558545}
   _envClips:
   - {fileID: 8300000, guid: 4b6b3a70863e21e42b968b53d8f8d13d, type: 3}
@@ -2725,7 +2761,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7516989854395125638, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.4
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 7516989854395125638, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4050,7 +4086,7 @@ RectTransform:
   m_GameObject: {fileID: 1718419707}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -0.00000003352762}
-  m_LocalScale: {x: 0.065, y: 0.065, z: 0.065}
+  m_LocalScale: {x: 0.05, y: 0.05, z: 0.065}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 11930489}

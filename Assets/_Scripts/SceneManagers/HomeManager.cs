@@ -82,7 +82,7 @@ public class HomeManager: MonoBehaviour
         //spegni tutto il resto
         _envOffice.SetActive(false);
         _envMyExperience.SetActive(false);
-        myExpVideoPlayer.SetDirectAudioVolume(0, 0.5f);
+        myExpVideoPlayer.SetDirectAudioVolume(0, 0.3f);
 
         //_envMyMotivation.SetActive(false);
         //_video2DScene.SetActive(false);
@@ -168,6 +168,7 @@ public class HomeManager: MonoBehaviour
         if (isFading) return;
         if (IsRotated() && !isRotated)
         {
+            Debug.Log("IS ROTATED");
             if (currentCoroutine != null) StopCoroutine(currentCoroutine);
             currentCoroutine = StartCoroutine(SwitchAudio(envAudioSrc[0], envAudioSrc[1], _switchAudioDelay));
             isRotated = true;
@@ -200,12 +201,13 @@ public class HomeManager: MonoBehaviour
 
     public void ResetSwitch()
     {
+        Debug.Log("RESET SWITCH");
         if(currentCoroutine != null) StopCoroutine(currentCoroutine);
         _switchAudioDelay = 1f;
         /*if(IsRotated()) isRotated = false;
         else isRotated = true;*/
         Debug.Log("IsRotated " + isRotated);
-        isRotated = false; //in ogni caso riparte l'audio 
+        isRotated = true; //in ogni caso riparte l'audio 
         isFading = false;
         //envAudioSrc[2].UnPause(); //unpause audio ambiente; messo in Button3D
         //isEnvironmentChanged = false; //messo in Button3D
@@ -237,11 +239,15 @@ public class HomeManager: MonoBehaviour
         fadeInSrc.volume = 0f;
         if (!initialPlayDone)
         {
+            Debug.Log("PLAY FADEIN");
             fadeInSrc.Play();
             initialPlayDone = true;
         }
-        else fadeInSrc.UnPause();
-        Debug.Log("UNPAUSE FADIN");
+        else
+        {
+            fadeInSrc.UnPause();
+            Debug.Log("UNPAUSE FADIN");
+        }
 
         float currentTime = 0f;
         while (currentTime < fadeTime)
@@ -329,13 +335,16 @@ public class HomeManager: MonoBehaviour
             }*/
             if (!IsRotated())
             {
-                envAudioSrc[0].PlayOneShot(_buttonExplainClips[0]); //start when the buttons appear
+                //envAudioSrc[0].PlayOneShot(_buttonExplainClips[0]); //start when the buttons appear
+                envAudioSrc[0].Play();
                 isRotated = false;
 
             }
             else
             {
-                envAudioSrc[1].PlayOneShot(_buttonExplainClips[1]);
+                Debug.Log("START AUDIO LATERALE 1");
+                //envAudioSrc[1].PlayOneShot(_buttonExplainClips[1]);
+                envAudioSrc[1].Play();
                 isRotated = true;
             }
         }
@@ -410,7 +419,7 @@ public class HomeManager: MonoBehaviour
 
     public void OnAgentActivationEffect(bool agentActivate)
     {
-        isAgentCalled = agentActivate;
+        //isAgentCalled = agentActivate;
         if (agentActivate == true)
             PauseAudioScene();
         else UnPauseAudioScene();
@@ -430,14 +439,14 @@ public class HomeManager: MonoBehaviour
         }
         myExpVideoPlayer.SetDirectAudioVolume(0, 0f);
         envAudioSrc[2].volume = 0.3f;
-        //isAgentCalled = true;
+        isAgentCalled = true;
     }
     public void UnPauseAudioScene()
     {
         ResetSwitch();
-        myExpVideoPlayer.SetDirectAudioVolume(0, 0.5f);
+        myExpVideoPlayer.SetDirectAudioVolume(0, 0.3f);
         envAudioSrc[2].volume = 1f;
-        //isAgentCalled = false;
+        isAgentCalled = false;
     }
 
 

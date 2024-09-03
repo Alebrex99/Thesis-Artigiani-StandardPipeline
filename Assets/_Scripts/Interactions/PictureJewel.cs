@@ -46,14 +46,17 @@ public class PictureJewel : MonoBehaviour
         {
             transform.rotation = Quaternion.Slerp(startRotation, endRotation, elapsed / rotationDuration);
             elapsed += Time.deltaTime;
+
+            if (elapsed >= rotationDuration * 0.8f) // Activate toShow near the end of rotation
+            {
+                toShow.SetActive(true);
+            }
+
             yield return null;
         }
 
         transform.rotation = endRotation;
         toHide.SetActive(false);
-        toShow.SetActive(true);
         //if(isPictureTouched) jewelInformations.SetActive(true);
-
-
     }
 }

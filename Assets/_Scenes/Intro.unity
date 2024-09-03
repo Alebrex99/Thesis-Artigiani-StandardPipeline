@@ -3986,6 +3986,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: '[Persistent]_new'
       objectReference: {fileID: 0}
+    - target: {fileID: 5938509931588606293, guid: e1cc94dc54f039f4ab4185cea2162610, type: 3}
+      propertyPath: m_text
+      value: 'Cargando
+
+'
+      objectReference: {fileID: 0}
     - target: {fileID: 6165308502866912815, guid: e1cc94dc54f039f4ab4185cea2162610, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -4078,6 +4084,16 @@ PrefabInstance:
       propertyPath: agentActivateBipClip.Array.data[2]
       value: 
       objectReference: {fileID: 8300000, guid: c774f291642a292409d09d2b664c923a, type: 3}
+    - target: {fileID: 7738378162646734431, guid: e1cc94dc54f039f4ab4185cea2162610, type: 3}
+      propertyPath: m_text
+      value: 'CARGAR EXPERIENCIA
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 7738378162646734431, guid: e1cc94dc54f039f4ab4185cea2162610, type: 3}
+      propertyPath: m_fontSize
+      value: 18.55
+      objectReference: {fileID: 0}
     - target: {fileID: 8306261539585845754, guid: e1cc94dc54f039f4ab4185cea2162610, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
@@ -4101,6 +4117,10 @@ PrefabInstance:
     - target: {fileID: 8306261539585845754, guid: e1cc94dc54f039f4ab4185cea2162610, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8994831491551672917, guid: e1cc94dc54f039f4ab4185cea2162610, type: 3}
+      propertyPath: m_text
+      value: "Pulse el bot\xF3n para empezar la experiencia"
       objectReference: {fileID: 0}
     - target: {fileID: 8994831491551672917, guid: e1cc94dc54f039f4ab4185cea2162610, type: 3}
       propertyPath: m_fontAsset

@@ -406,7 +406,8 @@ public class cSocketManager : MonoBehaviour
         receiverAudioSrc.Stop();
         receiverAudioSrc.clip = null;
         receiverAudioSrc.clip = clip;
-        if (clip != null) receiverAudioSrc.PlayOneShot(clip, 1f);
+        //if (clip != null) receiverAudioSrc.PlayOneShot(clip, 1f);
+        if (clip != null) receiverAudioSrc.Play();
         else Debug.Log("Clip is null");
 
         if (clip == lastAudioClip && isAudioResponseEnd) Debug.Log("Play END audio");
