@@ -186,6 +186,7 @@ public class Jewel1Manager : MonoBehaviour
     {
         this.isJewelTouched = isJewelTouched;
         //riduci regolarmente l'audio dell'ambiente nel giro di 5 secondi
+        pictureJewel.ResetPicture();
         jewel1Informations.SetActive(false);
         sorollaPicture.SetActive(isJewelTouched);
         bShowVideo = isJewelTouched;

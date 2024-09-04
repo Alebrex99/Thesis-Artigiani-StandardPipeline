@@ -7,6 +7,7 @@ using UnityEngine;
 public class PictureJewel : MonoBehaviour
 {
     private bool isPictureTouched = false;
+    private Quaternion initialRotation;
     [SerializeField] private GameObject jewelInformations;
     [SerializeField] private GameObject picture;
     Coroutine rotatePictureCor;
@@ -19,6 +20,7 @@ public class PictureJewel : MonoBehaviour
     {
         isPictureTouched = false;
         jewelInformations.SetActive(false);
+        initialRotation = transform.rotation;
     }
 
     private void Update()
@@ -67,6 +69,11 @@ public class PictureJewel : MonoBehaviour
             yield return null;
         }
 
+        if(toHide.activeSelf)
+            toHide.SetActive(false);
+        if(!toShow.activeSelf)
+            toShow.SetActive(true);
+
         transform.rotation = endRotation;
         OnPictureRotation?.Invoke(false);
     }
@@ -74,5 +81,15 @@ public class PictureJewel : MonoBehaviour
     public bool IsPictureTouched()
     {
         return isPictureTouched;
+    }
+
+    public void ResetPicture()
+    {
+        if (rotatePictureCor != null)
+        {
+            StopCoroutine(rotatePictureCor);
+        }
+        isPictureTouched = false;
+        transform.rotation = initialRotation;
     }
 }

@@ -137,7 +137,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4200847497137210523, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
       propertyPath: m_text
-      value: Pulse o toca la joya
+      value: "Pulse el bot\xF3n Joya"
       objectReference: {fileID: 0}
     - target: {fileID: 4200847497137210523, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
       propertyPath: m_fontSize
