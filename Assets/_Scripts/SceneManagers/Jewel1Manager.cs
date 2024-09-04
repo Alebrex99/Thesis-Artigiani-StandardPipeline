@@ -31,6 +31,7 @@ public class Jewel1Manager : MonoBehaviour
     [SerializeField] private GameObject[] _lateActivatedObj;
 
     //VIDEO/QUADRO SOROLLA
+    [SerializeField] private PictureJewel pictureJewel;
     [SerializeField] private GameObject goVideoPlayer;
     [SerializeField] private GameObject sorollaPicture;
     [SerializeField] private GameObject jewel1Informations;
@@ -54,6 +55,7 @@ public class Jewel1Manager : MonoBehaviour
         instance = this;
 
         _jewel1.OnJewelTouched += OnJewel1Touched;
+        pictureJewel.OnPictureRotation += OnPictureRotationEffect;
         sorollaPicture.SetActive(false);
         //jewel1Informations.SetActive(false);
         foreach (GameObject lateObj in _lateActivatedObj)
@@ -93,7 +95,12 @@ public class Jewel1Manager : MonoBehaviour
             //goVideoPlayer.transform.eulerAngles = new Vector3(0, euler.y, 0);
 
             //Used Method lectures:
-            Vector3 targetDirection = goVideoPlayer.transform.position - cXRManager.GetTrCenterEye().position;
+            Vector3 targetDirection;
+            if (pictureJewel.IsPictureTouched())
+            {
+                targetDirection = cXRManager.GetTrCenterEye().position - goVideoPlayer.transform.position;
+            }
+            else targetDirection = goVideoPlayer.transform.position - cXRManager.GetTrCenterEye().position;
             targetDirection.y = 0;
             targetDirection.Normalize();
             float rotationStep = rotationVideoSpeed * Time.deltaTime;
@@ -229,6 +236,12 @@ public class Jewel1Manager : MonoBehaviour
             }
 
         }
+    }
+
+    private void OnPictureRotationEffect(bool isRotating)
+    {
+        if (isRotating) bShowVideo = false;
+        else bShowVideo = true;
     }
 
     private IEnumerator SwitchAudio(AudioSource fadeOutSrc, AudioSource fadeInSrc, float fadeTime)
@@ -408,6 +421,7 @@ public class Jewel1Manager : MonoBehaviour
         //videoPlayer.Stop();
         //envAudioSrc.Stop(); //non puoi farlo!
         _jewel1.OnJewelTouched -= OnJewel1Touched;
+        pictureJewel.OnPictureRotation -= OnPictureRotationEffect;
         if (cSocketManager.instance != null) cSocketManager.instance.OnAgentActivation -= OnAgentActivationEffect;
 
         StopAllCoroutines();

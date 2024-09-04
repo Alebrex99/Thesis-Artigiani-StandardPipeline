@@ -28,6 +28,7 @@ public class Jewel3Manager : MonoBehaviour
     [SerializeField] private GameObject[] _lateActivatedObj;
 
     //IMMAGINE/DESCRIZIONE
+    [SerializeField] private PictureJewel pictureJewel;
     [SerializeField] private GameObject goVideoPlayer;
     [SerializeField] private GameObject treePicture;
     [SerializeField] private GameObject jewel3Informations;
@@ -54,6 +55,7 @@ public class Jewel3Manager : MonoBehaviour
         instance = this;
 
         _jewel3.OnJewelTouched += OnJewel3Touched;
+        pictureJewel.OnPictureRotation += OnPictureRotationEffect;
         treePicture.SetActive(false);
         //jewel3Informations.SetActive(false);
         jewel3Game.SetActive(false);
@@ -102,7 +104,13 @@ public class Jewel3Manager : MonoBehaviour
         if (bShowVideo)
         {
             //Used Method lectures:
-            Vector3 targetDirection = goVideoPlayer.transform.position - cXRManager.GetTrCenterEye().position;
+            //Vector3 targetDirection = goVideoPlayer.transform.position - cXRManager.GetTrCenterEye().position;
+            Vector3 targetDirection;
+            if (pictureJewel.IsPictureTouched())
+            {
+                targetDirection = cXRManager.GetTrCenterEye().position - goVideoPlayer.transform.position;
+            }
+            else targetDirection = goVideoPlayer.transform.position - cXRManager.GetTrCenterEye().position;
             targetDirection.y = 0;
             targetDirection.Normalize();
             float rotationStep = rotationVideoSpeed * Time.deltaTime;
@@ -254,6 +262,12 @@ public class Jewel3Manager : MonoBehaviour
                 envAudioSrc.volume = 1f;
             }
         }
+    }
+
+    private void OnPictureRotationEffect(bool isRotating)
+    {
+        if (isRotating) bShowVideo = false;
+        else bShowVideo = true;
     }
 
     private IEnumerator SwitchAudio(AudioSource fadeOutSrc, AudioSource fadeInSrc, float fadeTime)
@@ -410,6 +424,7 @@ public class Jewel3Manager : MonoBehaviour
         //videoPlayer.Stop();
         //envAudioSrc.Stop(); //non puoi farlo!
         _jewel3.OnJewelTouched -= OnJewel3Touched;
+        pictureJewel.OnPictureRotation -= OnPictureRotationEffect;
         if (cSocketManager.instance != null) cSocketManager.instance.OnAgentActivation -= OnAgentActivationEffect;
         StopAllCoroutines();
     }

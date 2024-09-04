@@ -28,6 +28,7 @@ public class Jewel2Manager : MonoBehaviour
     [SerializeField] private GameObject[] _lateActivatedObj;
 
     //IMMAGINE/DESCRIZIONE
+    [SerializeField] private PictureJewel pictureJewel;
     [SerializeField] private GameObject goVideoPlayer;
     [SerializeField] private GameObject fireworksPicture;
     [SerializeField] private GameObject jewel2Informations;
@@ -49,6 +50,7 @@ public class Jewel2Manager : MonoBehaviour
     {
         instance = this;
         _jewel2.OnJewelTouched += OnJewel2Touched;
+        pictureJewel.OnPictureRotation += OnPictureRotationEffect;
         fireworksPicture.SetActive(false);
         //jewel2Informations.SetActive(false);
         foreach (GameObject lateObj in _lateActivatedObj)
@@ -66,6 +68,7 @@ public class Jewel2Manager : MonoBehaviour
         //StartCoroutine(PlayEnvMedia());
         //StartCoroutine(LateActivation(_lateActivatedObj, _activationDelay));
         ResetUserPosition();
+        envVideoPlayer.SetDirectAudioVolume(0, 0.7f);
         envAudioSrc.Play(); //attivato sempre quando ritorno in scena anche
         if (cAppManager.isJewel2Visited)
         {
@@ -88,7 +91,13 @@ public class Jewel2Manager : MonoBehaviour
         if (bShowVideo)
         {
             //Used Method lectures:
-            Vector3 targetDirection = goVideoPlayer.transform.position - cXRManager.GetTrCenterEye().position;
+            //Vector3 targetDirection = goVideoPlayer.transform.position - cXRManager.GetTrCenterEye().position;
+            Vector3 targetDirection;
+            if (pictureJewel.IsPictureTouched())
+            {
+                targetDirection = cXRManager.GetTrCenterEye().position - goVideoPlayer.transform.position;
+            }
+            else targetDirection = goVideoPlayer.transform.position - cXRManager.GetTrCenterEye().position;
             targetDirection.y = 0;
             targetDirection.Normalize();
             float rotationStep = rotationVideoSpeed * Time.deltaTime;
@@ -222,6 +231,12 @@ public class Jewel2Manager : MonoBehaviour
             }
         }
 
+    }
+
+    private void OnPictureRotationEffect(bool isRotating)
+    {
+        if (isRotating) bShowVideo = false;
+        else bShowVideo = true;
     }
 
     private IEnumerator SwitchAudio(AudioSource fadeOutSrc, AudioSource fadeInSrc, float fadeTime)
@@ -380,6 +395,7 @@ public class Jewel2Manager : MonoBehaviour
         //videoPlayer.Stop();
         //envAudioSrc.Stop(); //non puoi farlo!
         _jewel2.OnJewelTouched -= OnJewel2Touched;
+        pictureJewel.OnPictureRotation -= OnPictureRotationEffect;
         if (cSocketManager.instance != null) cSocketManager.instance.OnAgentActivation -= OnAgentActivationEffect;
         StopAllCoroutines();
     }

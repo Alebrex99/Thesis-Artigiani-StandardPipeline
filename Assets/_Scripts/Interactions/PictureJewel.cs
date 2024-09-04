@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PictureJewel : MonoBehaviour
@@ -8,6 +9,8 @@ public class PictureJewel : MonoBehaviour
     private bool isPictureTouched = false;
     [SerializeField] private GameObject jewelInformations;
     [SerializeField] private GameObject picture;
+    Coroutine rotatePictureCor;
+    public Action<bool> OnPictureRotation;
 
     public float rotationDuration = 1f; // Durata della rotazione
 
@@ -18,37 +21,46 @@ public class PictureJewel : MonoBehaviour
         jewelInformations.SetActive(false);
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            TouchPicture();
+        }
+    }
+
     public void TouchPicture()
     {
-        isPictureTouched = !isPictureTouched;
         Debug.Log("Picture touched " + isPictureTouched);
         if (picture.activeSelf)
         {
-            StartCoroutine(RotatePicture(180,picture, jewelInformations));
+            isPictureTouched = true;
+            rotatePictureCor = StartCoroutine(RotatePicture(180,picture, jewelInformations));
         }
         else if(jewelInformations.activeSelf)
         {
-            Debug.Log("toccato info");
-            StartCoroutine(RotatePicture(180, jewelInformations, picture));
+            isPictureTouched = false;
+            rotatePictureCor = StartCoroutine(RotatePicture(-180, jewelInformations, picture));
             //jewelInformations.SetActive(false);
             //picture.SetActive(true);
         }
+
     }
 
     private IEnumerator RotatePicture(float angle, GameObject toHide, GameObject toShow)
     {
+        OnPictureRotation?.Invoke(true);
         float elapsed = 0f;
         Quaternion startRotation = transform.rotation;
         Quaternion endRotation = startRotation * Quaternion.Euler(0, angle, 0);
-
-        //if(!isPictureTouched) jewelInformations.SetActive(false);
         while (elapsed < rotationDuration)
         {
             transform.rotation = Quaternion.Slerp(startRotation, endRotation, elapsed / rotationDuration);
             elapsed += Time.deltaTime;
 
-            if (elapsed >= rotationDuration * 0.8f) // Activate toShow near the end of rotation
+            if (elapsed >= rotationDuration * 0.5f) // Activate toShow near the end of rotation
             {
+                toHide.SetActive(false);
                 toShow.SetActive(true);
             }
 
@@ -56,7 +68,11 @@ public class PictureJewel : MonoBehaviour
         }
 
         transform.rotation = endRotation;
-        toHide.SetActive(false);
-        //if(isPictureTouched) jewelInformations.SetActive(true);
+        OnPictureRotation?.Invoke(false);
+    }
+
+    public bool IsPictureTouched()
+    {
+        return isPictureTouched;
     }
 }
