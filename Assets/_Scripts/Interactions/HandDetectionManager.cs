@@ -74,10 +74,13 @@ public class HandDetectionManager : MonoBehaviour
 
     private void SetButtonsActive(bool isActive)
     {
-        if(jewelsButtons != null)
-            jewelsButtons.gameObject.SetActive(isActive);
+        //--------AGGIUNTA SEMPLICE : DISATTIVAZIONE JEWELSBUTTONS-------------------
+        /*if(jewelsButtons != null)
+            jewelsButtons.gameObject.SetActive(isActive);*/
+
+
         //if(buttons !=null) buttons.gameObject.SetActive(isActive);
-        if(informationsButtons != null)
+        if (informationsButtons != null)
             informationsButtons.gameObject.SetActive(isActive);
         if (buttonHome1 != null)
             buttonHome1.gameObject.SetActive(isActive);
@@ -100,7 +103,12 @@ public class HandDetectionManager : MonoBehaviour
         isActive = true;
         timer = 0f;
         Debug.Log("HandDetectionManager activated");
-        if (jewelsButtons == null || informationsButtons==null || buttonHome1==null || buttonHome2==null)
+        
+        //--------AGGIUNTA SEMPLICE : DISATTIVAZIONE JEWELSBUTTONS-------------------
+        //dottorandi tips: i jewelsButtons si disattivano finch� non esco dal miHistoria/mi experiencia
+        jewelsButtons.gameObject.SetActive(false);
+    
+        if (informationsButtons==null || buttonHome1==null || buttonHome2==null) //jewelsButtons == null (perch� non partecipa)
         {
             allButtons = FindObjectsOfType<HandDetectionActivator>(true);
             Debug.Log("Found " + allButtons.Length + " HandDetectionActivator objects");
@@ -116,6 +124,8 @@ public class HandDetectionManager : MonoBehaviour
     public void Deactivate()
     {
         isActive = false;
+        //--------AGGIUNTA SEMPLICE: DISATTIVAZIONE JEWELSBUTTONS-------------------
+        jewelsButtons.gameObject.SetActive(true);
         SetButtonsActive(true);
         Debug.Log("HandDetectionManager deactivated");
     }

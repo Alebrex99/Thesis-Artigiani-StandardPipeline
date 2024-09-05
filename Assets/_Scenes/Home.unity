@@ -12444,8 +12444,8 @@ MonoBehaviour:
   overridePerLayerColorScaleAndOffset: 0
   colorScale: {x: 1, y: 1, z: 1, w: 1}
   colorOffset: {x: 0, y: 0, z: 0, w: 0}
-  useExpensiveSuperSample: 1
-  useExpensiveSharpen: 1
+  useExpensiveSuperSample: 0
+  useExpensiveSharpen: 0
   hidden: 0
   isExternalSurface: 1
   externalSurfaceWidth: 4096
@@ -12460,8 +12460,8 @@ MonoBehaviour:
   isAlphaPremultiplied: 0
   useBicubicFiltering: 0
   useLegacyCubemapRotation: 0
-  useEfficientSupersample: 0
-  useEfficientSharpen: 0
+  useEfficientSupersample: 1
+  useEfficientSharpen: 1
   useAutomaticFiltering: 1
   _previewInEditor: 1
 --- !u!328 &737297686
@@ -17733,11 +17733,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4200847497137210523, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
       propertyPath: m_text
-      value: Mi Historia
+      value: Mi Historia y exposiciones
       objectReference: {fileID: 0}
     - target: {fileID: 4200847497137210523, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
       propertyPath: m_fontSize
-      value: 25
+      value: 23
       objectReference: {fileID: 0}
     - target: {fileID: 4200847497137210523, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
       propertyPath: m_fontStyle
@@ -17753,7 +17753,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4200847497137210523, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
       propertyPath: m_fontSizeBase
-      value: 25
+      value: 23
       objectReference: {fileID: 0}
     - target: {fileID: 4200847497137210523, guid: 3969feba1b8435f4d9900204b415e845, type: 3}
       propertyPath: m_fontColor32.rgba

@@ -197,6 +197,7 @@ public class Jewel2Manager : MonoBehaviour
         if (isJewelTouched)
         {
             envAudioSrc.volume = 0.3f;
+            GetJewelAudioSource().Stop();
             //StartCoroutine(FadeOutAudio(interactAudioSrc, 2f));
             if (currentCoroutine != null) StopCoroutine(currentCoroutine);
             currentCoroutine = StartCoroutine(SwitchAudio(interactAudioSrc, GetJewelAudioSource(), 2f)); 

@@ -191,9 +191,11 @@ public class cSocketManager : MonoBehaviour
             //GESTIONE AUDIO BUFFER STANDARD:
             chunkCounter++; //high numer = 110 chunks ; low number = 15 chunks
             conversation.AddRange(chunk);
-            //Per Latenza costante a 5 secondi circa (10 chunks)
-            if (chunkCounter == chunksBufferNumber) //se arrivo a 10 chunks
+            
+            //LATENZA COSTANTE
+            if (chunkCounter == chunksBufferNumber) //controllo Latenza: se arrivo a N chunks
             {
+                chunksBufferNumber = 10; //resetta numero max per allungare le clip successive
                 Debug.Log("[SOCKET V.2] Load on Chunk counter = " + chunkCounter + " total length: " + conversation.Count);
                 chunkCounter = 0; //resetti il contatore
                 audioClipIndex++; //parte da 0
@@ -205,6 +207,7 @@ public class cSocketManager : MonoBehaviour
                 {
                     //audioClipIndex++; //parte da 0
                     //var audioClipIndexLoc = audioClipIndex; //salvo nella action corrente
+                    if (conversationArray.Length == 0) Debug.LogWarning("[ATTENCION CONCURRENT] Conversation is empty");
                     var audioClip = LoadHelperNLayer(conversationArray);
                     //lock(audioClipDictionary){ } //se vuoi fare un lock
                     lock (audioClipDictionary)
@@ -276,6 +279,7 @@ public class cSocketManager : MonoBehaviour
             UnityThread.executeInUpdate(() => {
                 //audioClipIndex++;
                 //var audioClipIndexLoc = audioClipIndex; //salvo nella action corrente
+                if (conversationArray.Length == 0) Debug.LogWarning("[ATTENCION CONCURRENT] Conversation is empty");
                 lastAudioClip = LoadHelperNLayer(conversationArray);
                 //lock(audioClipDictionary){ } //se vuoi fare un lock
                 lock (audioClipDictionary)
@@ -338,6 +342,8 @@ public class cSocketManager : MonoBehaviour
             lock (audioClipDictionary)
             {
                 var clipToPlay = audioClipDictionary[currentClipIndex];
+                if(clipToPlay!=null) Debug.Log("CLIP TO PLAY " + currentClipIndex + ": " + clipToPlay.length);
+                else Debug.Log("PROBLEMA CLIP NULL");
                 audioClipDictionary.Remove(currentClipIndex);
                 if (agentBipSrc.clip == agentBipClips[3])
                 {
@@ -347,13 +353,6 @@ public class cSocketManager : MonoBehaviour
                 playAudioBufferCor = StartCoroutine(PlayAudioBufferCor(clipToPlay));
             }
         }
-        /*else if(currentClipIndex == audioClipDictionary.Count && isLastClipReady && !receiverAudioSrc.isPlaying && isAudioResponseEnd)
-        {
-            Debug.Log("Play END audio");
-            agentBipSrc.loop = false;
-            agentBipSrc.Stop();
-            StartCoroutine(PlayLastBufferCor(audioBufferFloat));
-        }*/
 
         if (serverException)
         {
@@ -402,21 +401,25 @@ public class cSocketManager : MonoBehaviour
     {
         yield return new WaitUntil(() => isPlayingBuffer == false && !receiverAudioSrc.isPlaying);
         isPlayingBuffer = true;
-        Debug.Log($"[PLAY] AudioClip: {currentClipIndex} length: {clip.length}");
+
         receiverAudioSrc.Stop();
         receiverAudioSrc.clip = null;
         receiverAudioSrc.clip = clip;
-        //if (clip != null) receiverAudioSrc.PlayOneShot(clip, 1f);
-        if (clip != null) receiverAudioSrc.Play();
-        else Debug.Log("Clip is null");
-
-        if (clip == lastAudioClip && isAudioResponseEnd) Debug.Log("Play END audio");
+        if (clip != null)
+        {
+            if (clip == lastAudioClip && isAudioResponseEnd) Debug.Log("[PLAY] Play END audio: " + currentClipIndex);
+            else Debug.Log($"[PLAY] AudioClip: {currentClipIndex} length: {clip.length}");
+            receiverAudioSrc.Play();
+            //receiverAudioSrc.PlayOneShot(clip, 1f);
+            yield return new WaitForSeconds(clip.length);
+            Debug.Log("[STOP] AudioClip: " + currentClipIndex + " length: " + clip.length);
+        }
+        else
+        {
+            Debug.Log("[NULL CLIP] Clip is null");
+        }
         //Debug.Log("[MPEG AUDIO CONVERSION] samples: " + audioBufferFloat.Length + " clip duration: " + clip.length + " channels: " + channels + " Sample Rate frequency: " + sampleRate);
         //INFO : [MPEG AUDIO CONVERSION] samples: 3497472 channels: 1 Sample Rate frequency: 44100
-
-        yield return new WaitForSeconds(clip.length);
-        Debug.Log("[STOP] AudioClip: " + currentClipIndex + " length: " + clip.length);
-
         //lock(audioClipDictionary){ } //se vuoi fare un lock
         currentClipIndex++;
         playAudioBufferCor = null;
@@ -606,7 +609,7 @@ public class cSocketManager : MonoBehaviour
     //CONTROLLO DELLA RICEZIONE E ABILITAZIONE A PARLARE
     public void ToggleSocket()
     {
-        Debug.Log("Toggle SOCKET Conversational Agent");
+        Debug.Log("------------Toggle SOCKET Conversational Agent-------------");
         Debug.Log("Socket Connected: " + isConnected);
         if (!isConnected)
         {
@@ -714,19 +717,31 @@ public class cSocketManager : MonoBehaviour
         agentActivate = false; //disattivi agente
         conversation.Clear();
         audioClipDictionary.Clear();
+
+        //GESTIONE CLIPS
         isAudioResponseEnd = false;
+        isPlayingBuffer = false;
         audioClipIndex = -1;
         currentClipIndex = 0;
+        chunksBufferNumber = 10;
+        chunkCounter = 0;
+        lastAudioClip = null;
 
+        //RICEZIONE
         stopReceiving = true;
-        Debug.Log("CHANGE stop Receiving -> " + stopReceiving);
+        isReceiving = false;
 
+        //MICROFONO
         _dictationActivation.ToggleActivation(agentActivate); //disattivi microfono
         
+        //AUDIO SOURCES E COROUTINE
         agentBipSrc.loop = false;
         if (agentBipSrc.isPlaying) agentBipSrc.Stop();
-        if (playAudioBufferCor!=null) StopCoroutine(playAudioBufferCor);
+        agentBipSrc.clip = null;
+        if (playAudioBufferCor != null) StopCoroutine(playAudioBufferCor);
+        playAudioBufferCor = null;
         if (receiverAudioSrc.isPlaying) receiverAudioSrc.Stop();
+        receiverAudioSrc.clip = null;
 
         Debug.Log("[CONV AGENT]--------DISATTIVO CONVERSATIONAL AGENT------ " + agentActivate);
         //BIP DISATTIVAZIONE -> quando lo disattivi: mentre parli / mentre ricevi / mentre agente parla

@@ -71,7 +71,7 @@ public class Button3D : MonoBehaviour
     //AI : CONVERSATIONAL AGENT
     public void CallConversationalAgent()
     {
-        Debug.Log("--------Toggle Conversational Agent----------");
+        Debug.Log("Call Conversational Agent Button");
         //TOGGLE per zittire il conversational agent
         if (cSocketManager.instance == null) return;
         cSocketManager.instance.OnAgentActivation += OnAgentActivationEffect;
@@ -192,7 +192,7 @@ public class Button3D : MonoBehaviour
     {
         if(text_label !=null) text_label.color = text_label_color;
         if (text_label != null && getButtonName() == "ButtonMyExperience") text_label.text = "Mi experiencia";
-        if (text_label != null && getButtonName() == "ButtonMyHistory") text_label.text = "Mi historia";
+        if (text_label != null && getButtonName() == "ButtonMyHistory") text_label.text = "Mi Historia y exposiciones";
     }
     public void SetLabel()
     {
