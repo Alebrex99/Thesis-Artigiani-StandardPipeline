@@ -38,7 +38,8 @@ public class HomeManager: MonoBehaviour
     //[SerializeField] GameObject _envMyMotivation;
     [SerializeField] GameObject _envOffice;
     [SerializeField] GameObject _envMyExperience;
-    [SerializeField] public VideoPlayer myExpVideoPlayer;
+    public VideoPlayer myExpVideoPlayer;
+    public VideoPlayer myHistoryVideoPlayer;
     public bool isEnvironmentChanged = false;
     [SerializeField] Transform chairInitPos;
     [Range(0.1f, 1)]
@@ -218,6 +219,7 @@ public class HomeManager: MonoBehaviour
         //envAudioSrc[2].Pause(); //messo in Button3D
         //isEnvironmentChanged = true; //messo in Button3D
         myExpVideoPlayer.Prepare();
+        myHistoryVideoPlayer.Prepare();
     }
 
     private IEnumerator SwitchAudio(AudioSource fadeOutSrc, AudioSource fadeInSrc, float fadeTime)
@@ -438,6 +440,7 @@ public class HomeManager: MonoBehaviour
             }
         }
         myExpVideoPlayer.SetDirectAudioVolume(0, 0f);
+        myHistoryVideoPlayer.SetDirectAudioVolume(0, 0f);
         envAudioSrc[2].volume = 0.3f;
         isAgentCalled = true;
     }
@@ -445,6 +448,7 @@ public class HomeManager: MonoBehaviour
     {
         ResetSwitch();
         myExpVideoPlayer.SetDirectAudioVolume(0, 0.3f);
+        myHistoryVideoPlayer.SetDirectAudioVolume(0, 1f);
         envAudioSrc[2].volume = 1f;
         isAgentCalled = false;
     }

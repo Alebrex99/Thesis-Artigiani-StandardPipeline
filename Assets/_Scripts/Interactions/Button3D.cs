@@ -171,10 +171,10 @@ public class Button3D : MonoBehaviour
             //HomeManager.instance.isEnvironmentChanged = true;
             //HomeManager.instance.envAudioSrc[2].Pause();
             HomeManager.instance.StopSwitch();
-            if(getButtonName() == "ButtonMyExperience")
-            {
-                HomeManager.instance.envAudioSrc[2].Pause();
-            }
+            /*if (getButtonName() == "ButtonMyExperience") //da usare se si mette l'img stereoscopica, non il video
+            { }*/ 
+            HomeManager.instance.envAudioSrc[2].Pause();
+            
             HomeManager.instance.isEnvironmentChanged = true;
             SetLabel();
             infoimage.gameObject.SetActive(false);

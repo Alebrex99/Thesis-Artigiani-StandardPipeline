@@ -11,6 +11,7 @@ public class PictureJewel : MonoBehaviour
     [SerializeField] private GameObject jewelInformations;
     [SerializeField] private GameObject picture;
     Coroutine rotatePictureCor;
+    private bool isRotating = false;
     public Action<bool> OnPictureRotation;
 
     public float rotationDuration = 1f; // Durata della rotazione
@@ -18,6 +19,7 @@ public class PictureJewel : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        isRotating = false;
         isPictureTouched = false;
         jewelInformations.SetActive(false);
         initialRotation = transform.rotation;
@@ -33,6 +35,10 @@ public class PictureJewel : MonoBehaviour
 
     public void TouchPicture()
     {
+        if (isRotating)
+        {
+            return;
+        }
         Debug.Log("Picture touched " + isPictureTouched);
         if (picture.activeSelf)
         {
@@ -51,6 +57,7 @@ public class PictureJewel : MonoBehaviour
 
     private IEnumerator RotatePicture(float angle, GameObject toHide, GameObject toShow)
     {
+        isRotating = true;
         OnPictureRotation?.Invoke(true);
         float elapsed = 0f;
         Quaternion startRotation = transform.rotation;
@@ -76,6 +83,7 @@ public class PictureJewel : MonoBehaviour
 
         transform.rotation = endRotation;
         OnPictureRotation?.Invoke(false);
+        isRotating = false;
     }
 
     public bool IsPictureTouched()
@@ -90,6 +98,7 @@ public class PictureJewel : MonoBehaviour
             StopCoroutine(rotatePictureCor);
         }
         isPictureTouched = false;
+        isRotating = false;
         transform.rotation = initialRotation;
     }
 }

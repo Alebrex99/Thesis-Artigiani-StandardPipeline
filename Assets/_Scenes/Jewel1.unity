@@ -408,8 +408,8 @@ MonoBehaviour:
   useExpensiveSharpen: 0
   hidden: 0
   isExternalSurface: 1
-  externalSurfaceWidth: 4096
-  externalSurfaceHeight: 2048
+  externalSurfaceWidth: 6144
+  externalSurfaceHeight: 3072
   compositionDepth: 3
   noDepthBufferTesting: 0
   layerTextureFormat: 0
@@ -2893,7 +2893,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 0.25}
+  m_Size: {x: 1, y: 1, z: 0.2}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1358880179
 GameObject:
@@ -3891,7 +3891,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 515661593}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bb86ba9d4c5126e48bfef9b0c9550e9d, type: 3}
   m_Name: 
