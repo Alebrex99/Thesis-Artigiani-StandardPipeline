@@ -200,7 +200,7 @@ public class Jewel2Manager : MonoBehaviour
             GetJewelAudioSource().Stop();
             //StartCoroutine(FadeOutAudio(interactAudioSrc, 2f));
             if (currentCoroutine != null) StopCoroutine(currentCoroutine);
-            currentCoroutine = StartCoroutine(SwitchAudio(interactAudioSrc, GetJewelAudioSource(), 2f)); 
+            currentCoroutine = StartCoroutine(SwitchAudio(interactAudioSrc, GetJewelAudioSource(), 1f)); 
             clipPoint = interactAudioSrc.time;
             Debug.Log("Clip point: " + clipPoint);
         }
@@ -215,7 +215,7 @@ public class Jewel2Manager : MonoBehaviour
                     Debug.Log("TIME: " + interactAudioSrc.time + " CLIP : " + interactAudioSrc.clip.length + " condition: " + (interactAudioSrc.time >= interactAudioSrc.clip.length));
                     //StartCoroutine(FadeInAudio(interactAudioSrc, 2f));
                     if (currentCoroutine != null) StopCoroutine(currentCoroutine);
-                    currentCoroutine = StartCoroutine(SwitchAudio(GetJewelAudioSource(), interactAudioSrc, 2f));
+                    currentCoroutine = StartCoroutine(SwitchAudio(GetJewelAudioSource(), interactAudioSrc, 1f));
                     //clipPointJewel = GetJewelAudioSource().time; //appena tolgo l'audio del gioiello salvo il punto del clip
                     //Debug.Log("Clip point Jewel: " + clipPointJewel);
                     //StartCoroutine(CheckIfClipFinished(interactAudioSrc));
