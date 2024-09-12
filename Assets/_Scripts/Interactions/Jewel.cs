@@ -99,7 +99,7 @@ public class Jewel : MonoBehaviour
         if (text_label != null)
         {
             text_label.color = text_label_color;
-            text_label.text = "Pulse o toca la joya";
+            text_label.text = "Pulse el botón Joya";
         }
     }
 

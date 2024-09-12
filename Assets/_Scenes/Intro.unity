@@ -3918,6 +3918,10 @@ PrefabInstance:
       propertyPath: loadingDistance
       value: 1.1
       objectReference: {fileID: 0}
+    - target: {fileID: 3036114088594046391, guid: e1cc94dc54f039f4ab4185cea2162610, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3709312544149691188, guid: e1cc94dc54f039f4ab4185cea2162610, type: 3}
       propertyPath: Priority
       value: 0
@@ -4356,6 +4360,10 @@ PrefabInstance:
     - target: {fileID: 3911047565518157226, guid: 117cafb6087c3ae4986068775a0aca68, type: 3}
       propertyPath: _whenSelect.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: IntroManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5970125344740293194, guid: 117cafb6087c3ae4986068775a0aca68, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5970125344740293194, guid: 117cafb6087c3ae4986068775a0aca68, type: 3}
       propertyPath: _whenSelect.m_PersistentCalls.m_Calls.Array.data[0].m_Target
