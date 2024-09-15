@@ -227,12 +227,18 @@ public class Jewel1Manager : MonoBehaviour
                 }
                 else
                 {
+                    if(fadeInCor != null) StopCoroutine(fadeInCor);
+                    if (fadeOutCor != null) StopCoroutine(fadeOutCor);
+                    if (currentCoroutine != null) StopCoroutine(currentCoroutine);
                     fadeOutCor = StartCoroutine(FadeOutAudio(GetJewelAudioSource(), 2f));
                     envAudioSrc.volume = 1f;
                 }
             }
             else
             {
+                if (fadeInCor != null) StopCoroutine(fadeInCor);
+                if (fadeOutCor != null) StopCoroutine(fadeOutCor);
+                if (currentCoroutine != null) StopCoroutine(currentCoroutine);
                 fadeOutCor = StartCoroutine(FadeOutAudio(GetJewelAudioSource(), 2f));
                 envAudioSrc.volume = 1f;
             }
