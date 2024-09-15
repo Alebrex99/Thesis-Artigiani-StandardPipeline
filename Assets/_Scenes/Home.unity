@@ -29203,7 +29203,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "JoseMarin\nNacido en Valencia, el 11 de Agosto de 1965, hijo de joyero,
-    a la edad de 13 a\xF1os ingreso en la escuela del Gremio de Joyeros de Valencia."
+    a la edad de 13 a\xF1os ingres\xF3 en la escuela del Gremio de Joyeros de Valencia."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e9dbfa6f2b13d934c93a9699588e5293, type: 2}
   m_sharedMaterial: {fileID: -130461901718449150, guid: e9dbfa6f2b13d934c93a9699588e5293, type: 2}

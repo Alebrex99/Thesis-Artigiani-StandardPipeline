@@ -2121,7 +2121,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Tocar el cuadro para informaciones
+  m_text: Esta es la voz del artista. Tocar el cuadro para informaciones
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e9dbfa6f2b13d934c93a9699588e5293, type: 2}
   m_sharedMaterial: {fileID: -130461901718449150, guid: e9dbfa6f2b13d934c93a9699588e5293, type: 2}
@@ -2148,8 +2148,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30
-  m_fontSizeBase: 30
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -3979,9 +3979,9 @@ MonoBehaviour:
     _unselectMode: 1
   _palmGrabRules:
     _thumbRequirement: 1
-    _indexRequirement: 0
-    _middleRequirement: 2
-    _ringRequirement: 2
+    _indexRequirement: 1
+    _middleRequirement: 1
+    _ringRequirement: 1
     _pinkyRequirement: 1
     _unselectMode: 0
   _movementProvider: {fileID: 0}
@@ -6569,6 +6569,7 @@ MonoBehaviour:
   - {fileID: 1902200744}
   - {fileID: 4899500524757510212}
   - {fileID: 2129398664581890621}
+  _fadeAudioDelay: 1
 --- !u!4 &2017778176
 Transform:
   m_ObjectHideFlags: 0
