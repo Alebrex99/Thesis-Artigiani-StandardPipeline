@@ -45,7 +45,7 @@ public class HomeManager: MonoBehaviour
     [Range(0.1f, 1)]
     [SerializeField] private float rotationChairSpeed = 0.6f;
     [Range(30, 200)]
-    [SerializeField] public int angleSwitch = 80;
+    [SerializeField] public int angleSwitch = 70;
     private float _switchAudioDelay = 1f;
     private Coroutine currentCoroutine;
     private bool isFading = false;

@@ -35208,7 +35208,7 @@ MonoBehaviour:
   isEnvironmentChanged: 0
   chairInitPos: {fileID: 59071151}
   rotationChairSpeed: 0.6
-  angleSwitch: 80
+  angleSwitch: 70
   userInitPos: {fileID: 1665542144}
   trLightButton: {fileID: 1314654741}
   informations: {fileID: 1944357239}
