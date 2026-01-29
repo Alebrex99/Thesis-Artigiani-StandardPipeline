@@ -1,7 +1,7 @@
 # Virtual Reality Showroom for Artisan Jewelry
 
 <p align="center">
-  <img src="Assets/_Media/white-logo-1-300x274.png" alt="Project Logo" width="200"/>
+  <img src="Assets/_Media/white-logo-1-300x274.png" alt="Project Logo"/>
 </p>
 
 ## 📖 Overview
@@ -214,25 +214,19 @@ In addition to the main thesis work, collaboration with **Politecnico di Milano*
 ## 📜 Credits & Acknowledgments
 
 ### Development
-- **Author**: Alessandro Artigiani
+- **Author**: Alessandro Bresciani
 - **Institution**: Universitat Politècnica de València (UPV)
 - **Laboratory**: labLENI
 - **Location**: Valencia, Spain
 
 ### Collaboration
-- **Partner Institution**: Politecnico di Milano, Italy
+- **Partner Institution**: Politecnico di Torino, Italy
 
 ### Artisan
 - **José Marín**: Valencian artisan jeweler whose creations are featured in the VR showroom
 
 ### Supervision
 - labLENI Research Team, UPV
-
----
-
-## 📄 License
-
-This project was developed for academic research purposes as part of a Master's Thesis. All rights regarding the jewelry designs belong to José Marín.
 
 ---
 
