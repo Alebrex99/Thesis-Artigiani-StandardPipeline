@@ -1,7 +1,7 @@
 # Virtual Reality Showroom for Artisan Jewelry
 
 <p align="center">
-  <img src="Assets/_Media/white-logo-1-300x274.png" alt="Project Logo"/>
+  <img src="Assets/_Models/HOME/MATERIAL/ARTISAN  XPERIENCE LOGO V2.jpg" alt="Project Logo" width='600' height='600'/>
 </p>
 
 ## 📖 Overview
